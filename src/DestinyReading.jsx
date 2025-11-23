@@ -2418,24 +2418,6 @@ export default function DestinyReading() {
                   </div>
                 )}
 
-                {aiError && (
-                  <div style={{
-                    marginTop: '30px',
-                    padding: '20px',
-                    background: 'rgba(220, 38, 38, 0.1)',
-                    borderRadius: '8px',
-                    border: '1px solid rgba(220, 38, 38, 0.3)'
-                  }}>
-                    <p style={{ color: '#ef4444' }}>{aiError}</p>
-                    <button
-                      className="secondary-button"
-                      onClick={fetchAIAnalysis}
-                      style={{ marginTop: '15px' }}
-                    >
-                      Try Again
-                    </button>
-                  </div>
-                )}
 
                 {/* AI 분석 결과 표시 */}
                 {aiAnalysis && (
