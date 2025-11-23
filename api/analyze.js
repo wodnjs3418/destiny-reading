@@ -49,7 +49,7 @@ export default async function handler(req, res) {
 - Qiong Tong Bao Jian (穷通宝鉴) - The Exhaustive Treasure Mirror
 - Zi Ping Zhen Quan (子平真詮) - The True Essence of Zi Ping
 
-A valued client has paid for a PREMIUM personalized destiny reading. This is a high-value consultation. Provide an exceptionally detailed, profound, and personalized analysis.
+A client seeks your wisdom for a comprehensive personalized destiny reading. As their trusted advisor, provide an exceptionally detailed, profound, and insightful analysis that demonstrates your mastery of BaZi.
 
 ═══════════════════════════════════════
 CLIENT'S FOUR PILLARS (四柱八字)
