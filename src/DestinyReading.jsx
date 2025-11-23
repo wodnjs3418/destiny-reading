@@ -1240,66 +1240,7 @@ export default function DestinyReading() {
         </div>
       )}
 
-      {/* Exit Intent Popup */}
-      {showExitIntent && (
-        <div className="exit-overlay" onClick={() => setShowExitIntent(false)}>
-          <div className="exit-popup" onClick={(e) => e.stopPropagation()}>
-            <button className="exit-close" onClick={() => setShowExitIntent(false)}>×</button>
-
-            <div style={{ fontSize: '48px', marginBottom: '20px' }}>🌟</div>
-
-            <h2 style={{
-              fontFamily: "'Cinzel', serif",
-              fontSize: '24px',
-              marginBottom: '15px',
-              letterSpacing: '2px'
-            }}>
-              WAIT! YOUR STARS ALIGNED TODAY
-            </h2>
-
-            <p style={{
-              color: 'rgba(232, 230, 227, 0.7)',
-              marginBottom: '25px',
-              lineHeight: 1.8
-            }}>
-              This is a rare cosmic moment. Don't leave without discovering what the universe has prepared for you.
-            </p>
-
-            <div style={{
-              background: 'rgba(220, 38, 38, 0.1)',
-              border: '1px solid rgba(220, 38, 38, 0.3)',
-              padding: '15px',
-              borderRadius: '8px',
-              marginBottom: '25px'
-            }}>
-              <div style={{ color: '#ef4444', fontWeight: 600, marginBottom: '5px' }}>
-                EXCLUSIVE EXIT OFFER
-              </div>
-              <div style={{ fontSize: '14px', color: 'rgba(232, 230, 227, 0.7)' }}>
-                Get an additional <span className="gold-text" style={{ fontSize: '18px', fontWeight: 600 }}>30% OFF</span> — Final price: <span className="gold-text" style={{ fontWeight: 600 }}>$1.99</span>
-              </div>
-            </div>
-
-            <button className="cta-button" style={{ width: '100%', marginBottom: '15px' }}>
-              CLAIM MY $1.99 READING
-            </button>
-
-            <button
-              onClick={() => setShowExitIntent(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'rgba(232, 230, 227, 0.4)',
-                fontSize: '13px',
-                cursor: 'pointer',
-                padding: '10px'
-              }}
-            >
-              No thanks, I'll pass on discovering my destiny
-            </button>
-          </div>
-        </div>
-      )}
+      {/* Exit Intent Popup - 제거됨 */}
 
       {/* Floating CTA for Mobile */}
       <div className="floating-cta">
