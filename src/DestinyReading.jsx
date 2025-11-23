@@ -201,7 +201,7 @@ export default function DestinyReading() {
     };
 
     try {
-      downloadPDF(birthData, analysis);
+      downloadPDF(birthData, analysis, aiAnalysis);
     } catch (error) {
       console.error('PDF generation error:', error);
       alert('Error generating PDF. Please try again.');

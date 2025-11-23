@@ -1,5 +1,4 @@
 import jsPDF from 'jspdf';
-import { ELEMENT_ANALYSIS, ANIMAL_ANALYSIS, TEN_YEAR_FORECAST, WEALTH_ANALYSIS } from './analysisContent';
 
 const COLORS = {
   gold: [178, 144, 72],
@@ -18,23 +17,22 @@ const ELEMENT_COLORS = {
   Water: [70, 110, 150]
 };
 
-// Remove Chinese characters from text for PDF compatibility
+// Remove Chinese characters and markdown from text for PDF compatibility
 const cleanText = (text) => {
   if (!text) return '';
-  // Remove Chinese characters and clean up the text
   return text
     .replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '') // Remove Chinese
+    .replace(/\*\*/g, '') // Remove markdown bold
+    .replace(/##\s*/g, '') // Remove markdown headers
     .replace(/\s+/g, ' ') // Normalize whitespace
     .replace(/\(\s*\)/g, '') // Remove empty parentheses
     .replace(/"\s*"/g, '') // Remove empty quotes
-    .replace(/,\s*,/g, ',') // Remove double commas
-    .replace(/\s*-\s*-\s*/g, ' - ') // Fix double dashes
     .trim();
 };
 
-export const generatePDF = (birthData, analysis) => {
+export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   const { year, month, day, hour } = birthData;
-  const { element, animal, yinYang, monthElement, dayElement, hourAnimal, lifePath, luckyNumbers, luckyColors, luckyDirection, compatibility } = analysis;
+  const { element, animal, yinYang, monthElement, dayElement, hourAnimal, lifePath, luckyNumbers, luckyColors, luckyDirection } = analysis;
 
   const doc = new jsPDF({
     orientation: 'portrait',
@@ -63,105 +61,38 @@ export const generatePDF = (birthData, analysis) => {
   const drawPageBackground = () => {
     doc.setFillColor(...COLORS.cream);
     doc.rect(0, 0, pageWidth, pageHeight, 'F');
-    // Subtle border
     doc.setDrawColor(200, 190, 170);
     doc.setLineWidth(0.3);
     doc.rect(8, 8, pageWidth - 16, pageHeight - 16);
   };
 
   // Helper: Draw section header
-  const drawHeader = (text, y, icon = '') => {
+  const drawHeader = (text, y) => {
     doc.setFillColor(...COLORS.gold);
     doc.rect(margin, y, contentWidth, 12, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.setTextColor(255, 255, 255);
-    doc.text(icon + text.toUpperCase(), margin + 5, y + 8);
+    doc.text(cleanText(text).toUpperCase(), margin + 5, y + 8);
     return y + 18;
   };
 
-  // Helper: Draw subheader
-  const drawSubheader = (text, y) => {
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(11);
-    doc.setTextColor(...COLORS.gold);
-    doc.text(text, margin, y);
-    return y + 7;
-  };
-
   // Helper: Draw paragraph with proper wrapping
-  const drawParagraph = (text, y, fontSize = 10, indent = 0) => {
+  const drawParagraph = (text, fontSize = 10) => {
     const cleanedText = cleanText(text);
-    if (!cleanedText) return y;
+    if (!cleanedText) return;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(fontSize);
     doc.setTextColor(...COLORS.text);
 
-    const lines = doc.splitTextToSize(cleanedText, contentWidth - indent);
-    lines.forEach((line, index) => {
-      if (addNewPageIfNeeded(5)) {
-        // Reset after new page
-      }
-      doc.text(line, margin + indent, yPos);
+    const lines = doc.splitTextToSize(cleanedText, contentWidth);
+    lines.forEach((line) => {
+      addNewPageIfNeeded(6);
+      doc.text(line, margin, yPos);
       yPos += 5;
     });
-    return yPos + 3;
-  };
-
-  // Helper: Draw bullet list with proper wrapping
-  const drawBulletList = (items, startY) => {
-    yPos = startY;
-    doc.setFont('helvetica', 'normal');
-    doc.setFontSize(10);
-    doc.setTextColor(...COLORS.text);
-
-    items.forEach((item) => {
-      const cleanedItem = cleanText(item);
-      if (!cleanedItem) return;
-
-      addNewPageIfNeeded(8);
-
-      // Draw bullet
-      doc.setFillColor(...COLORS.gold);
-      doc.circle(margin + 2, yPos - 1.5, 1, 'F');
-
-      // Wrap text
-      const lines = doc.splitTextToSize(cleanedItem, contentWidth - 10);
-      lines.forEach((line, lineIndex) => {
-        doc.text(line, margin + 7, yPos);
-        yPos += 5;
-      });
-      yPos += 2;
-    });
-    return yPos + 3;
-  };
-
-  // Helper: Draw info box
-  const drawInfoBox = (title, content, y, bgColor = [245, 242, 235]) => {
-    const cleanedContent = cleanText(content);
-    const lines = doc.splitTextToSize(cleanedContent, contentWidth - 16);
-    const boxHeight = 18 + (lines.length * 5);
-
-    addNewPageIfNeeded(boxHeight + 5);
-
-    doc.setFillColor(...bgColor);
-    doc.roundedRect(margin, yPos, contentWidth, boxHeight, 3, 3, 'F');
-
-    doc.setFont('helvetica', 'bold');
-    doc.setFontSize(10);
-    doc.setTextColor(...COLORS.gold);
-    doc.text(title, margin + 8, yPos + 10);
-
-    doc.setFont('helvetica', 'italic');
-    doc.setFontSize(9);
-    doc.setTextColor(80, 80, 80);
-    lines.forEach((line, i) => {
-      doc.text(line, margin + 8, yPos + 18 + (i * 5));
-    });
-
-    yPos += boxHeight + 8;
-    return yPos;
+    yPos += 3;
   };
 
   // === PAGE 1: COVER ===
@@ -174,14 +105,6 @@ export const generatePDF = (birthData, analysis) => {
   doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
   doc.setLineWidth(0.3);
   doc.rect(14, 14, pageWidth - 28, pageHeight - 28);
-
-  // Corner decorations
-  const cornerSize = 15;
-  [[15, 15], [pageWidth - 15, 15], [15, pageHeight - 15], [pageWidth - 15, pageHeight - 15]].forEach(([x, y]) => {
-    doc.setLineWidth(0.5);
-    doc.line(x - 5, y, x + 5, y);
-    doc.line(x, y - 5, x, y + 5);
-  });
 
   // Title
   doc.setFont('helvetica', 'bold');
@@ -259,142 +182,71 @@ export const generatePDF = (birthData, analysis) => {
   doc.text('Personal Destiny Report', pageWidth / 2, 282, { align: 'center' });
   doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, pageWidth / 2, 289, { align: 'center' });
 
-  // === PAGE 2: YOUR ELEMENT ===
-  doc.addPage();
-  drawPageBackground();
-  yPos = margin;
+  // === AI ANALYSIS PAGES ===
+  if (aiAnalysis) {
+    // Parse AI analysis into sections
+    const sections = aiAnalysis.split(/(?=##\s)/);
 
-  yPos = drawHeader(`Your Core Element: ${element}`, yPos);
+    sections.forEach((section, sectionIndex) => {
+      if (!section.trim()) return;
 
-  const elementData = ELEMENT_ANALYSIS[element];
+      // Start new page for each major section (or first section)
+      if (sectionIndex === 0 || section.startsWith('##')) {
+        doc.addPage();
+        drawPageBackground();
+        yPos = margin;
+      }
 
-  // Clean overview text (remove Chinese)
-  yPos = drawParagraph(elementData.overview, yPos, 10);
-  yPos += 5;
+      // Split section into lines
+      const lines = section.split('\n');
 
-  yPos = drawSubheader('Your Natural Strengths', yPos);
-  yPos = drawBulletList(elementData.personality.strengths, yPos);
+      lines.forEach((line) => {
+        const trimmedLine = line.trim();
+        if (!trimmedLine) {
+          yPos += 3;
+          return;
+        }
 
-  yPos = drawSubheader('Areas for Growth', yPos);
-  yPos = drawBulletList(elementData.personality.challenges, yPos);
+        // Check if it's a header (## or starts with number and emoji)
+        if (trimmedLine.startsWith('##') || trimmedLine.match(/^\d+\.\s*[🌟👤💼💰💕👨‍👩‍👧‍👦🏥📅🔮💎⚠️📜]/)) {
+          addNewPageIfNeeded(25);
+          const headerText = cleanText(trimmedLine.replace(/^##\s*/, '').replace(/^\d+\.\s*/, ''));
+          yPos = drawHeader(headerText, yPos);
+        }
+        // Check if it's a subheader (starts with **)
+        else if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
+          addNewPageIfNeeded(15);
+          doc.setFont('helvetica', 'bold');
+          doc.setFontSize(11);
+          doc.setTextColor(...COLORS.gold);
+          doc.text(cleanText(trimmedLine), margin, yPos);
+          yPos += 8;
+        }
+        // Check if it's a bullet point
+        else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
+          addNewPageIfNeeded(8);
+          doc.setFillColor(...COLORS.gold);
+          doc.circle(margin + 2, yPos - 1.5, 1, 'F');
+          doc.setFont('helvetica', 'normal');
+          doc.setFontSize(10);
+          doc.setTextColor(...COLORS.text);
+          const bulletText = cleanText(trimmedLine.replace(/^[-•]\s*/, ''));
+          const bulletLines = doc.splitTextToSize(bulletText, contentWidth - 10);
+          bulletLines.forEach((bulletLine) => {
+            doc.text(bulletLine, margin + 7, yPos);
+            yPos += 5;
+          });
+          yPos += 2;
+        }
+        // Regular paragraph
+        else {
+          drawParagraph(trimmedLine, 10);
+        }
+      });
+    });
+  }
 
-  yPos = drawInfoBox('Ancient Wisdom', elementData.personality.advice, yPos);
-
-  // === PAGE 3: ANIMAL SIGN ===
-  doc.addPage();
-  drawPageBackground();
-  yPos = margin;
-
-  yPos = drawHeader(`Year of the ${animal}`, yPos);
-
-  const animalData = ANIMAL_ANALYSIS[animal];
-  yPos = drawParagraph(animalData.overview, yPos, 10);
-  yPos += 5;
-
-  yPos = drawSubheader('Core Character Traits', yPos);
-  yPos = drawBulletList(animalData.traits, yPos);
-
-  // Lucky elements in a nice box
-  doc.setFillColor(248, 246, 240);
-  doc.roundedRect(margin, yPos, contentWidth, 50, 3, 3, 'F');
-  doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(0.3);
-  doc.roundedRect(margin, yPos, contentWidth, 50, 3, 3, 'S');
-
-  doc.setFont('helvetica', 'bold');
-  doc.setFontSize(11);
-  doc.setTextColor(...COLORS.gold);
-  doc.text('Your Lucky Elements', margin + 10, yPos + 12);
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(...COLORS.text);
-  doc.text(`Lucky Numbers: ${animalData.lucky.numbers.join(', ')}`, margin + 10, yPos + 24);
-  doc.text(`Lucky Colors: ${animalData.lucky.colors.join(', ')}`, margin + 10, yPos + 34);
-  doc.text(`Lucky Direction: ${animalData.lucky.direction}`, margin + 10, yPos + 44);
-
-  yPos += 60;
-
-  yPos = drawSubheader('Love & Compatibility', yPos);
-  yPos = drawParagraph(animalData.love, yPos, 10);
-
-  // === PAGE 4: CAREER & WEALTH ===
-  doc.addPage();
-  drawPageBackground();
-  yPos = margin;
-
-  yPos = drawHeader('Career & Wealth Destiny', yPos);
-
-  yPos = drawSubheader('Ideal Career Paths', yPos);
-  yPos = drawBulletList(elementData.career.ideal, yPos);
-
-  yPos = drawParagraph(elementData.career.strengths, yPos, 10);
-  yPos += 3;
-
-  yPos = drawInfoBox('Career Guidance', elementData.career.warning, yPos, [255, 248, 240]);
-
-  yPos = drawSubheader('Wealth & Prosperity Profile', yPos);
-  const wealthData = WEALTH_ANALYSIS[element];
-  yPos = drawParagraph(`Investment Style: ${wealthData.tendency}`, yPos, 10);
-  yPos = drawParagraph(wealthData.advice, yPos, 10);
-
-  yPos = drawSubheader('Lucky Industries for You', yPos);
-  yPos = drawBulletList(elementData.wealth.lucky_industries, yPos);
-
-  // === PAGE 5: HEALTH & WELLNESS ===
-  doc.addPage();
-  drawPageBackground();
-  yPos = margin;
-
-  yPos = drawHeader('Health & Wellness', yPos);
-
-  yPos = drawSubheader('Body-Element Connection', yPos);
-  yPos = drawParagraph(elementData.health.organs, yPos, 10);
-
-  yPos = drawSubheader('Health Awareness Areas', yPos);
-  yPos = drawParagraph(elementData.health.vulnerabilities, yPos, 10);
-
-  yPos = drawSubheader('Wellness Recommendations', yPos);
-  yPos = drawBulletList(elementData.health.recommendations, yPos);
-
-  yPos = drawInfoBox('Daily Health Tip',
-    `As a ${element} element person, focus on activities that balance your elemental energy. ` +
-    `Regular self-care aligned with your element will enhance your overall vitality and life force.`,
-    yPos);
-
-  // === PAGE 6: 10-YEAR FORECAST ===
-  doc.addPage();
-  drawPageBackground();
-  yPos = margin;
-
-  yPos = drawHeader('Your 10-Year Life Forecast', yPos);
-
-  doc.setFont('helvetica', 'normal');
-  doc.setFontSize(10);
-  doc.setTextColor(...COLORS.text);
-  doc.text(`Life Path Number: ${lifePath}`, margin, yPos);
-  yPos += 10;
-
-  const forecast = TEN_YEAR_FORECAST[lifePath] || TEN_YEAR_FORECAST[1];
-  yPos = drawParagraph(forecast, yPos, 10);
-  yPos += 5;
-
-  yPos = drawSubheader('Key Years to Watch', yPos);
-  const currentYear = new Date().getFullYear();
-  const keyYears = [
-    `${currentYear + 1} - Year of New Beginnings and Fresh Opportunities`,
-    `${currentYear + 3} - Period of Growth and Expansion`,
-    `${currentYear + 5} - Potential Career Milestone or Advancement`,
-    `${currentYear + 7} - Relationship Transformations and Deeper Connections`,
-    `${currentYear + 10} - Major Life Cycle Completion and Renewal`
-  ];
-  yPos = drawBulletList(keyYears, yPos);
-
-  yPos = drawInfoBox('Timing Wisdom',
-    `${elementData.career.timing} This is when your elemental energy is strongest, making it the ideal time for important decisions and new ventures.`,
-    yPos);
-
-  // === PAGE 7: FINAL SUMMARY ===
+  // === FINAL PAGE: SUMMARY ===
   doc.addPage();
   doc.setFillColor(...COLORS.darkBg);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
@@ -475,8 +327,8 @@ export const generatePDF = (birthData, analysis) => {
   return doc;
 };
 
-export const downloadPDF = (birthData, analysis) => {
-  const doc = generatePDF(birthData, analysis);
+export const downloadPDF = (birthData, analysis, aiAnalysis = '') => {
+  const doc = generatePDF(birthData, analysis, aiAnalysis);
   const fileName = `Lumina_Destiny_${analysis.element}_${analysis.animal}.pdf`;
   doc.save(fileName);
   return fileName;
