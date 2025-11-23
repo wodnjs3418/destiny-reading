@@ -2193,7 +2193,9 @@ export default function DestinyReading() {
             </div>
           </div>
 
-          {/* Locked Premium Sections */}
+          {/* Locked Premium Sections - 결제 전에만 표시 */}
+          {!isPaid && (
+          <>
           <div style={{ position: 'relative', marginBottom: '25px' }}>
             <div className="locked-section">
               <div className="mystical-border" style={{
@@ -2317,6 +2319,8 @@ export default function DestinyReading() {
               <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
             </div>
           </div>
+          </>
+          )}
 
           {/* Ancient Wisdom Quote */}
           <div style={{
