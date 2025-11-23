@@ -130,7 +130,10 @@ export default function DestinyReading() {
       alert('Please enter your birth date first to receive your personalized reading.');
       return;
     }
-    setShowPaymentModal(true);
+    // TODO: 테스트 모드 - 결제 없이 바로 결과 페이지로
+    setStep('result');
+    setIsPaid(true);
+    // setShowPaymentModal(true); // 실제 결제 시 이 줄 활성화
   };
 
   // AI 사주 분석 호출
