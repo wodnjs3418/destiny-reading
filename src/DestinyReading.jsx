@@ -126,6 +126,10 @@ export default function DestinyReading() {
 
   // 결제 처리 함수
   const handlePayment = () => {
+    if (!birthData.year || !birthData.month || !birthData.day) {
+      alert('Please enter your birth date first to receive your personalized reading.');
+      return;
+    }
     setShowPaymentModal(true);
   };
 
