@@ -621,12 +621,12 @@ export default function DestinyReading() {
     }
 
     .cta-button {
-      background: linear-gradient(135deg, #d4af37 0%, #aa8c2c 50%, #d4af37 100%);
+      background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FFD700 100%);
       background-size: 200% auto;
       border: none;
       color: #0a0a0f;
       font-family: 'Cinzel', serif;
-      font-weight: 600;
+      font-weight: 700;
       padding: 18px 48px;
       font-size: 16px;
       letter-spacing: 2px;
@@ -634,12 +634,13 @@ export default function DestinyReading() {
       transition: all 0.3s ease;
       animation: pulse-gold 2s ease-in-out infinite;
       text-transform: uppercase;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.5), 0 0 60px rgba(255, 215, 0, 0.3);
     }
 
     .cta-button:hover {
       background-position: right center;
       transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(212, 175, 55, 0.4);
+      box-shadow: 0 0 40px rgba(255, 215, 0, 0.8), 0 0 80px rgba(255, 215, 0, 0.5), 0 10px 50px rgba(255, 165, 0, 0.6);
     }
 
     .cta-button:disabled {
@@ -1132,7 +1133,7 @@ export default function DestinyReading() {
             }}>
               READING THE STARS
             </h2>
-            <p style={{ color: 'rgba(232, 230, 227, 0.7)', fontSize: '16px' }}>
+            <p style={{ color: 'rgba(232, 230, 227, 0.85)', fontSize: '16px' }}>
               Analyzing your cosmic blueprint...
             </p>
             <div style={{
@@ -1212,7 +1213,7 @@ export default function DestinyReading() {
             </h2>
 
             <p style={{
-              color: 'rgba(232, 230, 227, 0.7)',
+              color: 'rgba(232, 230, 227, 0.85)',
               marginBottom: '20px',
               fontSize: '14px'
             }}>
@@ -1225,8 +1226,8 @@ export default function DestinyReading() {
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$14.99</span>
-              <span className="gold-text" style={{ fontSize: '28px', marginLeft: '10px', fontWeight: 600 }}>$5.99</span>
+              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$49.99</span>
+              <span className="gold-text" style={{ fontSize: '28px', marginLeft: '10px', fontWeight: 600 }}>$19.00</span>
             </div>
 
             <input
@@ -1313,7 +1314,7 @@ export default function DestinyReading() {
       {/* Floating CTA for Mobile */}
       <div className="floating-cta">
         <button className="cta-button" style={{ width: '100%', padding: '16px' }} onClick={handlePayment}>
-          GET MY READING — $5.99
+          GET MY READING — $19.00
         </button>
       </div>
 
@@ -1390,7 +1391,7 @@ export default function DestinyReading() {
             </p>
             <p style={{
               fontSize: '20px',
-              color: 'rgba(232, 230, 227, 0.7)',
+              color: 'rgba(232, 230, 227, 0.85)',
               maxWidth: '620px',
               margin: '0 auto',
               lineHeight: 1.9,
@@ -1467,8 +1468,8 @@ export default function DestinyReading() {
               ⚡ CELESTIAL ALIGNMENT SPECIAL ⚡
             </div>
             <div style={{ fontSize: '18px', marginBottom: '10px' }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$14.99</span>
-              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '36px', marginLeft: '15px', fontWeight: 600 }}>$5.99</span>
+              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$49.99</span>
+              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '36px', marginLeft: '15px', fontWeight: 600 }}>$19.00</span>
             </div>
             <div style={{
               display: 'flex',
@@ -1477,7 +1478,7 @@ export default function DestinyReading() {
               gap: '20px',
               flexWrap: 'wrap',
               fontSize: '14px',
-              color: 'rgba(232, 230, 227, 0.7)'
+              color: 'rgba(232, 230, 227, 0.85)'
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
                 <span>Offer ends in:</span>
@@ -1610,7 +1611,7 @@ export default function DestinyReading() {
                 borderRadius: '4px'
               }}>
                 <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through' }}>Total Value: $78</span>
-                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Today: $5.99</span>
+                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Today: $19.00</span>
               </div>
             </div>
 
@@ -1682,7 +1683,7 @@ export default function DestinyReading() {
                   <p style={{
                     fontSize: '15px',
                     lineHeight: 1.75,
-                    color: 'rgba(232, 230, 227, 0.7)'
+                    color: 'rgba(232, 230, 227, 0.85)'
                   }}>
                     {item.desc}
                   </p>
@@ -1701,7 +1702,7 @@ export default function DestinyReading() {
               marginBottom: '50px',
               fontWeight: 400
             }}>
-              TRANSFORMATIONS
+              REAL STORIES
             </h2>
 
             <div style={{
@@ -1836,7 +1837,7 @@ export default function DestinyReading() {
                   </h3>
                   <p style={{
                     fontSize: '15px',
-                    color: 'rgba(232, 230, 227, 0.7)',
+                    color: 'rgba(232, 230, 227, 0.85)',
                     lineHeight: 1.7
                   }}>
                     {step.desc}
@@ -1864,7 +1865,7 @@ export default function DestinyReading() {
             </h2>
             <p style={{
               fontSize: '18px',
-              color: 'rgba(232, 230, 227, 0.7)',
+              color: 'rgba(232, 230, 227, 0.85)',
               marginBottom: '35px',
               maxWidth: '500px',
               margin: '0 auto 35px',
@@ -1874,7 +1875,7 @@ export default function DestinyReading() {
               <br />Are you ready to listen?
             </p>
             <button className="cta-button" onClick={handlePayment}>
-              GET MY READING — $5.99
+              GET MY READING — $19.00
             </button>
             <p style={{
               marginTop: '22px',
@@ -1988,7 +1989,7 @@ export default function DestinyReading() {
                 </h3>
                 <p style={{
                   fontSize: '15px',
-                  color: 'rgba(232, 230, 227, 0.7)',
+                  color: 'rgba(232, 230, 227, 0.85)',
                   lineHeight: 1.8
                 }}>
                   {faq.a}
@@ -2392,7 +2393,7 @@ export default function DestinyReading() {
             </p>
             <p style={{
               fontSize: '15px',
-              color: 'rgba(232, 230, 227, 0.7)',
+              color: 'rgba(232, 230, 227, 0.85)',
               marginBottom: '8px',
               maxWidth: '500px',
               margin: '0 auto 8px'
@@ -2434,7 +2435,7 @@ export default function DestinyReading() {
 
                 <p style={{
                   marginBottom: '25px',
-                  color: 'rgba(232, 230, 227, 0.7)',
+                  color: 'rgba(232, 230, 227, 0.85)',
                   fontSize: '16px'
                 }}>
                   Download your complete 15-page personalized destiny report
@@ -2579,7 +2580,7 @@ export default function DestinyReading() {
                 </h2>
                 <p style={{
                   marginBottom: '25px',
-                  color: 'rgba(232, 230, 227, 0.7)',
+                  color: 'rgba(232, 230, 227, 0.85)',
                   fontSize: '16px'
                 }}>
                   Get instant access to your full 15-page personalized destiny report
@@ -2617,8 +2618,8 @@ export default function DestinyReading() {
                 </div>
 
                 <div style={{ marginBottom: '25px' }}>
-                  <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)', fontSize: '18px' }}>$14.99</span>
-                  <span className="gold-text" style={{ fontSize: '42px', marginLeft: '15px', fontWeight: 600 }}>$5.99</span>
+                  <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)', fontSize: '18px' }}>$49.99</span>
+                  <span className="gold-text" style={{ fontSize: '42px', marginLeft: '15px', fontWeight: 600 }}>$19.00</span>
                 </div>
 
                 <button className="cta-button" onClick={handlePayment}>

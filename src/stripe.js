@@ -22,7 +22,7 @@ export const getStripe = () => {
 export const PRODUCT = {
   name: 'Lumina Destiny Reading',
   description: 'Complete Four Pillars of Destiny Analysis - 15 Page PDF Report',
-  price: 599, // cents ($5.99)
+  price: 1900, // cents ($19.00)
   currency: 'usd',
   image: 'https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?w=400'
 };
@@ -75,7 +75,7 @@ export const verifyPayment = async (sessionId) => {
 
 4. Stripe Payment Link 생성 (백엔드 없이 가장 쉬운 방법):
    - Stripe Dashboard > Products > Add Product
-   - Price: $5.99
+   - Price: $19.00
    - Payment Link 생성
    - 해당 링크를 버튼에 연결
 
