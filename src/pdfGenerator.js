@@ -333,3 +333,12 @@ export const downloadPDF = (birthData, analysis, aiAnalysis = '') => {
   doc.save(fileName);
   return fileName;
 };
+
+// PDF를 Base64로 변환 (이메일 전송용)
+export const generatePDFBase64 = (birthData, analysis, aiAnalysis = '') => {
+  const doc = generatePDF(birthData, analysis, aiAnalysis);
+  const pdfOutput = doc.output('datauristring');
+  // data:application/pdf;filename=generated.pdf;base64,JVBERi0xLjM... 형식에서 base64 부분만 추출
+  const base64 = pdfOutput.split(',')[1];
+  return base64;
+};
