@@ -86,6 +86,20 @@ ${hourAnimal ? `**HOUR PILLAR (時柱):**
 REQUIRED ANALYSIS SECTIONS
 ═══════════════════════════════════════
 
+⚠️ CRITICAL FIRST: Start with a ONE-LINE SUMMARY (must be first, before all sections)
+
+Format:
+**"Your Cosmic Blueprint: [Poetic Title based on their element/animal]"**
+**One-sentence essence:** "[Identity statement] + [2025 Action statement]"
+
+Example:
+**"Your Cosmic Blueprint: The Water Dragon of Hidden Wisdom"**
+**"You are a hidden genius held back by fear of failure. 2025 is your year to break free."**
+
+This must be EXTREMELY compelling and specific to them. Not generic.
+
+═══════════════════════════════════════
+
 Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each section must be detailed and specific to THIS person's unique elemental combination:
 
 ## 1. 🌟 THE COSMIC BLUEPRINT - Overall Destiny Pattern
@@ -97,11 +111,26 @@ Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each se
 
 ## 2. ⚠️ URGENT WARNINGS FOR 2025 - Critical Alerts
 **READ THIS FIRST** - The spirits urge immediate attention to these matters:
-- Specific months to be EXTRA cautious (name at least 2 specific months like "June 2025" or "September 2025")
+
+⚠️ FORMAT EACH WARNING AS A HIGHLIGHT BOX:
+Use this exact format for each critical warning:
+```
+⚠️ **CRITICAL WARNING: [Month] 2025**
+[Specific event prediction]
+**If you ignore this:** [Consequence]
+```
+
+Example:
+```
+⚠️ **CRITICAL WARNING: July 2025**
+Financial stress peaks. Someone close may ask for a large loan. The ancient texts warn: lending money during Metal-Water clash invites betrayal.
+**If you ignore this:** You risk losing both money AND the relationship.
+```
+
+- Name at least 2-3 specific months to be EXTRA cautious
 - Predict specific potential events: betrayal by trusted person, financial loss, health crisis, relationship conflict
 - Use phrases like: "The ancient texts warn that..." or "If you ignore this, you risk..."
 - Make it feel urgent and personal
-- Include what happens if they DON'T heed the warning
 
 ## 3. 👤 THE INNER SELF & SHADOW - Deep Personality Analysis
 **THE FACE YOU SHOW THE WORLD:**
@@ -120,6 +149,8 @@ Be BRUTALLY HONEST here. Examples:
 - How they sabotage themselves without realizing it
 
 ## 4. 💼 CAREER & LIFE PURPOSE - Professional Destiny
+**Career Success Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
+
 - Industries that resonate with their elemental composition
 - Specific job roles that align with their Day Master
 - Management style and work relationships
@@ -129,6 +160,8 @@ Be BRUTALLY HONEST here. Examples:
 - Ideal work environment (creative, structured, collaborative, solo)
 
 ## 5. 💰 WEALTH & PROSPERITY - Financial Destiny
+**Wealth Potential Rating: ★★★☆☆** (MUST include star rating 1-5 stars based on their chart)
+
 - Their relationship with money (spender, saver, investor)
 - Natural wealth-building strengths
 - Financial blind spots and risks
@@ -138,6 +171,8 @@ Be BRUTALLY HONEST here. Examples:
 - Specific advice for building long-term prosperity
 
 ## 6. 💕 LOVE & RELATIONSHIPS - Romantic Destiny
+**Love Fortune Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
+
 - Their love language and emotional needs
 - What they truly need in a partner (not what they think they want)
 - Most compatible zodiac signs with detailed explanations
@@ -155,6 +190,8 @@ Be BRUTALLY HONEST here. Examples:
 - Social reputation and public image
 
 ## 8. 🏥 HEALTH & LONGEVITY
+**Health & Vitality Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
+
 - Organs associated with their dominant element
 - Specific health vulnerabilities
 - Mental health tendencies
@@ -163,13 +200,9 @@ Be BRUTALLY HONEST here. Examples:
 - Warning signs to watch for
 - Longevity indicators in their chart
 
-## 9. 📅 DETAILED FORECAST 2024-2026 (WITH SPECIFIC MONTHS!)
+## 9. 📅 DETAILED FORECAST 2025-2026 (WITH SPECIFIC MONTHS!)
 ⚠️ CRITICAL: Be EXTREMELY SPECIFIC here. People pay for concrete predictions, not vague advice.
-
-**2024 (Year of the Wood Dragon 甲辰):**
-- How this year's energy interacts with their chart
-- Name at least 2 SPECIFIC months for opportunities (e.g., "April 2024: A career breakthrough opportunity presents itself")
-- Name at least 2 SPECIFIC months for caution (e.g., "August 2024: Watch out for conflicts with authority figures")
+⚠️ IMPORTANT: Today is December 2024. DO NOT predict past dates. Only predict FUTURE months (2025 onwards).
 
 **2025 (Year of the Wood Snake 乙巳):**
 YOU MUST specify at least 4 SPECIFIC MONTHS with SPECIFIC EVENTS:
