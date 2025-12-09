@@ -2450,7 +2450,7 @@ export default function DestinyReading() {
                       background: 'rgba(212, 175, 55, 0.3)'
                     }}
                   >
-                    ⏳ Generating Your Analysis...
+                    ⏳ Generating Your Analysis (1-2 min)
                   </button>
                 ) : (
                   <button className="download-button" onClick={handleDownloadPDF}>
@@ -2489,6 +2489,9 @@ export default function DestinyReading() {
                     </p>
                     <p style={{ color: 'rgba(232, 230, 227, 0.6)', fontSize: '14px', marginTop: '10px' }}>
                       Generating your personalized reading...
+                    </p>
+                    <p style={{ color: 'rgba(212, 175, 55, 0.8)', fontSize: '13px', marginTop: '15px', fontWeight: '500' }}>
+                      ⏱️ This usually takes 1-2 minutes. Please wait...
                     </p>
                   </div>
                 )}
