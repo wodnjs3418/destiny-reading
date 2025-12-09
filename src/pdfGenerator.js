@@ -99,12 +99,36 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   doc.setFillColor(...COLORS.darkBg);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Decorative borders
+  // Watermark - Chinese characters in background (龍 = Dragon)
+  doc.setFontSize(180);
+  doc.setTextColor(25, 25, 35); // Very dark, barely visible
+  doc.setFont('helvetica', 'bold');
+  doc.text('龍', pageWidth / 2, pageHeight / 2 + 40, { align: 'center' });
+
+  // Triple decorative borders (Certificate-style)
   doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(1);
-  doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+  doc.setLineWidth(2);
+  doc.rect(8, 8, pageWidth - 16, pageHeight - 16);
+  doc.setLineWidth(0.5);
+  doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
   doc.setLineWidth(0.3);
-  doc.rect(14, 14, pageWidth - 28, pageHeight - 28);
+  doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
+
+  // Corner ornaments (decorative L-shapes in corners)
+  const cornerSize = 12;
+  // Top-left
+  doc.setLineWidth(1.5);
+  doc.line(15, 15, 15 + cornerSize, 15);
+  doc.line(15, 15, 15, 15 + cornerSize);
+  // Top-right
+  doc.line(pageWidth - 15, 15, pageWidth - 15 - cornerSize, 15);
+  doc.line(pageWidth - 15, 15, pageWidth - 15, 15 + cornerSize);
+  // Bottom-left
+  doc.line(15, pageHeight - 15, 15 + cornerSize, pageHeight - 15);
+  doc.line(15, pageHeight - 15, 15, pageHeight - 15 - cornerSize);
+  // Bottom-right
+  doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15 - cornerSize, pageHeight - 15);
+  doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15, pageHeight - 15 - cornerSize);
 
   // Title
   doc.setFont('helvetica', 'bold');
