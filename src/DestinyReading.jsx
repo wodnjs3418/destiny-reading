@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
-import { downloadPDF } from './pdfGenerator';
+import { downloadPDF, generatePDFBase64 } from './pdfGenerator';
 import { ELEMENT_ANALYSIS, ANIMAL_ANALYSIS, ELEMENT_QUOTES, DESTINY_PROVERBS } from './analysisContent';
 import { generateSajuAnalysis } from './openai';
 
@@ -136,6 +136,57 @@ export default function DestinyReading() {
     // setShowPaymentModal(true); // 실제 결제 시 이 줄 활성화
   };
 
+  // 이메일 전송 함수
+  const sendEmailWithPDF = async (aiAnalysisText) => {
+    if (!email) {
+      console.log('No email provided, skipping email delivery');
+      return;
+    }
+
+    try {
+      const analysisForEmail = {
+        element,
+        animal,
+        yinYang,
+        monthElement,
+        dayElement,
+        hourAnimal,
+        lifePath,
+        luckyNumbers,
+        luckyColors,
+        luckyDirection,
+        compatibility
+      };
+
+      // PDF를 Base64로 생성
+      const pdfBase64 = generatePDFBase64(birthData, analysisForEmail, aiAnalysisText);
+
+      // 이메일 전송 API 호출
+      const response = await fetch('/api/send-email', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          birthData,
+          analysis: analysisForEmail,
+          pdfBase64
+        })
+      });
+
+      if (response.ok) {
+        console.log('✅ Email sent successfully to:', email);
+      } else {
+        const error = await response.json();
+        console.error('Email sending failed:', error);
+      }
+    } catch (error) {
+      console.error('Email sending error:', error);
+      // 이메일 전송 실패해도 사용자 경험에는 영향 없음 (웹에서 이미 결과 확인 가능)
+    }
+  };
+
   // AI 사주 분석 호출
   const fetchAIAnalysis = async () => {
     setIsLoadingAI(true);
@@ -162,6 +213,9 @@ export default function DestinyReading() {
 
       const result = await generateSajuAnalysis(birthData, analysisData);
       setAiAnalysis(result);
+
+      // AI 분석 완료 후 이메일 전송 (백그라운드)
+      sendEmailWithPDF(result);
     } catch (error) {
       console.error('AI Analysis Error:', error);
       setAiError('Failed to generate personalized analysis. Please try again.');
@@ -2386,9 +2440,23 @@ export default function DestinyReading() {
                   Download your complete 15-page personalized destiny report
                 </p>
 
-                <button className="download-button" onClick={handleDownloadPDF}>
-                  📥 DOWNLOAD PDF REPORT
-                </button>
+                {isLoadingAI ? (
+                  <button
+                    className="download-button"
+                    disabled
+                    style={{
+                      opacity: 0.6,
+                      cursor: 'not-allowed',
+                      background: 'rgba(212, 175, 55, 0.3)'
+                    }}
+                  >
+                    ⏳ Generating Your Analysis...
+                  </button>
+                ) : (
+                  <button className="download-button" onClick={handleDownloadPDF}>
+                    📥 DOWNLOAD PDF REPORT
+                  </button>
+                )}
 
                 <p style={{
                   marginTop: '20px',
