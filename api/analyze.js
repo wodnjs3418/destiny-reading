@@ -112,25 +112,27 @@ Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each se
 ## 2. ⚠️ URGENT WARNINGS FOR 2025 - Critical Alerts
 **READ THIS FIRST** - The spirits urge immediate attention to these matters:
 
-⚠️ FORMAT EACH WARNING AS A HIGHLIGHT BOX:
-Use this exact format for each critical warning:
-```
-⚠️ **CRITICAL WARNING: [Month] 2025**
-[Specific event prediction]
-**If you ignore this:** [Consequence]
-```
+⚠️ FORMAT EACH WARNING AS A HIGHLIGHT BOX using this format:
 
-Example:
-```
+⚠️ **CRITICAL WARNING: [Specific Month] 2025**
+[Specific event prediction - be dramatic and specific]
+**If you ignore this:** [Dire consequence]
+
+---
+
+Example of proper formatting:
+
 ⚠️ **CRITICAL WARNING: July 2025**
 Financial stress peaks. Someone close may ask for a large loan. The ancient texts warn: lending money during Metal-Water clash invites betrayal.
 **If you ignore this:** You risk losing both money AND the relationship.
-```
 
-- Name at least 2-3 specific months to be EXTRA cautious
+---
+
+- Name at least 2-3 specific months to be EXTRA cautious (e.g., "June 2025", "September 2025")
 - Predict specific potential events: betrayal by trusted person, financial loss, health crisis, relationship conflict
 - Use phrases like: "The ancient texts warn that..." or "If you ignore this, you risk..."
 - Make it feel urgent and personal
+- Use the ⚠️ emoji to make warnings stand out
 
 ## 3. 👤 THE INNER SELF & SHADOW - Deep Personality Analysis
 **THE FACE YOU SHOW THE WORLD:**
