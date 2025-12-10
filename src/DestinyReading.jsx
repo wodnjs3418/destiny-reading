@@ -1224,8 +1224,9 @@ export default function DestinyReading() {
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$49.99</span>
-              <span className="gold-text" style={{ fontSize: '28px', marginLeft: '10px', fontWeight: 600 }}>$19.00</span>
+              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$39.99</span>
+              <span className="gold-text" style={{ fontSize: '28px', marginLeft: '10px', fontWeight: 600 }}>$9.99</span>
+              <span style={{ fontSize: '14px', marginLeft: '8px', color: '#22c55e', fontWeight: 600 }}>75% OFF</span>
             </div>
 
             <input
@@ -1257,10 +1258,10 @@ export default function DestinyReading() {
                     return actions.order.create({
                       purchase_units: [{
                         amount: {
-                          value: "5.99",
+                          value: "9.99",
                           currency_code: "USD"
                         },
-                        description: "Lumina Destiny Reading - Complete PDF Report"
+                        description: "Lumina Destiny Reading - Complete PDF Report (Beta Launch Special)"
                       }]
                     });
                   }}
@@ -1313,7 +1314,7 @@ export default function DestinyReading() {
       {/* Floating CTA for Mobile */}
       <div className="floating-cta">
         <button className="cta-button" style={{ width: '100%', padding: '16px' }} onClick={handlePayment}>
-          GET MY READING — $19.00
+          GET MY READING — $9.99
         </button>
       </div>
 
@@ -1464,11 +1465,12 @@ export default function DestinyReading() {
               color: '#d4af37',
               whiteSpace: 'nowrap'
             }}>
-              ⚡ CELESTIAL ALIGNMENT SPECIAL ⚡
+              ⚡ BETA LAUNCH SPECIAL ⚡
             </div>
             <div style={{ fontSize: '18px', marginBottom: '10px' }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$49.99</span>
-              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '36px', marginLeft: '15px', fontWeight: 600 }}>$19.00</span>
+              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$39.99</span>
+              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '36px', marginLeft: '15px', fontWeight: 600 }}>$9.99</span>
+              <span style={{ fontSize: '16px', marginLeft: '10px', color: '#22c55e', fontWeight: 600, padding: '4px 8px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '4px' }}>75% OFF</span>
             </div>
             <div style={{
               display: 'flex',
@@ -1609,8 +1611,8 @@ export default function DestinyReading() {
                 background: 'rgba(212, 175, 55, 0.08)',
                 borderRadius: '4px'
               }}>
-                <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through' }}>Total Value: $78</span>
-                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Today: $19.00</span>
+                <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through' }}>Regular: $39.99</span>
+                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Beta Launch: $9.99</span>
               </div>
             </div>
 
@@ -1874,7 +1876,7 @@ export default function DestinyReading() {
               <br />Are you ready to listen?
             </p>
             <button className="cta-button" onClick={handlePayment}>
-              GET MY READING — $19.00
+              GET MY READING — $9.99
             </button>
             <p style={{
               marginTop: '22px',
@@ -2617,8 +2619,9 @@ export default function DestinyReading() {
                 </div>
 
                 <div style={{ marginBottom: '25px' }}>
-                  <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)', fontSize: '18px' }}>$49.99</span>
-                  <span className="gold-text" style={{ fontSize: '42px', marginLeft: '15px', fontWeight: 600 }}>$19.00</span>
+                  <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)', fontSize: '18px' }}>$39.99</span>
+                  <span className="gold-text" style={{ fontSize: '42px', marginLeft: '15px', fontWeight: 600 }}>$9.99</span>
+                  <span style={{ fontSize: '18px', marginLeft: '12px', color: '#22c55e', fontWeight: 600, padding: '6px 12px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '4px' }}>75% OFF</span>
                 </div>
 
                 <button className="cta-button" onClick={handlePayment}>
