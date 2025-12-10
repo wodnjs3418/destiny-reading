@@ -17,17 +17,32 @@ const ELEMENT_COLORS = {
   Water: [70, 110, 150]
 };
 
-// Remove Chinese characters and markdown from text for PDF compatibility
+// Remove emojis, Chinese characters and markdown from text for PDF compatibility
 const cleanText = (text) => {
   if (!text) return '';
   return text
-    .replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '') // Remove Chinese
+    // Remove emojis and symbols (comprehensive range)
+    .replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '')
+    // Remove other common symbols
+    .replace(/[⚛️⚡🌟👤💼💰💕👨‍👩‍👧‍👦🏥📅🔮💎⚠️📜✨🎯🌙☀️⭐]/g, '')
+    .replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '') // Remove Chinese characters
+    .replace(/\*\*\*/g, '') // Remove triple asterisks
     .replace(/\*\*/g, '') // Remove markdown bold
     .replace(/##\s*/g, '') // Remove markdown headers
+    .replace(/___/g, '') // Remove underscores
     .replace(/\s+/g, ' ') // Normalize whitespace
     .replace(/\(\s*\)/g, '') // Remove empty parentheses
+    .replace(/\[\s*\]/g, '') // Remove empty brackets
     .replace(/"\s*"/g, '') // Remove empty quotes
+    .replace(/&&&/g, '&') // Fix multiple ampersands
+    .replace(/\.\.\./g, '') // Remove ellipsis placeholders
     .trim();
+};
+
+// Check if text has meaningful content after cleaning
+const hasContent = (text) => {
+  const cleaned = cleanText(text);
+  return cleaned && cleaned.length > 2 && cleaned !== '-' && cleaned !== '...';
 };
 
 export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
@@ -45,42 +60,129 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   const margin = 20;
   const contentWidth = pageWidth - (margin * 2);
   let yPos = margin;
+  let currentPageNum = 1;
 
   // Helper: Add new page if needed
   const addNewPageIfNeeded = (heightNeeded) => {
-    if (yPos + heightNeeded > pageHeight - margin) {
+    if (yPos + heightNeeded > pageHeight - margin - 10) { // Extra margin for footer
       doc.addPage();
-      drawPageBackground();
+      currentPageNum++;
+      drawPageBackground(currentPageNum);
       yPos = margin + 10;
       return true;
     }
     return false;
   };
 
-  // Helper: Draw page background
-  const drawPageBackground = () => {
+  // Helper: Draw page background with decorative elements
+  const drawPageBackground = (pageNum = null) => {
+    // Cream background
     doc.setFillColor(...COLORS.cream);
     doc.rect(0, 0, pageWidth, pageHeight, 'F');
+
+    // Subtle watermark pattern (repeating decorative circles)
+    doc.setDrawColor(240, 235, 225);
+    doc.setLineWidth(0.2);
+    for (let i = 0; i < 5; i++) {
+      for (let j = 0; j < 7; j++) {
+        const x = 20 + (i * 35);
+        const y = 20 + (j * 40);
+        doc.circle(x, y, 3, 'S');
+      }
+    }
+
+    // Main border
     doc.setDrawColor(200, 190, 170);
     doc.setLineWidth(0.3);
     doc.rect(8, 8, pageWidth - 16, pageHeight - 16);
+
+    // Inner decorative border with gold accents
+    doc.setDrawColor(...COLORS.gold);
+    doc.setLineWidth(0.15);
+    doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
+
+    // Corner ornaments (small decorative elements)
+    const drawCornerOrnament = (x, y, rotation) => {
+      doc.setDrawColor(...COLORS.gold);
+      doc.setLineWidth(0.8);
+      const size = 4;
+      // Small decorative lines in corners
+      doc.line(x, y, x + size * Math.cos(rotation), y + size * Math.sin(rotation));
+      doc.line(x, y, x + size * Math.cos(rotation + Math.PI/2), y + size * Math.sin(rotation + Math.PI/2));
+    };
+
+    drawCornerOrnament(12, 12, 0);
+    drawCornerOrnament(pageWidth - 12, 12, Math.PI/2);
+    drawCornerOrnament(12, pageHeight - 12, -Math.PI/2);
+    drawCornerOrnament(pageWidth - 12, pageHeight - 12, Math.PI);
+
+    // Page number at bottom if provided
+    if (pageNum !== null && pageNum > 1) {
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor(...COLORS.lightText);
+      doc.text(`${pageNum}`, pageWidth / 2, pageHeight - 12, { align: 'center' });
+    }
+
+    // Footer decorative line
+    doc.setDrawColor(...COLORS.gold);
+    doc.setLineWidth(0.2);
+    doc.line(pageWidth / 2 - 15, pageHeight - 15, pageWidth / 2 + 15, pageHeight - 15);
   };
 
-  // Helper: Draw section header
+  // Helper: Draw section header with decorative elements
   const drawHeader = (text, y) => {
+    const cleanedText = cleanText(text).toUpperCase();
+    if (!hasContent(cleanedText)) return y;
+
+    // Add some spacing before header
+    const startY = y + 3;
+
+    // Decorative line above header (subtle gold accent)
+    doc.setDrawColor(...COLORS.gold);
+    doc.setLineWidth(0.5);
+    doc.line(margin, startY, pageWidth - margin, startY);
+
+    const headerY = startY + 5;
+
+    // Gold background with gradient effect (simulated with opacity)
     doc.setFillColor(...COLORS.gold);
-    doc.rect(margin, y, contentWidth, 12, 'F');
     doc.setFont('helvetica', 'bold');
     doc.setFontSize(13);
     doc.setTextColor(255, 255, 255);
-    doc.text(cleanText(text).toUpperCase(), margin + 5, y + 8);
-    return y + 18;
+
+    // Split text if too long
+    const headerLines = doc.splitTextToSize(cleanedText, contentWidth - 20);
+    const headerHeight = 12 + (headerLines.length > 1 ? (headerLines.length - 1) * 5 : 0);
+
+    // Main header box
+    doc.rect(margin, headerY, contentWidth, headerHeight, 'F');
+
+    // Subtle shadow effect (darker overlay on edges)
+    doc.setFillColor(160, 130, 60);
+    doc.rect(margin, headerY + headerHeight - 1, contentWidth, 1, 'F');
+
+    // Header text
+    doc.setTextColor(255, 255, 255);
+    headerLines.forEach((line, i) => {
+      doc.text(line, margin + 10, headerY + 8 + (i * 5));
+    });
+
+    // Decorative corner accents
+    doc.setFillColor(255, 255, 255);
+    const cornerSize = 2;
+    doc.circle(margin + 3, headerY + 3, cornerSize, 'F');
+    doc.circle(pageWidth - margin - 3, headerY + 3, cornerSize, 'F');
+
+    return headerY + headerHeight + 8;
   };
 
   // Helper: Draw paragraph with proper wrapping
   const drawParagraph = (text, fontSize = 10) => {
     const cleanedText = cleanText(text);
-    if (!cleanedText) return;
+
+    // Only draw if there's meaningful content
+    if (!hasContent(cleanedText)) return;
 
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(fontSize);
@@ -208,18 +310,20 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
 
   // === AI ANALYSIS PAGES ===
   if (aiAnalysis) {
+    // Start first analysis page
+    doc.addPage();
+    currentPageNum++;
+    drawPageBackground(currentPageNum);
+    yPos = margin;
+
     // Parse AI analysis into sections
     const sections = aiAnalysis.split(/(?=##\s)/);
 
     sections.forEach((section, sectionIndex) => {
       if (!section.trim()) return;
 
-      // Start new page for each major section (or first section)
-      if (sectionIndex === 0 || section.startsWith('##')) {
-        doc.addPage();
-        drawPageBackground();
-        yPos = margin;
-      }
+      // No automatic new page - let content flow naturally
+      // addNewPageIfNeeded will handle page breaks
 
       // Split section into lines
       const lines = section.split('\n');
@@ -239,28 +343,50 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
         }
         // Check if it's a subheader (starts with **)
         else if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
-          addNewPageIfNeeded(15);
-          doc.setFont('helvetica', 'bold');
-          doc.setFontSize(11);
-          doc.setTextColor(...COLORS.gold);
-          doc.text(cleanText(trimmedLine), margin, yPos);
-          yPos += 8;
+          const subheaderText = cleanText(trimmedLine);
+
+          // Only render if there's meaningful content
+          if (hasContent(subheaderText)) {
+            addNewPageIfNeeded(15);
+            doc.setFont('helvetica', 'bold');
+            doc.setFontSize(11);
+            doc.setTextColor(...COLORS.gold);
+            doc.text(subheaderText, margin, yPos);
+            yPos += 8;
+          }
         }
         // Check if it's a bullet point
         else if (trimmedLine.startsWith('-') || trimmedLine.startsWith('•')) {
-          addNewPageIfNeeded(8);
-          doc.setFillColor(...COLORS.gold);
-          doc.circle(margin + 2, yPos - 1.5, 1, 'F');
-          doc.setFont('helvetica', 'normal');
-          doc.setFontSize(10);
-          doc.setTextColor(...COLORS.text);
           const bulletText = cleanText(trimmedLine.replace(/^[-•]\s*/, ''));
-          const bulletLines = doc.splitTextToSize(bulletText, contentWidth - 10);
-          bulletLines.forEach((bulletLine) => {
-            doc.text(bulletLine, margin + 7, yPos);
-            yPos += 5;
-          });
-          yPos += 2;
+
+          // Only render if there's meaningful content
+          if (hasContent(bulletText)) {
+            addNewPageIfNeeded(10);
+
+            // Fancy bullet point (gold square with border)
+            const bulletX = margin + 2.5;
+            const bulletY = yPos - 2;
+            const bulletSize = 2;
+
+            // Draw square bullet with border (more elegant than plain circle)
+            doc.setFillColor(...COLORS.gold);
+            doc.rect(bulletX, bulletY, bulletSize, bulletSize, 'F');
+
+            // Add subtle border for depth
+            doc.setDrawColor(140, 110, 50);
+            doc.setLineWidth(0.2);
+            doc.rect(bulletX, bulletY, bulletSize, bulletSize, 'S');
+
+            // Bullet text with better formatting
+            doc.setFont('helvetica', 'normal');
+            doc.setFontSize(10);
+            doc.setTextColor(...COLORS.text);
+            const bulletLines = doc.splitTextToSize(bulletText, contentWidth - 15);
+            bulletLines.forEach((bulletLine, idx) => {
+              doc.text(bulletLine, margin + 10, yPos + (idx * 5));
+            });
+            yPos += bulletLines.length * 5 + 3;
+          }
         }
         // Regular paragraph
         else {
