@@ -1270,6 +1270,7 @@ export default function DestinyReading() {
                       setIsPaid(true);
                       setShowPaymentModal(false);
                       setDownloadReady(true);
+                      setStep('result'); // Move to result page to trigger AI analysis
                       // 결제자 이름 저장
                       if (details.payer?.name?.given_name) {
                         console.log('Payer:', details.payer.name.given_name);
