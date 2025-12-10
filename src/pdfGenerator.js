@@ -25,9 +25,22 @@ const cleanText = (text) => {
     .replace(/[\u{1F300}-\u{1F9FF}]|[\u{2600}-\u{26FF}]|[\u{2700}-\u{27BF}]|[\u{1F600}-\u{1F64F}]|[\u{1F680}-\u{1F6FF}]|[\u{1F900}-\u{1F9FF}]|[\u{1FA70}-\u{1FAFF}]/gu, '')
     // Remove other common symbols
     .replace(/[⚛️⚡🌟👤💼💰💕👨‍👩‍👧‍👦🏥📅🔮💎⚠️📜✨🎯🌙☀️⭐]/g, '')
+    // Remove pinyin/romanization in parentheses (before removing Chinese)
+    .replace(/\([A-Za-z\s+]+\)/g, '') // Remove (Pinyin romanization)
+    .replace(/\([^)]*[\u4e00-\u9fff][^)]*\)/g, '') // Remove parentheses with Chinese
     .replace(/[\u4e00-\u9fff\u3400-\u4dbf]/g, '') // Remove Chinese characters
+    // Clean up leftover punctuation from pinyin
+    .replace(/[àáâãäåāăąǎǻȁȃḁạảấầẩẫậắằẳẵặ]/gi, 'a')
+    .replace(/[èéêëēĕėęěȅȇḕḗḙḛḝẹẻẽếềểễệ]/gi, 'e')
+    .replace(/[ìíîïĩīĭįǐȉȋḭḯỉị]/gi, 'i')
+    .replace(/[òóôõöōŏőǒǫȍȏȱṍṏṑṓọỏốồổỗộớờởỡợ]/gi, 'o')
+    .replace(/[ùúûüũūŭůűųǔǖǘǚǜȕȗṳṵṷṹṻụủứừửữự]/gi, 'u')
+    .replace(/[ỳýŷÿȳỵỷỹ]/gi, 'y')
+    .replace(/ñ/gi, 'n')
+    .replace(/ç/gi, 'c')
     .replace(/\*\*\*/g, '') // Remove triple asterisks
     .replace(/\*\*/g, '') // Remove markdown bold
+    .replace(/\*/g, '') // Remove single asterisks
     .replace(/##\s*/g, '') // Remove markdown headers
     .replace(/___/g, '') // Remove underscores
     .replace(/\s+/g, ' ') // Normalize whitespace
@@ -36,6 +49,7 @@ const cleanText = (text) => {
     .replace(/"\s*"/g, '') // Remove empty quotes
     .replace(/&&&/g, '&') // Fix multiple ampersands
     .replace(/\.\.\./g, '') // Remove ellipsis placeholders
+    .replace(/\s*-\s*""/g, '') // Remove dangling dashes
     .trim();
 };
 
@@ -360,6 +374,38 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
               doc.text(line, margin, yPos + (idx * 6));
             });
             yPos += subheaderLines.length * 6 + 3;
+          }
+        }
+        // Check if it's a numbered list item (1., 2., etc.)
+        else if (trimmedLine.match(/^\d+\.\s+/)) {
+          const numberMatch = trimmedLine.match(/^(\d+)\.\s+(.+)/);
+          if (numberMatch) {
+            const itemNumber = numberMatch[1];
+            const itemText = cleanText(numberMatch[2]);
+
+            // Only render if there's meaningful content
+            if (hasContent(itemText)) {
+              doc.setFont('helvetica', 'bold');
+              doc.setFontSize(10);
+              doc.setTextColor(...COLORS.gold);
+
+              // Calculate space needed
+              const testLines = doc.splitTextToSize(itemText, contentWidth - 20);
+              const neededHeight = Math.max(testLines.length * 5 + 5, 10);
+              addNewPageIfNeeded(neededHeight);
+
+              // Draw number
+              doc.text(`${itemNumber}.`, margin, yPos);
+
+              // Draw text with proper wrapping
+              doc.setFont('helvetica', 'normal');
+              doc.setTextColor(...COLORS.text);
+              const itemLines = doc.splitTextToSize(itemText, contentWidth - 20);
+              itemLines.forEach((line, idx) => {
+                doc.text(line, margin + 12, yPos + (idx * 5));
+              });
+              yPos += itemLines.length * 5 + 4;
+            }
           }
         }
         // Check if it's a bullet point
