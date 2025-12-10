@@ -347,12 +347,19 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
 
           // Only render if there's meaningful content
           if (hasContent(subheaderText)) {
-            addNewPageIfNeeded(15);
             doc.setFont('helvetica', 'bold');
             doc.setFontSize(11);
             doc.setTextColor(...COLORS.gold);
-            doc.text(subheaderText, margin, yPos);
-            yPos += 8;
+
+            // Split text properly to prevent overflow
+            const subheaderLines = doc.splitTextToSize(subheaderText, contentWidth);
+            const neededHeight = subheaderLines.length * 6 + 5;
+            addNewPageIfNeeded(neededHeight);
+
+            subheaderLines.forEach((line, idx) => {
+              doc.text(line, margin, yPos + (idx * 6));
+            });
+            yPos += subheaderLines.length * 6 + 3;
           }
         }
         // Check if it's a bullet point
