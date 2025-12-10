@@ -111,7 +111,7 @@ export default function DestinyReading() {
   const [showExitIntent, setShowExitIntent] = useState(false);
   const [hasShownExit, setHasShownExit] = useState(false);
   const [pulsePrice, setPulsePrice] = useState(false);
-  const [isPaid, setIsPaid] = useState(true); // TODO: 테스트 후 false로 되돌리기!
+  const [isPaid, setIsPaid] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [email, setEmail] = useState('');
@@ -130,10 +130,8 @@ export default function DestinyReading() {
       alert('Please enter your birth date first to receive your personalized reading.');
       return;
     }
-    // TODO: 테스트 모드 - 결제 없이 바로 결과 페이지로
-    setStep('result');
-    setIsPaid(true);
-    // setShowPaymentModal(true); // 실제 결제 시 이 줄 활성화
+    // Show payment modal for real payment
+    setShowPaymentModal(true);
   };
 
   // 이메일 전송 함수
