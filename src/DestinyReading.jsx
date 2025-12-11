@@ -1224,9 +1224,30 @@ export default function DestinyReading() {
               borderRadius: '8px',
               marginBottom: '20px'
             }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$39.99</span>
-              <span className="gold-text" style={{ fontSize: '28px', marginLeft: '10px', fontWeight: 600 }}>$9.99</span>
-              <span style={{ fontSize: '14px', marginLeft: '8px', color: '#22c55e', fontWeight: 600 }}>75% OFF</span>
+              {/* Launch Special Badge - Small and elegant */}
+              <div style={{ marginBottom: '8px' }}>
+                <span style={{
+                  fontSize: '11px',
+                  color: '#d4af37',
+                  border: '1px solid #d4af37',
+                  padding: '3px 8px',
+                  borderRadius: '3px',
+                  letterSpacing: '0.5px',
+                  fontWeight: 500
+                }}>LAUNCH SPECIAL</span>
+              </div>
+              {/* Price Anchoring */}
+              <div style={{ marginBottom: '6px' }}>
+                <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>$39.99</span>
+              </div>
+              {/* Main Price - Large and prominent */}
+              <div style={{ marginBottom: '8px' }}>
+                <span className="gold-text" style={{ fontSize: '42px', fontWeight: 700, letterSpacing: '-1px' }}>$9.99</span>
+              </div>
+              {/* Urgency */}
+              <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.6)', fontStyle: 'italic' }}>
+                Offer ends soon.
+              </div>
             </div>
 
             <input
@@ -1465,12 +1486,28 @@ export default function DestinyReading() {
               color: '#d4af37',
               whiteSpace: 'nowrap'
             }}>
-              ⚡ BETA LAUNCH SPECIAL ⚡
+              {/* Launch Special Badge */}
+              <span style={{
+                fontSize: '10px',
+                color: '#d4af37',
+                border: '1px solid #d4af37',
+                padding: '4px 10px',
+                borderRadius: '3px',
+                letterSpacing: '1px',
+                display: 'inline-block'
+              }}>LAUNCH SPECIAL</span>
             </div>
-            <div style={{ fontSize: '18px', marginBottom: '10px' }}>
-              <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)' }}>$39.99</span>
-              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '36px', marginLeft: '15px', fontWeight: 600 }}>$9.99</span>
-              <span style={{ fontSize: '16px', marginLeft: '10px', color: '#22c55e', fontWeight: 600, padding: '4px 8px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '4px' }}>75% OFF</span>
+            {/* Price Anchoring */}
+            <div style={{ fontSize: '14px', marginBottom: '6px', color: '#999' }}>
+              <span style={{ textDecoration: 'line-through' }}>$39.99</span>
+            </div>
+            {/* Main Price */}
+            <div style={{ marginBottom: '10px' }}>
+              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '54px', fontWeight: 700, letterSpacing: '-2px' }}>$9.99</span>
+            </div>
+            {/* Urgency */}
+            <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.6)', fontStyle: 'italic', marginBottom: '15px' }}>
+              Offer ends soon.
             </div>
             <div style={{
               display: 'flex',
@@ -2618,10 +2655,32 @@ export default function DestinyReading() {
                   ))}
                 </div>
 
-                <div style={{ marginBottom: '25px' }}>
-                  <span style={{ textDecoration: 'line-through', color: 'rgba(232, 230, 227, 0.5)', fontSize: '18px' }}>$39.99</span>
-                  <span className="gold-text" style={{ fontSize: '42px', marginLeft: '15px', fontWeight: 600 }}>$9.99</span>
-                  <span style={{ fontSize: '18px', marginLeft: '12px', color: '#22c55e', fontWeight: 600, padding: '6px 12px', background: 'rgba(34, 197, 94, 0.1)', borderRadius: '4px' }}>75% OFF</span>
+                {/* Price Section - Conversion Optimized */}
+                <div style={{ marginBottom: '30px', textAlign: 'center' }}>
+                  {/* Launch Special Badge */}
+                  <div style={{ marginBottom: '10px' }}>
+                    <span style={{
+                      fontSize: '11px',
+                      color: '#d4af37',
+                      border: '1px solid #d4af37',
+                      padding: '4px 10px',
+                      borderRadius: '3px',
+                      letterSpacing: '1px',
+                      display: 'inline-block'
+                    }}>LAUNCH SPECIAL</span>
+                  </div>
+                  {/* Price Anchoring */}
+                  <div style={{ marginBottom: '8px' }}>
+                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '16px' }}>$39.99</span>
+                  </div>
+                  {/* Main Price */}
+                  <div style={{ marginBottom: '10px' }}>
+                    <span className="gold-text" style={{ fontSize: '56px', fontWeight: 700, letterSpacing: '-2px' }}>$9.99</span>
+                  </div>
+                  {/* Urgency */}
+                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.6)', fontStyle: 'italic' }}>
+                    Offer ends soon.
+                  </div>
                 </div>
 
                 <button className="cta-button" onClick={handlePayment}>
