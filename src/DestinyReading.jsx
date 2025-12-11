@@ -504,7 +504,8 @@ export default function DestinyReading() {
       setIsAnalyzing(true);
       setTimeout(() => {
         setIsAnalyzing(false);
-        setStep('result');
+        // Don't automatically go to result - user must pay first
+        // setStep('result'); // REMOVED - payment required
       }, 3000);
     }
   };
@@ -2062,7 +2063,7 @@ export default function DestinyReading() {
         </div>
       )}
 
-      {step === 'result' && (
+      {step === 'result' && isPaid && (
         <div style={{
           maxWidth: '850px',
           margin: '0 auto',
