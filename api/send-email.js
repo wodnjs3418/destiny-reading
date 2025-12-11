@@ -19,7 +19,14 @@ export default async function handler(req, res) {
 
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
 
+  // 디버깅: 환경변수 확인
+  console.log('🔍 [DEBUG] Environment variables check:');
+  console.log('- RESEND_API_KEY exists:', !!RESEND_API_KEY);
+  console.log('- RESEND_API_KEY length:', RESEND_API_KEY?.length || 0);
+  console.log('- All env keys:', Object.keys(process.env).filter(k => k.includes('RESEND')));
+
   if (!RESEND_API_KEY) {
+    console.error('❌ RESEND_API_KEY is not configured!');
     return res.status(500).json({ error: 'Resend API key not configured' });
   }
 
