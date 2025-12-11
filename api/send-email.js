@@ -17,7 +17,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  // 임시로 하드코딩 (테스트용)
+  // 하드코딩 사용 (Private 저장소)
   const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_6FLRsWBX_FbFkvHBbwWtQqMpf5ijCDQUV';
 
   // 디버깅: 환경변수 확인
@@ -224,7 +224,7 @@ export default async function handler(req, res) {
     const data = await resend.emails.send({
       from: 'Lumina <noreply@luminadestiny.com>',
       to: [email],
-      subject: `✨ Your Lumina Destiny Reading - ${element} ${animal}`,
+      subject: 'Delivery: Your Analysis Report (PDF)',
       html: htmlContent,
       attachments: pdfBase64 ? [{
         filename: `Lumina_Destiny_${element}_${animal}.pdf`,
