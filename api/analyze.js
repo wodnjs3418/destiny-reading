@@ -105,9 +105,9 @@ Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each se
 ## 1. 🌟 THE COSMIC BLUEPRINT - Overall Destiny Pattern
 - Analyze the interaction between their Year, Month, Day, and Hour pillars
 - Identify the dominant element pattern (is their chart balanced or does one element dominate?)
-- Explain their "Ming" (命) - their fundamental life pattern set at birth
+- Explain their fundamental life pattern set at birth
 - Reference what the San Ming Tong Hui says about this specific stem-branch combination
-- Include the classical Chinese term for their destiny pattern
+- Describe their destiny pattern in English only (NO Chinese characters or pinyin)
 
 ## 2. ⚠️ URGENT WARNINGS FOR 2025 - Critical Alerts
 **READ THIS FIRST** - The spirits urge immediate attention to these matters:
@@ -237,9 +237,11 @@ Use dramatic language:
 
 ## 12. 📜 WISDOM FROM THE ANCIENTS
 - Select 3 classical Chinese proverbs specifically relevant to their chart
-- Provide the Chinese characters, pinyin, and English translation
+- Provide ONLY the English translation (NO Chinese characters, NO pinyin, NO romanization)
 - Explain why each applies to them personally
 - Closing blessing and encouragement
+
+IMPORTANT: Do NOT include Chinese characters, pinyin, or any non-English text in this section.
 
 ═══════════════════════════════════════
 FORMATTING REQUIREMENTS
@@ -247,7 +249,7 @@ FORMATTING REQUIREMENTS
 - Use markdown headers (##) for main sections
 - Use bold (**) for emphasis
 - Use bullet points for lists
-- Include occasional Chinese characters for authenticity
+- Do NOT include Chinese characters, pinyin, or romanization anywhere in the response
 - Make it feel like a premium, professional consultation
 - Be SPECIFIC - avoid generic statements that could apply to anyone
 - Reference classical texts by name when making interpretations
