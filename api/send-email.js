@@ -17,7 +17,8 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   }
 
-  const RESEND_API_KEY = process.env.RESEND_API_KEY;
+  // 임시로 하드코딩 (테스트용)
+  const RESEND_API_KEY = process.env.RESEND_API_KEY || 're_6FLRsWBX_FbFkvHBbwWtQqMpf5ijCDQUV';
 
   // 디버깅: 환경변수 확인
   const debugInfo = {
