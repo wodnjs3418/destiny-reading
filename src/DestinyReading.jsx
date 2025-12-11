@@ -120,6 +120,9 @@ export default function DestinyReading() {
   const [aiAnalysis, setAiAnalysis] = useState('');
   const [isLoadingAI, setIsLoadingAI] = useState(false);
   const [aiError, setAiError] = useState('');
+  const [resendEmail, setResendEmail] = useState('');
+  const [isResending, setIsResending] = useState(false);
+  const [resendSuccess, setResendSuccess] = useState(false);
 
   // Stripe Payment Link - 여기에 실제 Stripe Payment Link URL을 넣으세요
   const STRIPE_PAYMENT_LINK = 'https://buy.stripe.com/test_YOUR_LINK_HERE';
@@ -183,6 +186,32 @@ export default function DestinyReading() {
       console.error('Email sending error:', error);
       // 이메일 전송 실패해도 사용자 경험에는 영향 없음 (웹에서 이미 결과 확인 가능)
     }
+  };
+
+  // 이메일 재발송 함수
+  const handleResendEmail = async () => {
+    if (!resendEmail || !resendEmail.includes('@')) {
+      alert('Please enter a valid email address');
+      return;
+    }
+
+    setIsResending(true);
+    setResendSuccess(false);
+
+    // 임시로 email state를 resendEmail로 변경하고 sendEmailWithPDF 호출
+    const originalEmail = email;
+    setEmail(resendEmail);
+
+    await sendEmailWithPDF(aiAnalysis);
+
+    setEmail(originalEmail);
+    setIsResending(false);
+    setResendSuccess(true);
+
+    // 3초 후 성공 메시지 숨기기
+    setTimeout(() => {
+      setResendSuccess(false);
+    }, 3000);
   };
 
   // AI 사주 분석 호출
@@ -1221,7 +1250,7 @@ export default function DestinyReading() {
               marginBottom: '20px',
               fontSize: '14px'
             }}>
-              Complete 15-page personalized destiny report
+              Complete personalized destiny report
             </p>
 
             <div style={{
@@ -1258,23 +1287,34 @@ export default function DestinyReading() {
 
             <input
               type="email"
-              placeholder="Enter your email for PDF delivery"
+              placeholder="Enter your email for PDF delivery *Required"
               className="payment-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              required
+              style={{
+                borderColor: email && !email.includes('@') ? '#ff6b6b' : undefined
+              }}
             />
+
+            {email && !email.includes('@') && (
+              <div style={{ color: '#ff6b6b', fontSize: '13px', marginTop: '5px', marginBottom: '10px' }}>
+                Please enter a valid email address
+              </div>
+            )}
 
             {paymentError && (
               <div className="payment-error">{paymentError}</div>
             )}
 
-            {/* PayPal 버튼 */}
+            {/* PayPal 버튼 - 이메일 입력 후에만 활성화 */}
             <div style={{ marginBottom: '15px' }}>
-              <PayPalScriptProvider options={{
-                "client-id": PAYPAL_CLIENT_ID,
-                currency: "USD"
-              }}>
-                <PayPalButtons
+              {email && email.includes('@') ? (
+                <PayPalScriptProvider options={{
+                  "client-id": PAYPAL_CLIENT_ID,
+                  currency: "USD"
+                }}>
+                  <PayPalButtons
                   style={{
                     layout: "vertical",
                     color: "gold",
@@ -1378,6 +1418,19 @@ export default function DestinyReading() {
                   }}
                 />
               </PayPalScriptProvider>
+              ) : (
+                <button
+                  className="cta-button"
+                  disabled
+                  style={{
+                    opacity: 0.5,
+                    cursor: 'not-allowed',
+                    width: '100%'
+                  }}
+                >
+                  Enter Email to Continue
+                </button>
+              )}
             </div>
 
             <div style={{
@@ -1701,7 +1754,7 @@ export default function DestinyReading() {
                 WHAT'S INCLUDED:
               </div>
               <div className="bonus-item">
-                <span>📜</span> Complete 15-Page Personalized Report
+                <span>📜</span> Complete Personalized Report
                 <span className="bonus-value">$29</span>
               </div>
               <div className="bonus-item">
@@ -1917,7 +1970,7 @@ export default function DestinyReading() {
               {[
                 { num: '1', title: 'Enter Your Birth Data', desc: 'Provide your birth date and time for precise calculations' },
                 { num: '2', title: 'Ancient Algorithm Decodes', desc: 'Our system applies 3,000+ years of BaZi wisdom' },
-                { num: '3', title: 'Receive Your Reading', desc: 'Instant 15-page personalized PDF delivered to your email' }
+                { num: '3', title: 'Receive Your Reading', desc: 'Instant personalized PDF delivered to your email' }
               ].map((step, i) => (
                 <div key={i} style={{
                   textAlign: 'center',
@@ -2551,7 +2604,7 @@ export default function DestinyReading() {
                   color: 'rgba(232, 230, 227, 0.85)',
                   fontSize: '16px'
                 }}>
-                  Download your complete 15-page personalized destiny report
+                  Download your complete personalized destiny report
                 </p>
 
                 {isLoadingAI ? (
@@ -2572,13 +2625,88 @@ export default function DestinyReading() {
                   </button>
                 )}
 
-                <p style={{
-                  marginTop: '20px',
-                  fontSize: '13px',
-                  color: 'rgba(232, 230, 227, 0.5)'
+                {email ? (
+                  <p style={{
+                    marginTop: '20px',
+                    fontSize: '13px',
+                    color: 'rgba(232, 230, 227, 0.5)'
+                  }}>
+                    A copy has been sent to: {email}
+                  </p>
+                ) : (
+                  <p style={{
+                    marginTop: '20px',
+                    fontSize: '13px',
+                    color: '#ff6b6b'
+                  }}>
+                    ⚠️ No email address provided during checkout
+                  </p>
+                )}
+
+                {/* 이메일 재발송 섹션 */}
+                <div style={{
+                  marginTop: '25px',
+                  padding: '20px',
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  borderRadius: '8px',
+                  border: '1px solid rgba(212, 175, 55, 0.2)'
                 }}>
-                  A copy has also been sent to: {email}
-                </p>
+                  <p style={{
+                    fontSize: '14px',
+                    color: 'rgba(232, 230, 227, 0.85)',
+                    marginBottom: '12px',
+                    fontWeight: 600
+                  }}>
+                    📧 Resend PDF to Another Email
+                  </p>
+                  <div style={{
+                    display: 'flex',
+                    gap: '10px',
+                    flexWrap: 'wrap'
+                  }}>
+                    <input
+                      type="email"
+                      placeholder="Enter email address"
+                      className="payment-input"
+                      value={resendEmail}
+                      onChange={(e) => setResendEmail(e.target.value)}
+                      style={{
+                        flex: 1,
+                        minWidth: '200px'
+                      }}
+                    />
+                    <button
+                      onClick={handleResendEmail}
+                      disabled={isResending || !resendEmail}
+                      style={{
+                        padding: '12px 24px',
+                        background: isResending ? 'rgba(212, 175, 55, 0.3)' : 'linear-gradient(135deg, #b8860b 0%, #daa520 100%)',
+                        color: '#fff',
+                        border: 'none',
+                        borderRadius: '6px',
+                        fontWeight: 600,
+                        cursor: isResending || !resendEmail ? 'not-allowed' : 'pointer',
+                        opacity: isResending || !resendEmail ? 0.6 : 1,
+                        fontSize: '14px',
+                        whiteSpace: 'nowrap'
+                      }}
+                    >
+                      {isResending ? 'Sending...' : 'Send'}
+                    </button>
+                  </div>
+                  {resendSuccess && (
+                    <p style={{
+                      marginTop: '12px',
+                      fontSize: '13px',
+                      color: '#22c55e',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '6px'
+                    }}>
+                      ✓ Email sent successfully to {resendEmail}!
+                    </p>
+                  )}
+                </div>
 
                 {/* 분석 로딩 상태 */}
                 {isLoadingAI && (
@@ -2696,7 +2824,7 @@ export default function DestinyReading() {
                   color: 'rgba(232, 230, 227, 0.85)',
                   fontSize: '18px'
                 }}>
-                  Get instant access to your full 15-page personalized destiny report
+                  Get instant access to your complete personalized destiny report
                 </p>
 
                 {/* What's included */}
