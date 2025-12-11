@@ -500,13 +500,18 @@ export default function DestinyReading() {
   };
 
   const handleSubmit = () => {
+    console.log('🔍 [DEBUG] handleSubmit called', birthData);
     if (birthData.year && birthData.month && birthData.day) {
+      console.log('🔍 [DEBUG] Birth data valid, starting analysis');
       setIsAnalyzing(true);
       setTimeout(() => {
+        console.log('🔍 [DEBUG] Analysis complete, moving to result screen');
         setIsAnalyzing(false);
-        // Don't automatically go to result - user must pay first
-        // setStep('result'); // REMOVED - payment required
+        setStep('result'); // Show preview screen
+        console.log('🔍 [DEBUG] setStep("result") called');
       }, 3000);
+    } else {
+      console.log('❌ [DEBUG] Birth data incomplete:', birthData);
     }
   };
 
@@ -1228,18 +1233,18 @@ export default function DestinyReading() {
               {/* Launch Special Badge - Small and elegant */}
               <div style={{ marginBottom: '8px' }}>
                 <span style={{
-                  fontSize: '11px',
+                  fontSize: '13px',
                   color: '#d4af37',
-                  border: '1px solid #d4af37',
-                  padding: '3px 8px',
-                  borderRadius: '3px',
-                  letterSpacing: '0.5px',
-                  fontWeight: 500
+                  border: '1.5px solid #d4af37',
+                  padding: '5px 12px',
+                  borderRadius: '4px',
+                  letterSpacing: '1px',
+                  fontWeight: 600
                 }}>LAUNCH SPECIAL</span>
               </div>
               {/* Price Anchoring */}
               <div style={{ marginBottom: '6px' }}>
-                <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '14px' }}>$39.99</span>
+                <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '28px', fontWeight: 500 }}>$39.99</span>
               </div>
               {/* Main Price - Large and prominent */}
               <div style={{ marginBottom: '8px' }}>
@@ -1288,17 +1293,84 @@ export default function DestinyReading() {
                     });
                   }}
                   onApprove={(data, actions) => {
-                    return actions.order.capture().then((details) => {
-                      console.log('Payment completed:', details);
-                      setIsPaid(true);
-                      setShowPaymentModal(false);
-                      setDownloadReady(true);
-                      setStep('result'); // Move to result page to trigger AI analysis
-                      // 결제자 이름 저장
-                      if (details.payer?.name?.given_name) {
-                        console.log('Payer:', details.payer.name.given_name);
-                      }
-                    });
+                    console.log('🔍 [PAYMENT] onApprove triggered. Order ID:', data.orderID);
+
+                    return actions.order.capture()
+                      .then((details) => {
+                        console.log('🔍 [PAYMENT] Capture response received:', JSON.stringify(details, null, 2));
+
+                        // 🔬 현미경 검증 모드 - 단계별 엄격한 검증
+
+                        // 1단계: 기본 응답 구조 확인
+                        if (!details || !details.purchase_units || !details.purchase_units[0]) {
+                          console.error('❌ [PAYMENT] Invalid response structure');
+                          alert('Payment verification failed: Invalid response');
+                          return;
+                        }
+
+                        // 2단계: Order Status 확인
+                        const orderStatus = details.status;
+                        console.log('🔍 [PAYMENT] Order Status:', orderStatus);
+                        if (orderStatus !== 'COMPLETED') {
+                          console.error('❌ [PAYMENT] Order not completed. Status:', orderStatus);
+                          alert('Payment failed: Order status is ' + orderStatus);
+                          setPaymentError('Order not completed: ' + orderStatus);
+                          return;
+                        }
+
+                        // 3단계: Capture 존재 확인
+                        const captures = details.purchase_units[0].payments?.captures;
+                        if (!captures || captures.length === 0) {
+                          console.error('❌ [PAYMENT] No captures found in response');
+                          alert('Payment verification failed: No payment captured');
+                          setPaymentError('No payment captured');
+                          return;
+                        }
+
+                        // 4단계: Capture Status 확인 (모든 capture가 COMPLETED여야 함)
+                        const allCapturesCompleted = captures.every(capture => {
+                          console.log('🔍 [PAYMENT] Checking capture:', capture.id, 'Status:', capture.status);
+                          return capture.status === 'COMPLETED';
+                        });
+
+                        if (!allCapturesCompleted) {
+                          const failedCaptures = captures.filter(c => c.status !== 'COMPLETED');
+                          console.error('❌ [PAYMENT] Some captures not completed:', failedCaptures);
+                          alert('Payment failed: Card declined or insufficient funds');
+                          setPaymentError('Payment capture failed');
+                          return;
+                        }
+
+                        // 5단계: Amount 확인 (정확히 9.99인지)
+                        const capturedAmount = parseFloat(captures[0].amount.value);
+                        console.log('🔍 [PAYMENT] Captured amount:', capturedAmount);
+                        if (capturedAmount !== 9.99) {
+                          console.error('❌ [PAYMENT] Incorrect amount. Expected: 9.99, Got:', capturedAmount);
+                          alert('Payment verification failed: Incorrect amount');
+                          setPaymentError('Incorrect payment amount');
+                          return;
+                        }
+
+                        // ✅ 모든 검증 통과!
+                        console.log('✅ [PAYMENT] All verifications passed!');
+                        console.log('✅ [PAYMENT] Payment successful. Transaction ID:', captures[0].id);
+
+                        // 결제 성공 처리
+                        setIsPaid(true);
+                        setShowPaymentModal(false);
+                        setDownloadReady(true);
+                        setStep('result');
+
+                        if (details.payer?.name?.given_name) {
+                          console.log('✅ [PAYMENT] Payer:', details.payer.name.given_name);
+                        }
+                      })
+                      .catch((error) => {
+                        console.error('❌ [PAYMENT] Capture failed with error:', error);
+                        console.error('❌ [PAYMENT] Error details:', JSON.stringify(error, null, 2));
+                        alert('Payment failed: ' + (error.message || 'Unknown error. Please try again.'));
+                        setPaymentError('Payment capture error: ' + error.message);
+                      });
                   }}
                   onError={(err) => {
                     console.error('PayPal Error:', err);
@@ -1489,17 +1561,18 @@ export default function DestinyReading() {
             }}>
               {/* Launch Special Badge */}
               <span style={{
-                fontSize: '10px',
+                fontSize: '13px',
                 color: '#d4af37',
-                border: '1px solid #d4af37',
-                padding: '4px 10px',
-                borderRadius: '3px',
-                letterSpacing: '1px',
-                display: 'inline-block'
+                border: '1.5px solid #d4af37',
+                padding: '6px 14px',
+                borderRadius: '4px',
+                letterSpacing: '1.5px',
+                display: 'inline-block',
+                fontWeight: 600
               }}>LAUNCH SPECIAL</span>
             </div>
             {/* Price Anchoring */}
-            <div style={{ fontSize: '14px', marginBottom: '6px', color: '#999' }}>
+            <div style={{ fontSize: '32px', marginBottom: '8px', color: '#999', fontWeight: 500 }}>
               <span style={{ textDecoration: 'line-through' }}>$39.99</span>
             </div>
             {/* Main Price */}
@@ -2063,7 +2136,7 @@ export default function DestinyReading() {
         </div>
       )}
 
-      {step === 'result' && isPaid && (
+      {step === 'result' && (
         <div style={{
           maxWidth: '850px',
           margin: '0 auto',
