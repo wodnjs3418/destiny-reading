@@ -971,14 +971,14 @@ export default function DestinyReading() {
       background: rgba(212, 175, 55, 0.05);
       border-left: 3px solid #d4af37;
       margin-bottom: 8px;
-      font-size: 14px;
+      font-size: 16px;
     }
 
     .bonus-value {
       margin-left: auto;
       color: rgba(232, 230, 227, 0.5);
       text-decoration: line-through;
-      font-size: 13px;
+      font-size: 15px;
     }
 
     /* Payment Modal */
@@ -1503,7 +1503,7 @@ export default function DestinyReading() {
               borderRight: '2px solid rgba(212, 175, 55, 0.3)'
             }}>
               <p style={{
-                fontSize: '22px',
+                fontSize: '26px',
                 color: '#d4af37',
                 marginBottom: '8px',
                 fontStyle: 'italic'
@@ -1511,13 +1511,13 @@ export default function DestinyReading() {
                 "命者，天之所賦也"
               </p>
               <p style={{
-                fontSize: '13px',
+                fontSize: '15px',
                 color: 'rgba(232, 230, 227, 0.5)',
                 letterSpacing: '1px'
               }}>
                 "Destiny is what Heaven bestows upon you"
                 <br />
-                <span style={{ fontSize: '11px' }}>— Yuan Hai Zi Ping (淵海子平), Tang Dynasty</span>
+                <span style={{ fontSize: '13px' }}>— Yuan Hai Zi Ping (淵海子平), Tang Dynasty</span>
               </p>
             </div>
           </header>
@@ -1691,11 +1691,12 @@ export default function DestinyReading() {
               paddingTop: '20px'
             }}>
               <div style={{
-                fontSize: '12px',
+                fontSize: '14px',
                 letterSpacing: '2px',
                 color: 'rgba(212, 175, 55, 0.7)',
                 marginBottom: '12px',
-                textAlign: 'center'
+                textAlign: 'center',
+                fontWeight: 600
               }}>
                 WHAT'S INCLUDED:
               </div>
@@ -1722,8 +1723,8 @@ export default function DestinyReading() {
                 background: 'rgba(212, 175, 55, 0.08)',
                 borderRadius: '4px'
               }}>
-                <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through' }}>Regular: $39.99</span>
-                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Launch Special: $9.99</span>
+                <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through', fontSize: '16px' }}>Regular: $39.99</span>
+                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '20px', fontWeight: 600 }}>Launch Special: $9.99</span>
               </div>
             </div>
 
@@ -1991,7 +1992,7 @@ export default function DestinyReading() {
             </button>
             <p style={{
               marginTop: '22px',
-              fontSize: '13px',
+              fontSize: '20px',
               color: 'rgba(232, 230, 227, 0.4)'
             }}>
               30-day money-back guarantee • Instant PDF delivery
@@ -2122,7 +2123,7 @@ export default function DestinyReading() {
               letterSpacing: '1px',
               lineHeight: 2
             }}>
-              © 2024 Lumina • Ancient BaZi Wisdom
+              © 2026 Lumina • Ancient BaZi Wisdom
               <br />
               <span style={{ fontSize: '11px' }}>
                 For entertainment purposes. Results may vary based on individual interpretation.
@@ -2734,18 +2735,19 @@ export default function DestinyReading() {
                   {/* Launch Special Badge */}
                   <div style={{ marginBottom: '10px' }}>
                     <span style={{
-                      fontSize: '11px',
+                      fontSize: '13px',
                       color: '#d4af37',
-                      border: '1px solid #d4af37',
-                      padding: '4px 10px',
-                      borderRadius: '3px',
-                      letterSpacing: '1px',
-                      display: 'inline-block'
+                      border: '1.5px solid #d4af37',
+                      padding: '6px 14px',
+                      borderRadius: '4px',
+                      letterSpacing: '1.5px',
+                      display: 'inline-block',
+                      fontWeight: 600
                     }}>LAUNCH SPECIAL</span>
                   </div>
                   {/* Price Anchoring */}
                   <div style={{ marginBottom: '8px' }}>
-                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '16px' }}>$39.99</span>
+                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '26px', fontWeight: 500 }}>$39.99</span>
                   </div>
                   {/* Main Price */}
                   <div style={{ marginBottom: '10px' }}>
