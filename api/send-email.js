@@ -154,21 +154,21 @@ export default async function handler(req, res) {
 <body>
   <div class="container">
     <div class="header">
-      <h1>✨ LUMINA</h1>
-      <p>Your Destiny Decoded</p>
+      <h1>LUMINA</h1>
+      <p>Analysis Report Delivery</p>
     </div>
 
     <div class="content">
       <div class="greeting">
-        Dear Seeker of Cosmic Wisdom,
+        Hello,
       </div>
 
       <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
-        Your personalized Four Pillars of Destiny reading is complete. The ancient wisdom of BaZi has revealed the cosmic patterns written in the stars at the moment of your birth.
+        Here is the PDF report you purchased. Your personalized analysis is attached to this email.
       </p>
 
       <div class="result-box">
-        <h2 style="margin-top: 0; color: #daa520; font-size: 20px;">Your Cosmic Blueprint</h2>
+        <h2 style="margin-top: 0; color: #daa520; font-size: 20px;">Order Information</h2>
         <div class="divider"></div>
         <div class="result-item">
           <span class="result-label">Birth Date:</span>
@@ -185,31 +185,29 @@ export default async function handler(req, res) {
       </div>
 
       <p style="line-height: 1.6; color: rgba(255,255,255,0.9);">
-        Your complete reading is attached as a beautifully formatted PDF. This comprehensive analysis includes:
+        The PDF file is attached to this email. Contents:
       </p>
 
       <ul style="line-height: 1.8; color: rgba(255,255,255,0.8);">
-        <li>Deep personality analysis</li>
-        <li>Career and life purpose guidance</li>
-        <li>Wealth and prosperity insights</li>
-        <li>Love and relationship compatibility</li>
+        <li>Personality analysis</li>
+        <li>Career guidance</li>
+        <li>Financial insights</li>
+        <li>Relationship compatibility</li>
         <li>Health recommendations</li>
-        <li>Yearly forecasts and lucky elements</li>
+        <li>Annual forecasts</li>
       </ul>
 
-      <div style="text-align: center; margin: 30px 0;">
-        <p style="color: rgba(255,255,255,0.7); font-style: italic; font-size: 15px;">
-          "The stars reveal tendencies, not certainties.<br/>Your choices ultimately shape your destiny."
-        </p>
-      </div>
+      <p style="line-height: 1.6; color: rgba(255,255,255,0.9); margin-top: 25px;">
+        If you have any questions, please contact our support team.
+      </p>
     </div>
 
     <div class="footer">
       <p>
-        Thank you for choosing <strong style="color: #daa520;">Lumina</strong> for your cosmic journey.
+        Thank you for your purchase.
       </p>
       <p style="margin-top: 15px;">
-        Questions? Contact us at <a href="mailto:support@lumina-destiny.com">support@lumina-destiny.com</a>
+        Support: <a href="mailto:support@luminadestiny.com">support@luminadestiny.com</a>
       </p>
       <p style="margin-top: 20px; font-size: 11px; color: rgba(255,255,255,0.4);">
         © ${new Date().getFullYear()} Lumina. All rights reserved.
