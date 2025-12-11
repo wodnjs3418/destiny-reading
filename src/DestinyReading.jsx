@@ -1282,7 +1282,7 @@ export default function DestinyReading() {
                           value: "9.99",
                           currency_code: "USD"
                         },
-                        description: "Lumina Destiny Reading - Complete PDF Report (Beta Launch Special)"
+                        description: "Lumina Destiny Reading - Complete PDF Report (Launch Special)"
                       }]
                     });
                   }}
@@ -1649,7 +1649,7 @@ export default function DestinyReading() {
                 borderRadius: '4px'
               }}>
                 <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through' }}>Regular: $39.99</span>
-                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Beta Launch: $9.99</span>
+                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '18px', fontWeight: 600 }}>Launch Special: $9.99</span>
               </div>
             </div>
 
