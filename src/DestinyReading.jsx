@@ -2206,7 +2206,7 @@ export default function DestinyReading() {
               borderLeft: '3px solid rgba(212, 175, 55, 0.4)'
             }}>
               <p style={{
-                fontSize: '18px',
+                fontSize: '22px',
                 color: '#d4af37',
                 marginBottom: '8px',
                 fontStyle: 'italic'
@@ -2214,14 +2214,14 @@ export default function DestinyReading() {
                 "{ELEMENT_QUOTES[element].chinese}"
               </p>
               <p style={{
-                fontSize: '13px',
+                fontSize: '20px',
                 color: 'rgba(232, 230, 227, 0.6)',
                 marginBottom: '5px'
               }}>
                 "{ELEMENT_QUOTES[element].english}"
               </p>
               <p style={{
-                fontSize: '11px',
+                fontSize: '16px',
                 color: 'rgba(212, 175, 55, 0.5)'
               }}>
                 — {ELEMENT_QUOTES[element].source}
@@ -2694,7 +2694,7 @@ export default function DestinyReading() {
                 <p style={{
                   marginBottom: '25px',
                   color: 'rgba(232, 230, 227, 0.85)',
-                  fontSize: '16px'
+                  fontSize: '18px'
                 }}>
                   Get instant access to your full 15-page personalized destiny report
                 </p>
@@ -2721,7 +2721,7 @@ export default function DestinyReading() {
                       display: 'flex',
                       alignItems: 'center',
                       gap: '8px',
-                      fontSize: '14px',
+                      fontSize: '16px',
                       color: 'rgba(232, 230, 227, 0.8)'
                     }}>
                       <span style={{ color: '#d4af37' }}>✓</span>
