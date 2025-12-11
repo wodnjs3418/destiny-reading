@@ -206,7 +206,7 @@ export default async function handler(req, res) {
 
     // 이메일 전송
     const data = await resend.emails.send({
-      from: 'Lumina <onboarding@resend.dev>', // TODO: 도메인 연결 후 변경
+      from: 'Lumina <noreply@luminadestiny.com>',
       to: [email],
       subject: `✨ Your Lumina Destiny Reading - ${element} ${animal}`,
       html: htmlContent,
