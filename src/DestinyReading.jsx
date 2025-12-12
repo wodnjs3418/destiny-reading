@@ -5,7 +5,7 @@ import { ELEMENT_ANALYSIS, ANIMAL_ANALYSIS, ELEMENT_QUOTES, DESTINY_PROVERBS } f
 import { generateSajuAnalysis } from './openai';
 
 // PayPal 설정
-const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'test';
+const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'AZA5M2uG97zvYefdfuPrNjWdi5ni5xdJkjZgm2azrUX0WWeQW46Zb1VrwZi_7sZrZf1rKs98LmEriFxM';
 
 // 오행 (Five Elements)
 const ELEMENTS = {
