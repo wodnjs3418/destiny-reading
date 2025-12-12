@@ -1396,6 +1396,7 @@ export default function DestinyReading() {
                         console.log('✅ [PAYMENT] Payment successful. Transaction ID:', captures[0].id);
 
                         // 결제 성공 처리
+                        // Meta Pixel 구매 이벤트 추적                        if (window.fbq) {                          window.fbq('track', 'Purchase', {                            value: 9.99,                            currency: 'USD',                            content_name: 'Lumina Destiny Reading',                            content_type: 'product'                          });                          console.log('📊 [META PIXEL] Purchase event tracked');                        }
                         setIsPaid(true);
                         setShowPaymentModal(false);
                         setDownloadReady(true);
