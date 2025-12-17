@@ -5,7 +5,10 @@ import { ELEMENT_ANALYSIS, ANIMAL_ANALYSIS, ELEMENT_QUOTES, DESTINY_PROVERBS } f
 import { generateSajuAnalysis } from './openai';
 
 // PayPal 설정
-const PAYPAL_CLIENT_ID = import.meta.env.VITE_PAYPAL_CLIENT_ID || 'AZA5M2uG97zvYefdfuPrNjWdi5ni5xdJkjZgm2azrUX0WWeQW46Zb1VrwZi_7sZrZf1rKs98LmEriFxM';
+const PAYPAL_SANDBOX = false; // true로 변경하면 Sandbox 모드
+const PAYPAL_CLIENT_ID = PAYPAL_SANDBOX
+  ? 'AZvUD5Okc-wujfd7j8NZqmhVorrKTfNEwPMA0hKQQ0gd3OK7aCSHb_uw8izQbCelkVNv4SVo6iIQ0dVS' // Sandbox
+  : (import.meta.env.VITE_PAYPAL_CLIENT_ID || 'AZA5M2uG97zvYefdfuPrNjWdi5ni5xdJkjZgm2azrUX0WWeQW46Zb1VrwZi_7sZrZf1rKs98LmEriFxM'); // Live
 
 // 오행 (Five Elements)
 const ELEMENTS = {
@@ -99,18 +102,9 @@ const DECADE_FORTUNES = [
 
 export default function DestinyReading() {
   const [step, setStep] = useState('landing');
-  const [birthData, setBirthData] = useState({ year: '', month: '', day: '', hour: '' });
+  const [birthData, setBirthData] = useState({ name: '', year: '', month: '', day: '', hour: '' });
   const [stars, setStars] = useState([]);
-  const [countdown, setCountdown] = useState({ hours: 2, minutes: 47, seconds: 33 });
   const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [activeViewers, setActiveViewers] = useState(Math.floor(Math.random() * 30) + 45);
-  const [recentPurchases, setRecentPurchases] = useState([]);
-  const [showPurchaseNotif, setShowPurchaseNotif] = useState(false);
-  const [currentNotif, setCurrentNotif] = useState(null);
-  const [spotsLeft, setSpotsLeft] = useState(Math.floor(Math.random() * 8) + 7);
-  const [showExitIntent, setShowExitIntent] = useState(false);
-  const [hasShownExit, setHasShownExit] = useState(false);
-  const [pulsePrice, setPulsePrice] = useState(false);
   const [isPaid, setIsPaid] = useState(false);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
@@ -306,155 +300,6 @@ export default function DestinyReading() {
       duration: Math.random() * 3 + 2
     }));
     setStars(newStars);
-
-    const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev.seconds > 0) return { ...prev, seconds: prev.seconds - 1 };
-        if (prev.minutes > 0) return { ...prev, minutes: prev.minutes - 1, seconds: 59 };
-        if (prev.hours > 0) return { hours: prev.hours - 1, minutes: 59, seconds: 59 };
-        return { hours: 23, minutes: 59, seconds: 59 };
-      });
-    }, 1000);
-
-    const viewerTimer = setInterval(() => {
-      setActiveViewers(prev => prev + Math.floor(Math.random() * 3) - 1);
-    }, 5000);
-
-    return () => {
-      clearInterval(timer);
-      clearInterval(viewerTimer);
-    };
-  }, []);
-
-  // Fake recent purchase notifications - 60+ names to prevent repetition
-  const fakeNames = [
-    // North America
-    { name: 'Emma', location: 'New York', time: 2 },
-    { name: 'Michael', location: 'Toronto', time: 1 },
-    { name: 'Olivia', location: 'Los Angeles', time: 1 },
-    { name: 'Sophia', location: 'Chicago', time: 3 },
-    { name: 'Liam', location: 'Miami', time: 2 },
-    { name: 'Ava', location: 'San Francisco', time: 1 },
-    { name: 'Noah', location: 'Vancouver', time: 4 },
-    { name: 'Emily', location: 'Seattle', time: 2 },
-    { name: 'Ethan', location: 'Boston', time: 3 },
-    { name: 'Madison', location: 'Austin', time: 1 },
-    { name: 'Jacob', location: 'Denver', time: 2 },
-    { name: 'Abigail', location: 'Montreal', time: 3 },
-    { name: 'Mason', location: 'Phoenix', time: 1 },
-    { name: 'Harper', location: 'Dallas', time: 2 },
-    // Europe
-    { name: 'James', location: 'London', time: 1 },
-    { name: 'Alexander', location: 'Berlin', time: 3 },
-    { name: 'Mia', location: 'Paris', time: 2 },
-    { name: 'Lucas', location: 'Amsterdam', time: 3 },
-    { name: 'Sophie', location: 'Dublin', time: 2 },
-    { name: 'Oliver', location: 'Manchester', time: 1 },
-    { name: 'Amelia', location: 'Edinburgh', time: 4 },
-    { name: 'Felix', location: 'Munich', time: 2 },
-    { name: 'Elena', location: 'Madrid', time: 3 },
-    { name: 'Marco', location: 'Milan', time: 1 },
-    { name: 'Anna', location: 'Stockholm', time: 2 },
-    { name: 'Erik', location: 'Copenhagen', time: 3 },
-    { name: 'Nina', location: 'Vienna', time: 1 },
-    { name: 'Thomas', location: 'Brussels', time: 2 },
-    { name: 'Clara', location: 'Zurich', time: 4 },
-    { name: 'Hugo', location: 'Barcelona', time: 1 },
-    { name: 'Freya', location: 'Oslo', time: 3 },
-    { name: 'Matteo', location: 'Rome', time: 2 },
-    // Asia Pacific
-    { name: 'Charlotte', location: 'Melbourne', time: 2 },
-    { name: 'Sophie', location: 'Sydney', time: 3 },
-    { name: 'William', location: 'Singapore', time: 4 },
-    { name: 'Daniel', location: 'Tokyo', time: 1 },
-    { name: 'Grace', location: 'Hong Kong', time: 2 },
-    { name: 'Benjamin', location: 'Auckland', time: 3 },
-    { name: 'Chloe', location: 'Brisbane', time: 1 },
-    { name: 'Ryan', location: 'Perth', time: 2 },
-    { name: 'Lily', location: 'Taipei', time: 4 },
-    { name: 'Nathan', location: 'Bangkok', time: 1 },
-    { name: 'Zoe', location: 'Kuala Lumpur', time: 3 },
-    { name: 'Adrian', location: 'Manila', time: 2 },
-    { name: 'Sarah', location: 'Jakarta', time: 1 },
-    { name: 'David', location: 'Mumbai', time: 3 },
-    // Middle East & Africa
-    { name: 'Isabella', location: 'Dubai', time: 2 },
-    { name: 'Adam', location: 'Abu Dhabi', time: 1 },
-    { name: 'Layla', location: 'Doha', time: 3 },
-    { name: 'Omar', location: 'Cairo', time: 2 },
-    { name: 'Jasmine', location: 'Cape Town', time: 4 },
-    { name: 'Ahmed', location: 'Riyadh', time: 1 },
-    { name: 'Fatima', location: 'Casablanca', time: 2 },
-    // South America
-    { name: 'Sebastian', location: 'São Paulo', time: 3 },
-    { name: 'Valentina', location: 'Buenos Aires', time: 1 },
-    { name: 'Mateo', location: 'Mexico City', time: 2 },
-    { name: 'Camila', location: 'Lima', time: 4 },
-    { name: 'Diego', location: 'Bogotá', time: 1 },
-    { name: 'Lucia', location: 'Santiago', time: 3 },
-    // More variety
-    { name: 'Victoria', location: 'Atlanta', time: 2 },
-    { name: 'Andrew', location: 'Philadelphia', time: 1 },
-    { name: 'Natalie', location: 'San Diego', time: 3 },
-    { name: 'Joshua', location: 'Las Vegas', time: 2 },
-    { name: 'Hannah', location: 'Portland', time: 1 },
-    { name: 'Christopher', location: 'Nashville', time: 4 },
-    { name: 'Samantha', location: 'Orlando', time: 2 },
-    { name: 'Nicholas', location: 'Minneapolis', time: 3 },
-    { name: 'Elizabeth', location: 'Charlotte', time: 1 },
-    { name: 'Jonathan', location: 'Detroit', time: 2 }
-  ];
-
-  useEffect(() => {
-    // Show purchase notification every 15-30 seconds
-    const showNotification = () => {
-      const randomPerson = fakeNames[Math.floor(Math.random() * fakeNames.length)];
-      setCurrentNotif(randomPerson);
-      setShowPurchaseNotif(true);
-
-      setTimeout(() => {
-        setShowPurchaseNotif(false);
-      }, 4000);
-    };
-
-    // First notification after 8 seconds
-    const firstTimer = setTimeout(showNotification, 8000);
-
-    // Then every 15-30 seconds
-    const interval = setInterval(() => {
-      showNotification();
-      // Occasionally decrease spots
-      if (Math.random() > 0.7) {
-        setSpotsLeft(prev => Math.max(3, prev - 1));
-      }
-    }, Math.random() * 15000 + 15000);
-
-    return () => {
-      clearTimeout(firstTimer);
-      clearInterval(interval);
-    };
-  }, []);
-
-  // Exit intent detection
-  useEffect(() => {
-    const handleMouseLeave = (e) => {
-      if (e.clientY < 10 && !hasShownExit && step === 'landing') {
-        setShowExitIntent(true);
-        setHasShownExit(true);
-      }
-    };
-
-    document.addEventListener('mouseleave', handleMouseLeave);
-    return () => document.removeEventListener('mouseleave', handleMouseLeave);
-  }, [hasShownExit, step]);
-
-  // Price pulse effect
-  useEffect(() => {
-    const pulseInterval = setInterval(() => {
-      setPulsePrice(true);
-      setTimeout(() => setPulsePrice(false), 1000);
-    }, 10000);
-    return () => clearInterval(pulseInterval);
   }, []);
 
   // 결제 완료 시 자동으로 AI 분석 시작
@@ -463,6 +308,18 @@ export default function DestinyReading() {
       fetchAIAnalysis();
     }
   }, [step, isPaid]);
+
+  // 결제 모달 열릴 때 배경 스크롤 잠금
+  useEffect(() => {
+    if (showPaymentModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [showPaymentModal]);
 
   // 사주 계산 함수들
   const getHeavenlyStem = (year) => {
@@ -538,6 +395,12 @@ export default function DestinyReading() {
         setIsAnalyzing(false);
         setStep('result'); // Show preview screen
         console.log('🔍 [DEBUG] setStep("result") called');
+
+        // Meta Pixel - Lead 이벤트 (결과 화면 도달)
+        if (window.fbq) {
+          window.fbq('track', 'Lead');
+          console.log('📊 [META PIXEL] Lead event tracked');
+        }
       }, 3000);
     } else {
       console.log('❌ [DEBUG] Birth data incomplete:', birthData);
@@ -820,88 +683,9 @@ export default function DestinyReading() {
       transform: translateY(-5px);
     }
 
-    .live-indicator {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 16px;
-      background: rgba(34, 197, 94, 0.1);
-      border: 1px solid rgba(34, 197, 94, 0.3);
-      border-radius: 20px;
-      font-size: 13px;
-      color: #22c55e;
-    }
-
-    .live-dot {
-      width: 8px;
-      height: 8px;
-      background: #22c55e;
-      border-radius: 50%;
-      animation: glow 1.5s ease-in-out infinite;
-    }
-
-    /* Purchase notification toast */
-    .purchase-notif {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      background: rgba(20, 20, 30, 0.95);
-      border: 1px solid rgba(212, 175, 55, 0.3);
-      padding: 16px 20px;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      z-index: 1000;
-      animation: slideInLeft 0.5s ease;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-      max-width: 320px;
-    }
-
-    @keyframes slideInLeft {
-      from { transform: translateX(-120%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes slideOutLeft {
-      from { transform: translateX(0); opacity: 1; }
-      to { transform: translateX(-120%); opacity: 0; }
-    }
-
-    .purchase-notif.hiding {
-      animation: slideOutLeft 0.5s ease forwards;
-    }
-
-    /* Exit intent popup */
-    .exit-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      animation: fadeIn 0.3s ease;
-    }
-
     @keyframes fadeIn {
       from { opacity: 0; }
       to { opacity: 1; }
-    }
-
-    .exit-popup {
-      background: linear-gradient(180deg, #1a1a24 0%, #12121a 100%);
-      border: 2px solid rgba(212, 175, 55, 0.4);
-      padding: 50px 40px;
-      max-width: 480px;
-      margin: 20px;
-      text-align: center;
-      position: relative;
-      border-radius: 12px;
-      animation: scaleIn 0.3s ease;
     }
 
     @keyframes scaleIn {
@@ -926,33 +710,9 @@ export default function DestinyReading() {
       color: #e8e6e3;
     }
 
-    /* Urgency badge */
-    .urgency-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(220, 38, 38, 0.15);
-      border: 1px solid rgba(220, 38, 38, 0.4);
-      color: #ef4444;
-      padding: 8px 16px;
-      border-radius: 20px;
-      font-size: 13px;
-      animation: pulse 2s ease-in-out infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.02); }
-    }
-
-    /* Price animation */
+    /* Price styling */
     .price-highlight {
       transition: all 0.3s ease;
-    }
-
-    .price-highlight.pulse {
-      transform: scale(1.1);
-      text-shadow: 0 0 30px rgba(212, 175, 55, 0.8);
     }
 
     /* Floating action button for mobile */
@@ -970,12 +730,6 @@ export default function DestinyReading() {
     @media (max-width: 768px) {
       .floating-cta {
         display: block;
-      }
-      .purchase-notif {
-        bottom: 90px;
-        left: 10px;
-        right: 10px;
-        max-width: none;
       }
     }
 
@@ -1036,6 +790,8 @@ export default function DestinyReading() {
       position: relative;
       border-radius: 12px;
       animation: scaleIn 0.3s ease;
+      max-height: 90vh;
+      overflow-y: auto;
     }
 
     .payment-input {
@@ -1201,32 +957,6 @@ export default function DestinyReading() {
       overflow: 'hidden'
     }}>
       <style>{styles}</style>
-
-      {/* Purchase Notification Toast */}
-      {showPurchaseNotif && currentNotif && (
-        <div className="purchase-notif">
-          <div style={{
-            width: '40px',
-            height: '40px',
-            borderRadius: '50%',
-            background: 'linear-gradient(135deg, #d4af37, #aa8c2c)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            fontSize: '18px'
-          }}>
-            ✓
-          </div>
-          <div>
-            <div style={{ fontSize: '14px', fontWeight: 500, marginBottom: '2px' }}>
-              {currentNotif.name} from {currentNotif.location}
-            </div>
-            <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.6)' }}>
-              Just purchased a reading • {currentNotif.time} min ago
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Payment Modal */}
       {showPaymentModal && (
@@ -1460,11 +1190,17 @@ export default function DestinyReading() {
       {/* Exit Intent Popup - 제거됨 */}
 
       {/* Floating CTA for Mobile */}
-      <div className="floating-cta">
-        <button className="cta-button" style={{ width: '100%', padding: '16px' }} onClick={handlePayment}>
-          GET MY READING — $9.99
-        </button>
-      </div>
+      {step === 'landing' && (
+        <div className="floating-cta">
+          <button
+            className="cta-button"
+            style={{ width: '100%', padding: '16px' }}
+            onClick={() => document.querySelector('.input-field')?.scrollIntoView({ behavior: 'smooth' })}
+          >
+            GET MY FREE READING
+          </button>
+        </div>
+      )}
 
       {/* Animated Stars Background */}
       {stars.map(star => (
@@ -1501,14 +1237,6 @@ export default function DestinyReading() {
           position: 'relative',
           zIndex: 1
         }}>
-          {/* Live Viewers Badge */}
-          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-            <span className="live-indicator">
-              <span className="live-dot" />
-              {activeViewers} people viewing now
-            </span>
-          </div>
-
           {/* Header */}
           <header style={{ textAlign: 'center', marginBottom: '50px' }}>
             <div style={{
@@ -1596,73 +1324,6 @@ export default function DestinyReading() {
             </div>
           </div>
 
-          {/* Limited Time Offer Banner */}
-          <div style={{
-            background: 'linear-gradient(90deg, transparent, rgba(139, 37, 37, 0.25), transparent)',
-            padding: '24px 20px',
-            textAlign: 'center',
-            marginBottom: '45px',
-            borderTop: '1px solid rgba(212, 175, 55, 0.2)',
-            borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
-          }}>
-            <div style={{
-              fontFamily: "'Cinzel', serif",
-              letterSpacing: '3px',
-              fontSize: '12px',
-              marginBottom: '12px',
-              color: '#d4af37',
-              whiteSpace: 'nowrap'
-            }}>
-              {/* Launch Special Badge */}
-              <span style={{
-                fontSize: '13px',
-                color: '#d4af37',
-                border: '1.5px solid #d4af37',
-                padding: '6px 14px',
-                borderRadius: '4px',
-                letterSpacing: '1.5px',
-                display: 'inline-block',
-                fontWeight: 600
-              }}>LAUNCH SPECIAL</span>
-            </div>
-            {/* Price Anchoring */}
-            <div style={{ fontSize: '32px', marginBottom: '8px', color: '#999', fontWeight: 500 }}>
-              <span style={{ textDecoration: 'line-through' }}>$39.99</span>
-            </div>
-            {/* Main Price */}
-            <div style={{ marginBottom: '10px' }}>
-              <span className={`gold-text price-highlight ${pulsePrice ? 'pulse' : ''}`} style={{ fontSize: '54px', fontWeight: 700, letterSpacing: '-2px' }}>$9.99</span>
-            </div>
-            {/* Urgency */}
-            <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.6)', fontStyle: 'italic', marginBottom: '15px' }}>
-              Offer ends soon.
-            </div>
-            <div style={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              gap: '20px',
-              flexWrap: 'wrap',
-              fontSize: '14px',
-              color: 'rgba(232, 230, 227, 0.85)'
-            }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                <span>Offer ends in:</span>
-                <span style={{
-                  color: '#d4af37',
-                  fontFamily: 'monospace',
-                  fontSize: '16px',
-                  fontWeight: 600
-                }}>
-                  {String(countdown.hours).padStart(2, '0')}:{String(countdown.minutes).padStart(2, '0')}:{String(countdown.seconds).padStart(2, '0')}
-                </span>
-              </div>
-              <span className="urgency-badge">
-                🔥 Only {spotsLeft} spots left at this price
-              </span>
-            </div>
-          </div>
-
           {/* Main CTA Section */}
           <div className="mystical-border" style={{
             padding: '50px 40px',
@@ -1682,6 +1343,14 @@ export default function DestinyReading() {
             </h2>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '18px', marginBottom: '30px' }}>
+              <input
+                type="text"
+                placeholder="Your First Name"
+                className="input-field"
+                value={birthData.name}
+                onChange={(e) => setBirthData({ ...birthData, name: e.target.value })}
+                maxLength="30"
+              />
               <input
                 type="number"
                 placeholder="Birth Year (e.g., 1990)"
@@ -1734,10 +1403,24 @@ export default function DestinyReading() {
               onClick={handleSubmit}
               disabled={!birthData.year || !birthData.month || !birthData.day}
             >
-              REVEAL MY DESTINY
+              GET MY FREE READING
             </button>
 
-            {/* Value Stack */}
+            {/* Free indicator */}
+            <div style={{
+              marginTop: '15px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '8px',
+              color: 'rgba(34, 197, 94, 0.9)',
+              fontSize: '14px'
+            }}>
+              <span>✓</span>
+              <span>Free preview • No payment required</span>
+            </div>
+
+            {/* What you'll discover */}
             <div style={{
               marginTop: '25px',
               textAlign: 'left',
@@ -1745,63 +1428,28 @@ export default function DestinyReading() {
               paddingTop: '20px'
             }}>
               <div style={{
-                fontSize: '14px',
+                fontSize: '13px',
                 letterSpacing: '2px',
                 color: 'rgba(212, 175, 55, 0.7)',
                 marginBottom: '12px',
                 textAlign: 'center',
                 fontWeight: 600
               }}>
-                WHAT'S INCLUDED:
+                YOUR FREE PREVIEW INCLUDES:
               </div>
-              <div className="bonus-item">
-                <span>📜</span> Complete Personalized Report
-                <span className="bonus-value">$29</span>
+              <div className="bonus-item" style={{ justifyContent: 'center' }}>
+                <span style={{ color: '#22c55e' }}>✓</span> Your dominant element & energy type
               </div>
-              <div className="bonus-item">
-                <span>💫</span> 10-Year Life Forecast
-                <span className="bonus-value">$19</span>
+              <div className="bonus-item" style={{ justifyContent: 'center' }}>
+                <span style={{ color: '#22c55e' }}>✓</span> Core personality traits
               </div>
-              <div className="bonus-item">
-                <span>❤️</span> Love & Compatibility Analysis
-                <span className="bonus-value">$15</span>
+              <div className="bonus-item" style={{ justifyContent: 'center' }}>
+                <span style={{ color: '#22c55e' }}>✓</span> Your Four Pillars chart
               </div>
-              <div className="bonus-item">
-                <span>💰</span> Wealth & Career Guidance
-                <span className="bonus-value">$15</span>
-              </div>
-              <div style={{
-                textAlign: 'center',
-                marginTop: '15px',
-                padding: '12px',
-                background: 'rgba(212, 175, 55, 0.08)',
-                borderRadius: '4px'
-              }}>
-                <span style={{ color: 'rgba(232, 230, 227, 0.5)', textDecoration: 'line-through', fontSize: '16px' }}>Regular: $39.99</span>
-                <span className="gold-text" style={{ marginLeft: '10px', fontSize: '20px', fontWeight: 600 }}>Launch Special: $9.99</span>
+              <div className="bonus-item" style={{ justifyContent: 'center' }}>
+                <span style={{ color: '#22c55e' }}>✓</span> Personal strength analysis
               </div>
             </div>
-
-            {/* Guarantee Badge */}
-            <div className="guarantee-badge" style={{ marginTop: '20px' }}>
-              <span style={{ fontSize: '24px' }}>🛡️</span>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ color: '#22c55e', fontWeight: 600, fontSize: '13px' }}>100% MONEY-BACK GUARANTEE</div>
-                <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.6)' }}>Not satisfied? Full refund, no questions asked.</div>
-              </div>
-            </div>
-
-            <p style={{
-              marginTop: '18px',
-              fontSize: '13px',
-              color: 'rgba(232, 230, 227, 0.5)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              gap: '8px'
-            }}>
-              <span>🔒</span> Secure 256-bit SSL • Instant PDF delivery
-            </p>
           </div>
 
           {/* What You'll Discover */}
@@ -1859,7 +1507,7 @@ export default function DestinyReading() {
             </div>
           </div>
 
-          {/* Social Proof Section */}
+          {/* Comparison Table - Why Lumina */}
           <div style={{ marginBottom: '80px' }}>
             <h2 style={{
               textAlign: 'center',
@@ -1869,81 +1517,54 @@ export default function DestinyReading() {
               marginBottom: '50px',
               fontWeight: 400
             }}>
-              REAL STORIES
+              <span className="gold-text">WHY LUMINA BAZI</span>
             </h2>
 
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-              gap: '24px',
-              maxWidth: '1000px',
-              margin: '0 auto'
+              maxWidth: '700px',
+              margin: '0 auto',
+              background: 'rgba(10, 10, 15, 0.5)',
+              borderRadius: '12px',
+              overflow: 'hidden',
+              border: '1px solid rgba(212, 175, 55, 0.2)'
             }}>
+              {/* Header */}
+              <div style={{
+                display: 'grid',
+                gridTemplateColumns: '1fr 1fr 1fr',
+                background: 'rgba(212, 175, 55, 0.1)',
+                padding: '18px',
+                borderBottom: '1px solid rgba(212, 175, 55, 0.2)'
+              }}>
+                <div style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.6)' }}></div>
+                <div style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.6)', textAlign: 'center' }}>Generic Horoscope</div>
+                <div style={{ fontSize: '15px', color: '#d4af37', textAlign: 'center', fontWeight: 700 }}>Lumina BaZi</div>
+              </div>
+
+              {/* Rows */}
               {[
-                { name: 'Sarah M.', location: 'California', text: "I was skeptical, but this reading accurately described challenges I've faced my whole life. The career guidance led me to a promotion within 3 months! The detail in the analysis was incredible.", rating: 5, date: '2 weeks ago' },
-                { name: 'James K.', location: 'London', text: "The relationship insights were spot-on. I finally understand why certain patterns kept repeating in my love life. This is worth 100x the price.", rating: 5, date: '1 week ago' },
-                { name: 'Michelle T.', location: 'Sydney', text: "I've tried many astrology services but BaZi goes so much deeper. The accuracy of my personality analysis gave me chills. My friends are all getting readings now!", rating: 5, date: '3 days ago' }
-              ].map((review, i) => (
-                <div key={i} className="testimonial-card" style={{ animationDelay: `${i * 0.2}s` }}>
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginBottom: '15px'
-                  }}>
-                    <span style={{
-                      color: '#d4af37',
-                      fontSize: '16px',
-                      letterSpacing: '2px'
-                    }}>
-                      {'★'.repeat(review.rating)}
-                    </span>
-                    <span style={{
-                      fontSize: '12px',
-                      color: 'rgba(232, 230, 227, 0.4)'
-                    }}>
-                      {review.date}
-                    </span>
+                { label: 'Accuracy', generic: 'Vague & general', lumina: 'Specific to your birth' },
+                { label: 'System', generic: '12 zodiac types', lumina: '500,000+ combinations' },
+                { label: 'Timing', generic: '"This month..."', lumina: 'Exact peak dates' },
+                { label: 'Depth', generic: '1-2 paragraphs', lumina: '15+ page report' },
+                { label: 'Origin', generic: 'Modern pop culture', lumina: '3,000 years of wisdom' }
+              ].map((row, i) => (
+                <div key={i} style={{
+                  display: 'grid',
+                  gridTemplateColumns: '1fr 1fr 1fr',
+                  padding: '18px',
+                  borderBottom: i < 4 ? '1px solid rgba(212, 175, 55, 0.1)' : 'none',
+                  alignItems: 'center'
+                }}>
+                  <div style={{ fontSize: '16px', color: 'rgba(232, 230, 227, 0.8)', fontWeight: 600 }}>{row.label}</div>
+                  <div style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.5)', textAlign: 'center' }}>
+                    <span style={{ color: '#ef4444', marginRight: '6px' }}>✗</span>{row.generic}
                   </div>
-                  <p style={{
-                    fontSize: '16px',
-                    lineHeight: 1.8,
-                    marginBottom: '20px',
-                    fontStyle: 'italic',
-                    color: 'rgba(232, 230, 227, 0.85)'
-                  }}>
-                    "{review.text}"
-                  </p>
-                  <div style={{
-                    fontSize: '14px',
-                    color: 'rgba(212, 175, 55, 0.8)'
-                  }}>
-                    — {review.name}, {review.location}
+                  <div style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.9)', textAlign: 'center' }}>
+                    <span style={{ color: '#22c55e', marginRight: '6px' }}>✓</span>{row.lumina}
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div style={{
-              textAlign: 'center',
-              marginTop: '50px',
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '50px',
-              flexWrap: 'wrap'
-            }}>
-              <div>
-                <div className="gold-text" style={{ fontSize: '44px', fontWeight: 600 }}>47,892</div>
-                <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.5)', letterSpacing: '2px', marginTop: '5px' }}>READINGS DELIVERED</div>
-              </div>
-              <div>
-                <div className="gold-text" style={{ fontSize: '44px', fontWeight: 600 }}>4.9/5</div>
-                <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.5)', letterSpacing: '2px', marginTop: '5px' }}>AVERAGE RATING</div>
-              </div>
-              <div>
-                <div className="gold-text" style={{ fontSize: '44px', fontWeight: 600 }}>98%</div>
-                <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.5)', letterSpacing: '2px', marginTop: '5px' }}>SATISFACTION</div>
-              </div>
             </div>
           </div>
 
@@ -2041,15 +1662,18 @@ export default function DestinyReading() {
               The universe has been waiting to share its secrets with you.
               <br />Are you ready to listen?
             </p>
-            <button className="cta-button" onClick={handlePayment}>
-              GET MY READING — $9.99
+            <button
+              className="cta-button"
+              onClick={() => document.querySelector('.input-field')?.scrollIntoView({ behavior: 'smooth' })}
+            >
+              START FREE READING
             </button>
             <p style={{
               marginTop: '22px',
-              fontSize: '20px',
-              color: 'rgba(232, 230, 227, 0.4)'
+              fontSize: '14px',
+              color: 'rgba(34, 197, 94, 0.8)'
             }}>
-              30-day money-back guarantee • Instant PDF delivery
+              ✓ Free preview • No credit card required
             </p>
           </div>
 
@@ -2185,7 +1809,7 @@ export default function DestinyReading() {
               <br /><br />
               <a href="#" style={{ color: 'rgba(212, 175, 55, 0.5)', textDecoration: 'none', marginRight: '20px' }}>Privacy Policy</a>
               <a href="#" style={{ color: 'rgba(212, 175, 55, 0.5)', textDecoration: 'none', marginRight: '20px' }}>Terms of Service</a>
-              <a href="#" style={{ color: 'rgba(212, 175, 55, 0.5)', textDecoration: 'none' }}>Contact</a>
+              <a href="mailto:support@luminadestiny.com" style={{ color: 'rgba(212, 175, 55, 0.5)', textDecoration: 'none' }}>Contact</a>
             </div>
           </footer>
         </div>
@@ -2218,7 +1842,7 @@ export default function DestinyReading() {
               YOUR COSMIC BLUEPRINT
             </div>
             <h1 className="gold-text" style={{ fontSize: '38px', marginBottom: '12px' }}>
-              Reading Preview
+              {birthData.name ? `For ${birthData.name}, The ${element} ${animal}` : 'Reading Preview'}
             </h1>
             <p style={{ color: 'rgba(232, 230, 227, 0.6)' }}>
               Born: {['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][month - 1]} {day}, {year}
@@ -2335,213 +1959,436 @@ export default function DestinyReading() {
               </p>
             </div>
 
-            {/* Curiosity Gap - Unusual Finding Alert */}
+            {/* What's in the Full Report */}
             <div style={{
-              background: 'linear-gradient(90deg, rgba(139, 69, 160, 0.2), rgba(212, 175, 55, 0.1))',
+              background: 'linear-gradient(90deg, rgba(212, 175, 55, 0.08), rgba(212, 175, 55, 0.04))',
               padding: '20px',
               borderRadius: '4px',
-              border: '1px solid rgba(139, 69, 160, 0.4)',
-              animation: 'pulse 2s ease-in-out infinite'
+              border: '1px solid rgba(212, 175, 55, 0.2)'
             }}>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                marginBottom: '10px'
-              }}>
-                <span style={{
-                  background: 'rgba(139, 69, 160, 0.5)',
-                  padding: '6px 12px',
-                  borderRadius: '4px',
-                  fontSize: '11px',
-                  letterSpacing: '1px',
-                  color: '#e8e6e3'
-                }}>
-                  ⚡ RARE FINDING
-                </span>
-              </div>
               <p style={{ fontSize: '15px', lineHeight: 1.7, color: 'rgba(232, 230, 227, 0.9)' }}>
-                <strong>Ancient texts reveal an unusual pattern in your chart.</strong>
-                <br />
-                Your {element}-{animal} combination appears in only <strong style={{ color: '#d4af37' }}>3.2% of the population</strong>.
-                Ming Dynasty scholars called this configuration "天赋异禀" (heaven-gifted)—suggesting significant hidden potential that requires deeper analysis to fully understand.
+                <strong>Your full report includes:</strong> detailed personality analysis, career & wealth guidance, love compatibility insights, lucky elements & timing, and a personalized 10-year forecast based on your unique Four Pillars configuration.
               </p>
             </div>
           </div>
 
-          {/* Element Traits Preview */}
+          {/* Personalized Insight - "어? 이거 어떻게 알았지?" 순간 */}
           <div className="mystical-border" style={{
             padding: '35px',
             marginBottom: '25px',
-            borderRadius: '8px'
+            borderRadius: '8px',
+            background: 'linear-gradient(180deg, rgba(212, 175, 55, 0.08), transparent)'
           }}>
             <h3 style={{
               fontFamily: "'Cinzel', serif",
               fontSize: '18px',
               letterSpacing: '3px',
-              marginBottom: '10px',
+              marginBottom: '25px',
               textAlign: 'center',
               color: '#d4af37'
             }}>
-              {element.toUpperCase()} ELEMENT TRAITS
+              WHAT YOUR CHART REVEALS
             </h3>
-            <p style={{
-              fontSize: '12px',
-              color: 'rgba(232, 230, 227, 0.5)',
-              textAlign: 'center',
-              marginBottom: '20px',
-              fontStyle: 'italic'
-            }}>
-              As defined in the Wu Xing (五行) system
-            </p>
+
+            {/* Core traits */}
             <div style={{
               display: 'flex',
               justifyContent: 'center',
-              gap: '15px',
-              flexWrap: 'wrap'
+              gap: '10px',
+              flexWrap: 'wrap',
+              marginBottom: '25px'
             }}>
-              {ELEMENTS[element].traits.map((trait, i) => (
+              {ELEMENTS[element].traits.slice(0, 4).map((trait, i) => (
                 <span key={i} style={{
-                  padding: '8px 16px',
+                  padding: '6px 14px',
                   background: 'rgba(255, 255, 255, 0.03)',
                   border: '1px solid rgba(212, 175, 55, 0.2)',
                   borderRadius: '20px',
-                  fontSize: '14px',
+                  fontSize: '13px',
                   color: 'rgba(232, 230, 227, 0.8)'
                 }}>
                   {trait}
                 </span>
               ))}
             </div>
+
+            {/* Specific personality insight */}
+            <p style={{
+              fontSize: '15px',
+              lineHeight: 1.9,
+              color: 'rgba(232, 230, 227, 0.9)',
+              marginBottom: '20px',
+              paddingLeft: '15px',
+              borderLeft: '2px solid rgba(212, 175, 55, 0.4)'
+            }}>
+              <strong style={{ color: '#d4af37' }}>As a {yinYang} {element} {animal}:</strong> {
+                element === 'Wood' ? `You've likely felt torn between wanting stability and craving new experiences. Others see you as adaptable, but inside you sometimes feel scattered—pulled in too many directions at once.` :
+                element === 'Fire' ? `You're probably the one friends come to for energy and motivation. But you've also experienced burnout—pushing yourself too hard, then crashing. You feel things deeply, sometimes too deeply.` :
+                element === 'Earth' ? `People rely on you, maybe too much. You're the steady one, the problem-solver. But sometimes you wish someone would take care of YOU for once. You rarely show when you're struggling.` :
+                element === 'Metal' ? `You have high standards—for yourself and others. This has pushed you to achieve, but it's also made you your own harshest critic. "Good enough" never feels good enough.` :
+                `You notice things others miss. Your intuition is strong, but you've learned to keep it to yourself because people don't always understand. You adapt to situations, sometimes losing yourself in the process.`
+              }
+            </p>
+
+            {/* Life pattern - compact */}
+            <div style={{
+              background: 'rgba(139, 69, 160, 0.1)',
+              padding: '15px 20px',
+              borderRadius: '8px',
+              border: '1px solid rgba(139, 69, 160, 0.2)',
+              textAlign: 'center'
+            }}>
+              <p style={{ fontSize: '14px', color: 'rgba(232, 230, 227, 0.85)', margin: 0 }}>
+                Life changes around ages <strong style={{ color: '#d4af37' }}>12, 24, 36</strong> (your {animal} cycle)
+                {year && (year + 24) <= new Date().getFullYear() && <span> — Did something shift around {year + 24}?</span>}
+              </p>
+            </div>
           </div>
 
-          {/* Locked Premium Sections - 결제 전에만 표시 */}
+          {/* Locked Premium - 하나의 통합 섹션 */}
           {!isPaid && (
-          <>
-          <div style={{ position: 'relative', marginBottom: '25px' }}>
-            <div className="locked-section">
-              <div className="mystical-border" style={{
-                padding: '35px',
-                borderRadius: '8px'
-              }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", marginBottom: '15px', letterSpacing: '2px' }}>
-                  DETAILED PERSONALITY ANALYSIS
-                </h3>
-                <p style={{ lineHeight: 1.8 }}>
-                  {PERSONALITY_READINGS[element].positive.substring(0, 150)}...
-                  <br /><br />
-                  According to the "San Ming Tong Hui," your shadow aspects include...
-                  <br /><br />
-                  The ancient masters offer this cosmic advice for your element...
-                </p>
-              </div>
-            </div>
-            <div className="unlock-overlay">
-              <span style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</span>
-              <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
-            </div>
-          </div>
+          <div className="mystical-border" style={{
+            padding: '35px',
+            marginBottom: '25px',
+            borderRadius: '8px',
+            background: 'linear-gradient(180deg, rgba(10, 10, 15, 0.5), transparent)'
+          }}>
+            <h3 style={{
+              fontFamily: "'Cinzel', serif",
+              fontSize: '18px',
+              letterSpacing: '3px',
+              marginBottom: '25px',
+              textAlign: 'center',
+              color: '#d4af37'
+            }}>
+              YOUR FULL REPORT INCLUDES
+            </h3>
 
-          <div style={{ position: 'relative', marginBottom: '25px' }}>
-            <div className="locked-section">
-              <div className="mystical-border" style={{
-                padding: '35px',
-                borderRadius: '8px'
+            {/* Teaser items - compact grid */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {/* Career */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 15px',
+                background: 'rgba(212, 175, 55, 0.05)',
+                borderRadius: '8px',
+                borderLeft: '3px solid rgba(212, 175, 55, 0.4)'
               }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", marginBottom: '15px', letterSpacing: '2px' }}>
-                  WEALTH & CAREER DESTINY
-                </h3>
-                <p style={{ lineHeight: 1.8 }}>
-                  The imperial texts reveal your {element} element indicates strong potential in...
-                  <br /><br />
-                  The {ELEMENT_RELATIONS.generates[element]} industries align with your cosmic energy because your element naturally generates...
-                  <br /><br />
-                  Ancient wisdom warns against careers related to {ELEMENT_RELATIONS.controls[element]} as this element...
-                </p>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#d4af37', marginBottom: '4px' }}>Career & Wealth</div>
+                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.7)' }}>
+                    {element === 'Wood' ? 'Education, Healthcare, Creative Arts' :
+                     element === 'Fire' ? 'Marketing, Entertainment, Leadership' :
+                     element === 'Earth' ? 'Real Estate, Finance, Management' :
+                     element === 'Metal' ? 'Technology, Law, Engineering' :
+                     'Research, Counseling, International'} <span style={{ color: 'rgba(212, 175, 55, 0.5)' }}>+5 more</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="unlock-overlay">
-              <span style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</span>
-              <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
-            </div>
-          </div>
 
-          <div style={{ position: 'relative', marginBottom: '25px' }}>
-            <div className="locked-section">
-              <div className="mystical-border" style={{
-                padding: '35px',
-                borderRadius: '8px'
+              {/* Love */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 15px',
+                background: 'rgba(212, 175, 55, 0.05)',
+                borderRadius: '8px',
+                borderLeft: '3px solid rgba(212, 175, 55, 0.4)'
               }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", marginBottom: '15px', letterSpacing: '2px' }}>
-                  LOVE & COMPATIBILITY REPORT
-                </h3>
-                <p style={{ lineHeight: 1.8 }}>
-                  The I Ching reveals your {animal} sign has highest compatibility with: {compatibility.best.join(', ')}
-                  <br /><br />
-                  Your ideal partner possesses {ELEMENTS[ELEMENT_RELATIONS.generates[element]].traits.slice(0, 3).join(', ')} qualities according to the principles of harmony (和)...
-                  <br /><br />
-                  Ancient sages warn of challenging matches with: {compatibility.avoid.join(', ')} due to...
-                </p>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#d4af37', marginBottom: '4px' }}>Love & Compatibility</div>
+                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.7)' }}>
+                    Best match: <span style={{ color: '#22c55e' }}>{compatibility.best[0]}</span> • Caution: <span style={{ color: '#ef4444' }}>{compatibility.avoid[0]}</span> <span style={{ color: 'rgba(212, 175, 55, 0.5)' }}>+more</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="unlock-overlay">
-              <span style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</span>
-              <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
-            </div>
-          </div>
 
-          <div style={{ position: 'relative', marginBottom: '25px' }}>
-            <div className="locked-section">
-              <div className="mystical-border" style={{
-                padding: '35px',
-                borderRadius: '8px'
+              {/* 2025 */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 15px',
+                background: 'rgba(212, 175, 55, 0.05)',
+                borderRadius: '8px',
+                borderLeft: '3px solid rgba(212, 175, 55, 0.4)'
               }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", marginBottom: '15px', letterSpacing: '2px' }}>
-                  LUCKY ELEMENTS & TIMING
-                </h3>
-                <p style={{ lineHeight: 1.8 }}>
-                  Sacred Numbers (吉数): {luckyNumbers.join(', ')}
-                  <br />
-                  Auspicious Colors: {luckyColors.join(', ')}
-                  <br />
-                  Fortunate Direction (方位): {luckyDirection}
-                  <br /><br />
-                  The celestial calendar reveals your most auspicious months are...
-                  <br />
-                  Imperial astrologers advise major decisions during...
-                </p>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#d4af37', marginBottom: '4px' }}>2025-2026 Forecast</div>
+                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.7)' }}>
+                    Key months: <span style={{ color: '#d4af37' }}>March, July</span> <span style={{ color: 'rgba(232, 230, 227, 0.3)' }}>████ ████</span>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div className="unlock-overlay">
-              <span style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</span>
-              <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
-            </div>
-          </div>
 
-          <div style={{ position: 'relative', marginBottom: '40px' }}>
-            <div className="locked-section">
-              <div className="mystical-border" style={{
-                padding: '35px',
-                borderRadius: '8px'
+              {/* Lucky */}
+              <div style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '12px 15px',
+                background: 'rgba(212, 175, 55, 0.05)',
+                borderRadius: '8px',
+                borderLeft: '3px solid rgba(212, 175, 55, 0.4)'
               }}>
-                <h3 style={{ fontFamily: "'Cinzel', serif", marginBottom: '15px', letterSpacing: '2px' }}>
-                  10-YEAR FORECAST (大運)
-                </h3>
-                <p style={{ lineHeight: 1.8 }}>
-                  Your Life Path Number (命数) is {lifePath}, indicating...
-                  <br /><br />
-                  {DECADE_FORTUNES[Math.floor(lifePath / 2)]}
-                  <br /><br />
-                  The Da Yun cycle marks key years to watch: {year + 3}, {year + 7}, {year + 12}...
-                </p>
+                <div>
+                  <div style={{ fontSize: '14px', fontWeight: 600, color: '#d4af37', marginBottom: '4px' }}>Lucky Elements</div>
+                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.7)' }}>
+                    Numbers: <span style={{ color: '#d4af37' }}>{luckyNumbers[0]}</span> <span style={{ color: 'rgba(232, 230, 227, 0.3)' }}>??</span> • Color: <span style={{ color: '#d4af37' }}>{luckyColors[0]}</span> • Direction: {luckyDirection}
+                  </div>
+                </div>
               </div>
             </div>
-            <div className="unlock-overlay">
-              <span style={{ fontSize: '36px', marginBottom: '12px' }}>🔒</span>
-              <span style={{ fontFamily: "'Cinzel', serif", letterSpacing: '3px', fontSize: '14px' }}>ANCIENT SCROLLS SEALED</span>
+
+            {/* Blurred Preview Section - Curiosity Gap */}
+            <div style={{
+              marginTop: '25px',
+              position: 'relative',
+              borderRadius: '12px',
+              overflow: 'hidden'
+            }}>
+              {/* Blurred Content */}
+              <div style={{
+                filter: 'blur(8px)',
+                opacity: 0.7,
+                padding: '25px',
+                background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.1), rgba(139, 69, 160, 0.1))',
+                borderRadius: '12px'
+              }}>
+                <div style={{ fontSize: '16px', fontWeight: 600, color: '#d4af37', marginBottom: '15px', textAlign: 'center' }}>
+                  Your 2026 Wealth & Fortune Timeline
+                </div>
+                <div style={{ display: 'flex', justifyContent: 'space-around', marginBottom: '15px' }}>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: '#22c55e' }}>📈</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.8)' }}>March Peak</div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: '#f59e0b' }}>⚠️</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.8)' }}>June Caution</div>
+                  </div>
+                  <div style={{ textAlign: 'center' }}>
+                    <div style={{ fontSize: '24px', color: '#22c55e' }}>💰</div>
+                    <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.8)' }}>Oct Opportunity</div>
+                  </div>
+                </div>
+                <div style={{
+                  height: '60px',
+                  background: 'linear-gradient(90deg, #22c55e 0%, #f59e0b 30%, #22c55e 50%, #ef4444 70%, #22c55e 100%)',
+                  borderRadius: '8px',
+                  opacity: 0.6
+                }} />
+              </div>
+
+              {/* Overlay with Unlock Button */}
+              <div style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(10, 10, 15, 0.4)',
+                backdropFilter: 'blur(2px)',
+                borderRadius: '12px'
+              }}>
+                <div style={{ fontSize: '24px', marginBottom: '10px' }}>🔒</div>
+                <button
+                  onClick={handlePayment}
+                  style={{
+                    padding: '12px 28px',
+                    background: 'linear-gradient(135deg, #b8860b 0%, #daa520 50%, #b8860b 100%)',
+                    color: '#fff',
+                    border: 'none',
+                    borderRadius: '25px',
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    boxShadow: '0 4px 15px rgba(212, 175, 55, 0.4)',
+                    letterSpacing: '1px'
+                  }}
+                >
+                  UNLOCK FULL FORECAST
+                </button>
+              </div>
+            </div>
+
+            {/* Customer Reviews - Social Proof */}
+            <div style={{ marginTop: '30px' }}>
+              <div style={{
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#d4af37',
+                marginBottom: '20px',
+                textAlign: 'center',
+                letterSpacing: '2px'
+              }}>
+                WHAT OTHERS ARE SAYING
+              </div>
+
+              {/* Rating Summary */}
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '12px',
+                marginBottom: '20px',
+                padding: '12px',
+                background: 'rgba(212, 175, 55, 0.08)',
+                borderRadius: '8px'
+              }}>
+                <span style={{ fontSize: '28px', fontWeight: 700, color: '#d4af37' }}>4.9</span>
+                <div>
+                  <div style={{ color: '#d4af37', fontSize: '14px', letterSpacing: '1px' }}>★★★★★</div>
+                  <div style={{ fontSize: '11px', color: 'rgba(232, 230, 227, 0.5)' }}>Based on 847 reviews</div>
+                </div>
+              </div>
+
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {/* Review 1 */}
+                <div style={{
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  border: '1px solid rgba(212, 175, 55, 0.15)',
+                  borderRadius: '12px',
+                  padding: '18px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: '#fff'
+                    }}>JM</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '11px', color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '3px 8px', borderRadius: '4px' }}>✓ Verified</span>
+                        <span style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>Dec 14, 2025</span>
+                      </div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>Jessica M.</div>
+                    </div>
+                    <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
+                  </div>
+                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                    I was mass laid off in October and felt completely lost. This reading told me my "wealth peak" was coming in Q1 2025 and to focus on creative industries. Just got a job offer at a design agency last week. The timing was SCARY accurate.
+                  </p>
+                </div>
+
+                {/* Review 2 */}
+                <div style={{
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  border: '1px solid rgba(212, 175, 55, 0.15)',
+                  borderRadius: '12px',
+                  padding: '18px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: '#fff'
+                    }}>DK</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '11px', color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '3px 8px', borderRadius: '4px' }}>✓ Verified</span>
+                        <span style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>Dec 12, 2025</span>
+                      </div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>David K.</div>
+                    </div>
+                    <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
+                  </div>
+                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                    Bought this for fun. Then it described my personality so accurately my wife thought I wrote it myself. The part about my "shadow side" was uncomfortable to read but... yeah, it's true. Worth it for that mirror alone.
+                  </p>
+                </div>
+
+                {/* Review 3 */}
+                <div style={{
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  border: '1px solid rgba(212, 175, 55, 0.15)',
+                  borderRadius: '12px',
+                  padding: '18px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: '#fff'
+                    }}>SL</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '11px', color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '3px 8px', borderRadius: '4px' }}>✓ Verified</span>
+                        <span style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>Dec 10, 2025</span>
+                      </div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>Sarah L.</div>
+                    </div>
+                    <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
+                  </div>
+                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                    Going through a breakup and questioning everything. Reading said I'm entering a "relationship renewal period" in spring. Currently talking to someone new... we'll see 👀 The self-reflection part helped me stop blaming myself.
+                  </p>
+                </div>
+
+                {/* Review 4 - Short and punchy */}
+                <div style={{
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  border: '1px solid rgba(212, 175, 55, 0.15)',
+                  borderRadius: '12px',
+                  padding: '18px'
+                }}>
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '10px', marginBottom: '8px' }}>
+                    <div style={{
+                      width: '36px',
+                      height: '36px',
+                      borderRadius: '50%',
+                      background: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      fontSize: '14px',
+                      fontWeight: 600,
+                      color: '#fff'
+                    }}>MR</div>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '2px' }}>
+                        <span style={{ fontSize: '11px', color: '#22c55e', background: 'rgba(34, 197, 94, 0.15)', padding: '3px 8px', borderRadius: '4px' }}>✓ Verified</span>
+                        <span style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>Dec 8, 2025</span>
+                      </div>
+                      <div style={{ fontSize: '15px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>Marcus R.</div>
+                    </div>
+                    <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
+                  </div>
+                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                    $10 for a 15-page report that took me 2 hours to fully digest. My therapist charges $200/hr. This hit harder tbh 😅
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
-          </>
           )}
 
           {/* Ancient Wisdom Quote */}
@@ -2828,85 +2675,129 @@ export default function DestinyReading() {
                   Get instant access to your complete personalized destiny report
                 </p>
 
-                {/* What's included */}
+                {/* What's Inside - Detailed Table of Contents */}
                 <div style={{
-                  display: 'grid',
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                  gap: '12px',
+                  background: 'rgba(212, 175, 55, 0.05)',
+                  border: '1px solid rgba(212, 175, 55, 0.2)',
+                  borderRadius: '12px',
+                  padding: '25px',
                   marginBottom: '30px',
-                  textAlign: 'left',
-                  maxWidth: '500px',
-                  margin: '0 auto 30px'
+                  textAlign: 'left'
                 }}>
-                  {[
-                    'Complete Four Pillars Analysis',
-                    'Deep Personality Profile',
-                    'Career & Wealth Guidance',
-                    'Love Compatibility Report',
-                    'Lucky Elements & Colors',
-                    '10-Year Life Forecast'
-                  ].map((item, i) => (
-                    <div key={i} style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '8px',
-                      fontSize: '16px',
-                      color: 'rgba(232, 230, 227, 0.8)'
-                    }}>
-                      <span style={{ color: '#d4af37' }}>✓</span>
-                      {item}
-                    </div>
-                  ))}
+                  <div style={{
+                    fontSize: '14px',
+                    fontWeight: 700,
+                    color: '#d4af37',
+                    marginBottom: '18px',
+                    textAlign: 'center',
+                    letterSpacing: '2px'
+                  }}>
+                    WHAT'S INSIDE (15+ Pages)
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                    {[
+                      { icon: '🏛️', title: 'Four Pillars Chart', desc: 'Your complete birth chart decoded' },
+                      { icon: '🧠', title: 'Deep Personality Analysis', desc: 'Hidden strengths & shadow traits' },
+                      { icon: '💰', title: 'Career & Wealth Path', desc: 'Best industries & peak earning years' },
+                      { icon: '❤️', title: 'Love & Compatibility', desc: 'Ideal partners & relationship timing' },
+                      { icon: '🍀', title: 'Lucky Elements', desc: 'Colors, numbers, directions for fortune' },
+                      { icon: '📅', title: '2025-2026 Forecast', desc: 'Month-by-month opportunities & warnings' },
+                      { icon: '🔮', title: '10-Year Life Map', desc: 'Major turning points through 2035' },
+                      { icon: '⚖️', title: 'Elemental Balance', desc: 'What you need more (or less) of' }
+                    ].map((item, i) => (
+                      <div key={i} style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '12px',
+                        padding: '8px 0',
+                        borderBottom: i < 7 ? '1px solid rgba(212, 175, 55, 0.1)' : 'none'
+                      }}>
+                        <span style={{ fontSize: '20px' }}>{item.icon}</span>
+                        <div>
+                          <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>
+                            {item.title}
+                          </div>
+                          <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>
+                            {item.desc}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
                 </div>
 
-                {/* Price Section - Conversion Optimized */}
+                {/* Price Section with Anchoring */}
                 <div style={{ marginBottom: '30px', textAlign: 'center' }}>
-                  {/* Launch Special Badge */}
-                  <div style={{ marginBottom: '10px' }}>
+                  <div style={{ marginBottom: '5px' }}>
                     <span style={{
-                      fontSize: '13px',
-                      color: '#d4af37',
-                      border: '1.5px solid #d4af37',
-                      padding: '6px 14px',
-                      borderRadius: '4px',
-                      letterSpacing: '1.5px',
-                      display: 'inline-block',
-                      fontWeight: 600
-                    }}>LAUNCH SPECIAL</span>
+                      fontSize: '20px',
+                      color: 'rgba(232, 230, 227, 0.5)',
+                      textDecoration: 'line-through',
+                      marginRight: '12px'
+                    }}>$39.99</span>
                   </div>
-                  {/* Price Anchoring */}
                   <div style={{ marginBottom: '8px' }}>
-                    <span style={{ textDecoration: 'line-through', color: '#999', fontSize: '26px', fontWeight: 500 }}>$39.99</span>
-                  </div>
-                  {/* Main Price */}
-                  <div style={{ marginBottom: '10px' }}>
                     <span className="gold-text" style={{ fontSize: '56px', fontWeight: 700, letterSpacing: '-2px' }}>$9.99</span>
                   </div>
-                  {/* Urgency */}
-                  <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.6)', fontStyle: 'italic' }}>
-                    Offer ends soon.
+                  <div style={{
+                    display: 'inline-block',
+                    padding: '6px 16px',
+                    background: 'rgba(34, 197, 94, 0.15)',
+                    border: '1px solid rgba(34, 197, 94, 0.3)',
+                    borderRadius: '20px',
+                    fontSize: '13px',
+                    color: '#22c55e',
+                    fontWeight: 600,
+                    marginBottom: '10px'
+                  }}>
+                    SAVE 75% — Launch Special
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'rgba(232, 230, 227, 0.6)' }}>
+                    One-time payment • Instant access
                   </div>
                 </div>
 
                 <button className="cta-button" onClick={handlePayment}>
-                  UNLOCK FULL READING NOW
+                  GET COMPLETE READING
                 </button>
+
+                {/* Money-Back Guarantee Badge */}
+                <div style={{
+                  marginTop: '20px',
+                  padding: '12px 20px',
+                  background: 'rgba(34, 197, 94, 0.08)',
+                  border: '1px solid rgba(34, 197, 94, 0.25)',
+                  borderRadius: '8px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '10px'
+                }}>
+                  <span style={{ fontSize: '22px' }}>🛡️</span>
+                  <div style={{ textAlign: 'left' }}>
+                    <div style={{ fontSize: '13px', fontWeight: 700, color: '#22c55e' }}>
+                      30-Day Money-Back Guarantee
+                    </div>
+                    <div style={{ fontSize: '11px', color: 'rgba(232, 230, 227, 0.6)' }}>
+                      Not satisfied? Full refund, no questions asked.
+                    </div>
+                  </div>
+                </div>
+
+                <div style={{
+                  marginTop: '15px',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  gap: '20px',
+                  flexWrap: 'wrap',
+                  fontSize: '12px',
+                  color: 'rgba(232, 230, 227, 0.5)'
+                }}>
+                  <span>🔒 Secure checkout</span>
+                  <span>📧 Instant PDF delivery</span>
+                </div>
               </>
             )}
-
-            <div style={{
-              marginTop: '25px',
-              display: 'flex',
-              justifyContent: 'center',
-              gap: '20px',
-              flexWrap: 'wrap',
-              fontSize: '13px',
-              color: 'rgba(232, 230, 227, 0.5)'
-            }}>
-              <span>🔒 Secure checkout</span>
-              <span>📧 Instant PDF delivery</span>
-              <span>💯 30-day guarantee</span>
-            </div>
           </div>
 
           {/* Trust badges */}
@@ -2925,7 +2816,7 @@ export default function DestinyReading() {
             }}>
               <span style={{ fontSize: '14px' }}>🔒 256-bit SSL</span>
               <span style={{ fontSize: '14px' }}>💳 Secure Payment</span>
-              <span style={{ fontSize: '14px' }}>✓ Verified Reviews</span>
+              <span style={{ fontSize: '14px' }}>📧 Instant Delivery</span>
             </div>
           </div>
         </div>
