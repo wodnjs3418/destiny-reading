@@ -2014,7 +2014,7 @@ export default function DestinyReading() {
 
             {/* Specific personality insight */}
             <p style={{
-              fontSize: '15px',
+              fontSize: '17px',
               lineHeight: 1.9,
               color: 'rgba(232, 230, 227, 0.9)',
               marginBottom: '20px',
@@ -2280,7 +2280,7 @@ export default function DestinyReading() {
                     </div>
                     <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
                     I was mass laid off in October and felt completely lost. This reading told me my "wealth peak" was coming in Q1 2025 and to focus on creative industries. Just got a job offer at a design agency last week. The timing was SCARY accurate.
                   </p>
                 </div>
@@ -2314,7 +2314,7 @@ export default function DestinyReading() {
                     </div>
                     <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
                     Bought this for fun. Then it described my personality so accurately my wife thought I wrote it myself. The part about my "shadow side" was uncomfortable to read but... yeah, it's true. Worth it for that mirror alone.
                   </p>
                 </div>
@@ -2348,7 +2348,7 @@ export default function DestinyReading() {
                     </div>
                     <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
                     Going through a breakup and questioning everything. Reading said I'm entering a "relationship renewal period" in spring. Currently talking to someone new... we'll see 👀 The self-reflection part helped me stop blaming myself.
                   </p>
                 </div>
@@ -2382,7 +2382,7 @@ export default function DestinyReading() {
                     </div>
                     <div style={{ color: '#d4af37', fontSize: '12px' }}>★★★★★</div>
                   </div>
-                  <p style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
+                  <p style={{ fontSize: '15px', color: 'rgba(232, 230, 227, 0.75)', lineHeight: 1.6, margin: 0 }}>
                     $10 for a 15-page report that took me 2 hours to fully digest. My therapist charges $200/hr. This hit harder tbh 😅
                   </p>
                 </div>
@@ -2717,7 +2717,7 @@ export default function DestinyReading() {
                           <div style={{ fontSize: '14px', fontWeight: 600, color: 'rgba(232, 230, 227, 0.9)' }}>
                             {item.title}
                           </div>
-                          <div style={{ fontSize: '12px', color: 'rgba(232, 230, 227, 0.5)' }}>
+                          <div style={{ fontSize: '13px', color: 'rgba(232, 230, 227, 0.5)' }}>
                             {item.desc}
                           </div>
                         </div>
