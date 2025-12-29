@@ -200,22 +200,24 @@ export default function DestinyReading() {
     setAiError('');
 
     try {
+      const yearNum = parseInt(birthData.year) || 2000;
+      const monthNum = parseInt(birthData.month) || 1;
+      const dayNum = parseInt(birthData.day) || 1;
+      const elementCalc = getHeavenlyStem(yearNum);
+      const animalCalc = getAnimal(yearNum);
+
       const analysisData = {
-        element: getHeavenlyStem(parseInt(birthData.year) || 2000),
-        animal: getAnimal(parseInt(birthData.year) || 2000),
-        yinYang: getYinYang(parseInt(birthData.year) || 2000),
-        monthElement: getMonthElement(parseInt(birthData.month) || 1),
-        dayElement: getDayElement(
-          parseInt(birthData.year) || 2000,
-          parseInt(birthData.month) || 1,
-          parseInt(birthData.day) || 1
-        ),
+        element: elementCalc,
+        animal: animalCalc,
+        yinYang: getYinYang(yearNum),
+        monthElement: getMonthElement(monthNum),
+        dayElement: getDayElement(yearNum, monthNum, dayNum),
         hourAnimal: getHourAnimal(birthData.hour),
-        lifePath: calculateLifePath({
-          year: parseInt(birthData.year) || 2000,
-          month: parseInt(birthData.month) || 1,
-          day: parseInt(birthData.day) || 1
-        })
+        lifePath: calculateLifePath({ year: yearNum, month: monthNum, day: dayNum }),
+        // AI 일관성을 위해 Lucky 값들도 전달
+        luckyNumbers: getLuckyNumbers(elementCalc, animalCalc),
+        luckyColors: getLuckyColors(elementCalc),
+        luckyDirection: getLuckyDirections(elementCalc)
       };
 
       const result = await generateSajuAnalysis(birthData, analysisData);

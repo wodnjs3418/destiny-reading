@@ -286,32 +286,38 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   doc.setFillColor(...COLORS.gold);
   doc.rect(pageWidth / 2 - 30, 70, 60, 0.5, 'F');
 
-  // Element emblem area - elegant rounded box
-  doc.setFillColor(28, 28, 38);
-  doc.roundedRect(pageWidth / 2 - 38, 82, 76, 80, 6, 6, 'F');
+  // Central emblem area - circular design
+  const centerY = 120;
+
+  // Outer decorative circle
   doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(0.8);
-  doc.roundedRect(pageWidth / 2 - 38, 82, 76, 80, 6, 6, 'S');
+  doc.setLineWidth(1);
+  doc.circle(pageWidth / 2, centerY, 38, 'S');
 
-  // Draw geometric emblem (instead of Chinese character)
-  drawElementEmblem(pageWidth / 2, 110, 15, element);
+  // Inner filled circle
+  doc.setFillColor(25, 25, 35);
+  doc.circle(pageWidth / 2, centerY, 32, 'F');
+  doc.setDrawColor(60, 55, 45);
+  doc.setLineWidth(0.5);
+  doc.circle(pageWidth / 2, centerY, 32, 'S');
 
-  // Element name in gold
-  doc.setFontSize(22);
+  // Draw geometric emblem inside circle
+  drawElementEmblem(pageWidth / 2, centerY - 5, 12, element);
+
+  // Element name inside circle
+  doc.setFontSize(14);
   doc.setTextColor(...COLORS.gold);
-  doc.text(element.toUpperCase(), pageWidth / 2, 145, { align: 'center' });
+  doc.text(element.toUpperCase(), pageWidth / 2, centerY + 22, { align: 'center' });
 
-  // Subtitle - Dominant Element (smaller, elegant)
-  doc.setFontSize(8);
-  doc.setTextColor(120, 120, 120);
-  doc.text('DOMINANT ELEMENT', pageWidth / 2, 153, { align: 'center' });
+  // Destiny Type label (above main text)
+  doc.setFontSize(10);
+  doc.setTextColor(100, 100, 100);
+  doc.text('DESTINY TYPE', pageWidth / 2, 175, { align: 'center' });
 
-  // Main destiny text
-  doc.setFontSize(24);
+  // Main destiny text - formatted as complete type
+  doc.setFontSize(26);
   doc.setTextColor(...COLORS.gold);
-  doc.text(`${yinYang} ${element}`, pageWidth / 2, 185, { align: 'center' });
-  doc.setFontSize(22);
-  doc.text(animal, pageWidth / 2, 198, { align: 'center' });
+  doc.text(`${yinYang} ${element} ${animal}`, pageWidth / 2, 192, { align: 'center' });
 
   // Birth info
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
@@ -515,14 +521,14 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   doc.setFillColor(30, 30, 40);
   doc.roundedRect(margin + 10, 65, contentWidth - 20, 100, 5, 5, 'F');
 
+  // Summary shows only core info - Lucky values are detailed in the AI analysis section
   const summaryItems = [
-    { label: 'Core Element', value: element },
-    { label: 'Animal Sign', value: animal },
-    { label: 'Yin/Yang', value: yinYang },
+    { label: 'Dominant Element', value: element },
+    { label: 'Chinese Zodiac', value: animal },
+    { label: 'Energy Type', value: yinYang },
     { label: 'Life Path Number', value: lifePath.toString() },
-    { label: 'Lucky Numbers', value: luckyNumbers.join(', ') },
-    { label: 'Lucky Colors', value: luckyColors.join(', ') },
-    { label: 'Lucky Direction', value: luckyDirection }
+    { label: 'Month Element', value: monthElement },
+    { label: 'Day Element', value: dayElement }
   ];
 
   summaryItems.forEach((item, i) => {

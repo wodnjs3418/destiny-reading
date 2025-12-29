@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   try {
     const { birthData, analysis } = req.body;
     const { year, month, day, hour } = birthData;
-    const { element, animal, yinYang, monthElement, dayElement, hourAnimal, lifePath } = analysis;
+    const { element, animal, yinYang, monthElement, dayElement, hourAnimal, lifePath, luckyNumbers, luckyColors, luckyDirection } = analysis;
 
     // 천간 계산
     const heavenlyStems = ['Geng (庚)', 'Xin (辛)', 'Ren (壬)', 'Gui (癸)', 'Jia (甲)', 'Yi (乙)', 'Bing (丙)', 'Ding (丁)', 'Wu (戊)', 'Ji (己)'];
@@ -51,10 +51,20 @@ export default async function handler(req, res) {
 
 A client seeks your wisdom for a comprehensive personalized destiny reading. As their trusted advisor, provide an exceptionally detailed, profound, and insightful analysis that demonstrates your mastery of BaZi.
 
-⚠️ CRITICAL TONE REQUIREMENT: Adopt a "Mystical yet Brutally Honest" approach. Don't just give generic compliments.
-- Identify their 'Deepest Insecurity' or 'Secret Trauma' derived from their element imbalance
+⚠️ CRITICAL DISCLAIMER (Include at the very start of your response):
+**Disclaimer:** This reading is for entertainment and self-reflection purposes only. It does not constitute professional advice in medical, financial, legal, or psychological matters. For important life decisions, please consult qualified professionals.
+
+⚠️ CRITICAL TONE REQUIREMENT: Adopt a "Mystical yet Refreshingly Direct" approach. Don't just give generic compliments.
+- Identify their hidden challenges and inner struggles derived from their element imbalance
 - Use stronger, more dramatic adjectives (e.g., instead of 'You are smart', use 'You possess a sharp, almost dangerous intellect')
-- People trust fortune-tellers who reveal "the weaknesses they hide from others" - use the Barnum Effect powerfully
+- Be specific and personal - avoid generic advice like "journal your thoughts" or "spend time in nature"
+
+⚠️ ELEMENT TERMINOLOGY - CRITICAL FOR CONSISTENCY:
+- **Dominant Element**: ${element} (from Year Pillar) - This is shown on the PDF cover
+- **Day Master**: ${dayElement} (from Day Pillar) - This represents their core self
+- When you mention "your element" or "your nature", ALWAYS refer to the Dominant Element (${element})
+- You may discuss how Day Master (${dayElement}) influences their inner self, but ALWAYS be clear which you're referencing
+- The PDF cover says "${element}" - your content must align with this
 
 ═══════════════════════════════════════
 CLIENT'S FOUR PILLARS (四柱八字)
@@ -238,89 +248,70 @@ Be BRUTALLY HONEST here. Examples:
 ⚠️ CRITICAL: This is the MOST IMPORTANT section. People pay for SPECIFIC timing predictions.
 ⚠️ IMPORTANT: Today is December 2025. Only predict FUTURE months (2026 onwards).
 
-**This section MUST include ALL 24 months with specific predictions for each.**
+**MANDATORY FORMAT FOR EACH MONTH:**
+**[MONTH YEAR]:** ★★★☆☆ (3/5)
+**Theme:** [2-3 word theme]
+**Opportunity:** [Specific opportunity this month]
+**Warning:** [Specific thing to avoid]
+**Action:** [One concrete action to take]
 
-### 2026 - YEAR OF THE FIRE HORSE (丙午) - COMPLETE MONTH-BY-MONTH GUIDE
+⚠️ You MUST include actual star ratings (★) for every month. Do NOT write "[Rating]" - write actual stars like ★★★☆☆ or ★★★★☆
 
-You MUST provide a detailed forecast for EACH of these 12 months. For each month include:
-- Overall energy rating (★ to ★★★★★)
-- Key theme/focus for the month
-- Specific opportunity or warning
-- Best action to take
+### 2026 - YEAR OF THE FIRE HORSE - COMPLETE MONTH-BY-MONTH GUIDE
 
-**JANUARY 2026:**
-[Rating: ★★★☆☆] [Theme] [Specific prediction] [Action advice]
+**JANUARY 2026:** ★★★☆☆ (3/5)
+**Theme:** [Fill in]
+**Opportunity:** [Fill in]
+**Warning:** [Fill in]
+**Action:** [Fill in]
 
-**FEBRUARY 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**FEBRUARY 2026:** [Use same format - include actual ★ rating]
 
-**MARCH 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**MARCH 2026:** [Use same format]
 
-**APRIL 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**APRIL 2026:** [Use same format]
 
-**MAY 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**MAY 2026:** [Use same format]
 
-**JUNE 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**JUNE 2026:** [Use same format]
 
-**JULY 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**JULY 2026:** [Use same format]
 
-**AUGUST 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**AUGUST 2026:** [Use same format]
 
-**SEPTEMBER 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**SEPTEMBER 2026:** [Use same format]
 
-**OCTOBER 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**OCTOBER 2026:** [Use same format]
 
-**NOVEMBER 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**NOVEMBER 2026:** [Use same format]
 
-**DECEMBER 2026:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**DECEMBER 2026:** [Use same format]
 
-### 2027 - YEAR OF THE FIRE GOAT (丁未) - COMPLETE MONTH-BY-MONTH GUIDE
+### 2027 - YEAR OF THE FIRE GOAT - COMPLETE MONTH-BY-MONTH GUIDE
 
-**JANUARY 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**JANUARY 2027:** [Use same format with actual ★ rating]
 
-**FEBRUARY 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**FEBRUARY 2027:** [Use same format]
 
-**MARCH 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**MARCH 2027:** [Use same format]
 
-**APRIL 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**APRIL 2027:** [Use same format]
 
-**MAY 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**MAY 2027:** [Use same format]
 
-**JUNE 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**JUNE 2027:** [Use same format]
 
-**JULY 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**JULY 2027:** [Use same format]
 
-**AUGUST 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**AUGUST 2027:** [Use same format]
 
-**SEPTEMBER 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**SEPTEMBER 2027:** [Use same format]
 
-**OCTOBER 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**OCTOBER 2027:** [Use same format]
 
-**NOVEMBER 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**NOVEMBER 2027:** [Use same format]
 
-**DECEMBER 2027:**
-[Rating] [Theme] [Specific prediction] [Action advice]
+**DECEMBER 2027:** [Use same format]
 
 ### KEY DATES TO MARK ON YOUR CALENDAR
 List 5-10 specific dates that are particularly significant (best days for signing contracts, starting new ventures, avoiding major decisions, etc.)
@@ -332,30 +323,29 @@ List 5-10 specific dates that are particularly significant (best days for signin
 
 ## 11. 💎 LUCKY ELEMENTS & ENHANCEMENTS
 
-⚠️ CRITICAL CONSISTENCY RULE: The lucky numbers and directions you list here MUST match what you mention in ALL other sections of this report. Do NOT contradict yourself.
+⚠️ CRITICAL: You MUST use these EXACT values provided. Do NOT change or add different numbers/colors/directions anywhere in the report.
 
-**Lucky Numbers:** [List 4 numbers and stick to ONLY these throughout the report]
-- Primary Lucky Number: [Number] - [Explanation of why]
-- Secondary Lucky Numbers: [2-3 more numbers] - [Brief explanation]
+**Lucky Numbers:** ${luckyNumbers ? luckyNumbers.join(', ') : '3, 8, 1, 6'}
+- Use ONLY these numbers throughout the entire report
+- Explain why each number resonates with their ${element} element
 
-**Lucky Colors:** [List 3-4 colors with specific shades]
-- Primary: [Color with shade, e.g., "Deep Forest Green"] - [Why this color]
-- Secondary: [More colors]
+**Lucky Colors:** ${luckyColors ? luckyColors.join(', ') : 'Green, Teal, Blue'}
+- These colors enhance their ${element} energy
+- Explain how to incorporate them in daily life
 
-**Lucky Directions:**
-- Primary Direction: [ONE main direction, e.g., "East"] - [Why]
-- Secondary Direction: [One backup direction]
-- Direction to AVOID: [Direction that conflicts with their element]
+**Lucky Direction:** ${luckyDirection || 'East'}
+- Primary direction for important decisions and home/office orientation
+- Explain the elemental reasoning
 
 **Beneficial Gemstones & Crystals:**
-- Primary Stone: [Stone name] - [Why it helps their element]
-- Secondary Stones: [2-3 more options]
+- List 2-3 stones that support ${element} element
+- Explain how each stone helps
 
 **Feng Shui Recommendations:**
-- Home office placement
+- Home office placement based on ${luckyDirection || 'East'} direction
 - Bedroom orientation
-- Colors to use in living spaces
-- Items to add/remove for elemental balance
+- Colors to use: ${luckyColors ? luckyColors.join(', ') : 'Green, Teal, Blue'}
+- Items to add/remove for ${element} elemental balance
 
 ## 12. 🎯 YOUR PERSONALIZED DO'S AND DON'TS CHECKLIST
 
