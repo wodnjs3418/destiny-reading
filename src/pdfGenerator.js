@@ -215,33 +215,59 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   doc.setFillColor(...COLORS.darkBg);
   doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-  // Watermark - Chinese characters in background (龍 = Dragon)
-  doc.setFontSize(180);
-  doc.setTextColor(25, 25, 35); // Very dark, barely visible
-  doc.setFont('helvetica', 'bold');
-  doc.text('龍', pageWidth / 2, pageHeight / 2 + 40, { align: 'center' });
+  // Helper: Draw element emblem (geometric shapes instead of Chinese characters)
+  const drawElementEmblem = (cx, cy, size, elementType) => {
+    doc.setDrawColor(45, 45, 55);
+    doc.setLineWidth(1.5);
+    doc.setFillColor(35, 35, 45);
 
-  // Triple decorative borders (Certificate-style)
+    switch(elementType) {
+      case 'Wood':
+        // Tree/growth shape - upward triangle with line
+        doc.triangle(cx, cy - size, cx - size * 0.7, cy + size * 0.5, cx + size * 0.7, cy + size * 0.5, 'S');
+        doc.line(cx, cy + size * 0.5, cx, cy + size);
+        break;
+      case 'Fire':
+        // Flame shape - pointed upward
+        doc.triangle(cx, cy - size, cx - size * 0.6, cy + size * 0.7, cx + size * 0.6, cy + size * 0.7, 'S');
+        doc.triangle(cx, cy - size * 0.3, cx - size * 0.3, cy + size * 0.4, cx + size * 0.3, cy + size * 0.4, 'S');
+        break;
+      case 'Earth':
+        // Square/stable shape
+        doc.rect(cx - size * 0.7, cy - size * 0.5, size * 1.4, size, 'S');
+        doc.line(cx - size * 0.5, cy, cx + size * 0.5, cy);
+        break;
+      case 'Metal':
+        // Circle/coin shape
+        doc.circle(cx, cy, size * 0.8, 'S');
+        doc.circle(cx, cy, size * 0.4, 'S');
+        break;
+      case 'Water':
+        // Wave shape - three curved lines
+        for (let i = -1; i <= 1; i++) {
+          const waveY = cy + i * size * 0.5;
+          doc.line(cx - size, waveY, cx - size * 0.5, waveY - size * 0.2);
+          doc.line(cx - size * 0.5, waveY - size * 0.2, cx, waveY);
+          doc.line(cx, waveY, cx + size * 0.5, waveY - size * 0.2);
+          doc.line(cx + size * 0.5, waveY - size * 0.2, cx + size, waveY);
+        }
+        break;
+      default:
+        doc.circle(cx, cy, size * 0.7, 'S');
+    }
+  };
+
+  // Single clean border - moved more inward for print safety (15mm)
   doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(2);
-  doc.rect(8, 8, pageWidth - 16, pageHeight - 16);
-  doc.setLineWidth(0.5);
-  doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
-  doc.setLineWidth(0.3);
+  doc.setLineWidth(1);
   doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
 
-  // Corner ornaments (decorative L-shapes in corners)
-  const cornerSize = 12;
-  // Top-left
+  // Minimal corner accents (only 2 corners - top left and bottom right)
+  const cornerSize = 8;
   doc.setLineWidth(1.5);
+  // Top-left
   doc.line(15, 15, 15 + cornerSize, 15);
   doc.line(15, 15, 15, 15 + cornerSize);
-  // Top-right
-  doc.line(pageWidth - 15, 15, pageWidth - 15 - cornerSize, 15);
-  doc.line(pageWidth - 15, 15, pageWidth - 15, 15 + cornerSize);
-  // Bottom-left
-  doc.line(15, pageHeight - 15, 15 + cornerSize, pageHeight - 15);
-  doc.line(15, pageHeight - 15, 15, pageHeight - 15 - cornerSize);
   // Bottom-right
   doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15 - cornerSize, pageHeight - 15);
   doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15, pageHeight - 15 - cornerSize);
@@ -250,77 +276,93 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
   doc.setFont('helvetica', 'bold');
   doc.setFontSize(48);
   doc.setTextColor(...COLORS.gold);
-  doc.text('LUMINA', pageWidth / 2, 55, { align: 'center' });
+  doc.text('LUMINA', pageWidth / 2, 50, { align: 'center' });
 
-  doc.setFontSize(12);
-  doc.setTextColor(180, 180, 180);
-  doc.text('FOUR PILLARS OF DESTINY', pageWidth / 2, 68, { align: 'center' });
+  doc.setFontSize(11);
+  doc.setTextColor(140, 140, 140);
+  doc.text('FOUR PILLARS OF DESTINY', pageWidth / 2, 62, { align: 'center' });
 
   // Decorative line
   doc.setFillColor(...COLORS.gold);
-  doc.rect(pageWidth / 2 - 40, 75, 80, 0.5, 'F');
+  doc.rect(pageWidth / 2 - 30, 70, 60, 0.5, 'F');
 
-  // Element symbol area
-  doc.setFillColor(30, 30, 40);
-  doc.roundedRect(pageWidth / 2 - 35, 85, 70, 70, 5, 5, 'F');
+  // Element emblem area - elegant rounded box
+  doc.setFillColor(28, 28, 38);
+  doc.roundedRect(pageWidth / 2 - 38, 82, 76, 80, 6, 6, 'F');
   doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(0.5);
-  doc.roundedRect(pageWidth / 2 - 35, 85, 70, 70, 5, 5, 'S');
+  doc.setLineWidth(0.8);
+  doc.roundedRect(pageWidth / 2 - 38, 82, 76, 80, 6, 6, 'S');
 
-  // Element name in the box
-  doc.setFontSize(32);
-  doc.setTextColor(...ELEMENT_COLORS[element]);
-  doc.text(element.toUpperCase(), pageWidth / 2, 115, { align: 'center' });
+  // Draw geometric emblem (instead of Chinese character)
+  drawElementEmblem(pageWidth / 2, 110, 15, element);
 
-  doc.setFontSize(14);
+  // Element name in gold
+  doc.setFontSize(22);
   doc.setTextColor(...COLORS.gold);
-  doc.text('ELEMENT', pageWidth / 2, 130, { align: 'center' });
+  doc.text(element.toUpperCase(), pageWidth / 2, 145, { align: 'center' });
+
+  // Subtitle - Dominant Element (smaller, elegant)
+  doc.setFontSize(8);
+  doc.setTextColor(120, 120, 120);
+  doc.text('DOMINANT ELEMENT', pageWidth / 2, 153, { align: 'center' });
 
   // Main destiny text
-  doc.setFontSize(26);
+  doc.setFontSize(24);
   doc.setTextColor(...COLORS.gold);
-  doc.text(`${yinYang} ${element}`, pageWidth / 2, 175, { align: 'center' });
-  doc.text(animal, pageWidth / 2, 190, { align: 'center' });
+  doc.text(`${yinYang} ${element}`, pageWidth / 2, 185, { align: 'center' });
+  doc.setFontSize(22);
+  doc.text(animal, pageWidth / 2, 198, { align: 'center' });
 
   // Birth info
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   doc.setFontSize(11);
-  doc.setTextColor(160, 160, 160);
-  doc.text(`Born: ${months[parseInt(month) - 1]} ${day}, ${year}`, pageWidth / 2, 210, { align: 'center' });
+  doc.setTextColor(140, 140, 140);
+  doc.text(`Born: ${months[parseInt(month) - 1]} ${day}, ${year}`, pageWidth / 2, 218, { align: 'center' });
 
-  // Four Pillars box
+  // Four Pillars box - unified format
   doc.setFillColor(25, 25, 35);
-  doc.roundedRect(margin + 10, 225, contentWidth - 20, 45, 3, 3, 'F');
+  doc.roundedRect(margin + 15, 232, contentWidth - 30, 42, 4, 4, 'F');
   doc.setDrawColor(...COLORS.gold);
-  doc.roundedRect(margin + 10, 225, contentWidth - 20, 45, 3, 3, 'S');
+  doc.setLineWidth(0.5);
+  doc.roundedRect(margin + 15, 232, contentWidth - 30, 42, 4, 4, 'S');
 
   doc.setFontSize(9);
   doc.setTextColor(...COLORS.gold);
-  doc.text('THE FOUR PILLARS', pageWidth / 2, 235, { align: 'center' });
+  doc.text('THE FOUR PILLARS', pageWidth / 2, 241, { align: 'center' });
+
+  // Hour element mapping (from animal)
+  const animalElements = {
+    Rat: 'Water', Ox: 'Earth', Tiger: 'Wood', Rabbit: 'Wood',
+    Dragon: 'Earth', Snake: 'Fire', Horse: 'Fire', Goat: 'Earth',
+    Monkey: 'Metal', Rooster: 'Metal', Dog: 'Earth', Pig: 'Water'
+  };
+  const hourElement = hourAnimal ? animalElements[hourAnimal] : null;
 
   const pillars = [
     { label: 'YEAR', value: element },
     { label: 'MONTH', value: monthElement },
     { label: 'DAY', value: dayElement },
-    { label: 'HOUR', value: hourAnimal || 'N/A' }
+    { label: 'HOUR', value: hourElement || '—' }
   ];
-  const pillarWidth = (contentWidth - 40) / 4;
+  const pillarWidth = (contentWidth - 50) / 4;
 
   pillars.forEach((pillar, i) => {
-    const x = margin + 20 + (i * pillarWidth) + pillarWidth / 2;
+    const x = margin + 25 + (i * pillarWidth) + pillarWidth / 2;
     doc.setFontSize(8);
-    doc.setTextColor(140, 140, 140);
-    doc.text(pillar.label, x, 248, { align: 'center' });
-    doc.setFontSize(12);
-    doc.setTextColor(255, 255, 255);
-    doc.text(pillar.value, x, 260, { align: 'center' });
+    doc.setTextColor(120, 120, 120);
+    doc.text(pillar.label, x, 253, { align: 'center' });
+    doc.setFontSize(11);
+    doc.setTextColor(220, 220, 220);
+    doc.text(pillar.value, x, 264, { align: 'center' });
   });
 
-  // Footer
+  // Footer - moved up and larger
+  doc.setFontSize(10);
+  doc.setTextColor(...COLORS.gold);
+  doc.text('Personal Destiny Report', pageWidth / 2, pageHeight - 28, { align: 'center' });
   doc.setFontSize(9);
-  doc.setTextColor(120, 120, 120);
-  doc.text('Personal Destiny Report', pageWidth / 2, 282, { align: 'center' });
-  doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, pageWidth / 2, 289, { align: 'center' });
+  doc.setTextColor(100, 100, 100);
+  doc.text(`Generated: ${new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}`, pageWidth / 2, pageHeight - 20, { align: 'center' });
 
   // === AI ANALYSIS PAGES ===
   if (aiAnalysis) {

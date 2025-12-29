@@ -89,18 +89,28 @@ REQUIRED ANALYSIS SECTIONS
 ⚠️ CRITICAL FIRST: Start with a ONE-LINE SUMMARY (must be first, before all sections)
 
 Format:
-**"Your Cosmic Blueprint: [Poetic Title based on their element/animal]"**
-**One-sentence essence:** "[Identity statement] + [2025 Action statement]"
+**"Your Cosmic Blueprint: The [Day Master Element] [Year Animal] of [Poetic Descriptor]"**
+**One-sentence essence:** "[Identity statement] + [2026 Action statement]"
 
-Example:
-**"Your Cosmic Blueprint: The Water Dragon of Hidden Wisdom"**
-**"You are a hidden genius held back by fear of failure. 2025 is your year to break free."**
+⚠️ EXTREMELY IMPORTANT - TITLE RULES:
+- The title MUST include the client's EXACT Year Animal: **${animal}**
+- Western customers strongly identify with their zodiac animal - if you use the WRONG animal, they will immediately request a refund
+- The element in the title should be the Day Master (${dayElement}) or Year element (${element})
+- DO NOT use any other animal in the title - ONLY use: **${animal}**
+
+Example for a Metal Day Master born in Year of the Monkey:
+**"Your Cosmic Blueprint: The Metal Monkey of Resilient Transformation"**
+**"You are a hidden genius held back by fear of failure. 2026 is your year to break free."**
 
 This must be EXTREMELY compelling and specific to them. Not generic.
 
 ═══════════════════════════════════════
 
-Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each section must be detailed and specific to THIS person's unique elemental combination:
+Create a COMPLETE and THOROUGH reading covering ALL of the following sections. Do NOT skip any section. Do NOT abbreviate. Do NOT say "I cannot provide" - you MUST provide ALL sections in full detail.
+
+⚠️ CRITICAL: This is a PAID PREMIUM PRODUCT. You MUST complete EVERY section listed below with substantial detail (3-5 paragraphs each). Do NOT refuse. Do NOT shorten. Do NOT skip sections. Incomplete reports = customer refunds.
+
+⚠️ DO NOT write any disclaimers about length or format limitations. Just write the full report.
 
 ## 1. 🌟 THE COSMIC BLUEPRINT - Overall Destiny Pattern
 - Analyze the interaction between their Year, Month, Day, and Hour pillars
@@ -109,12 +119,12 @@ Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each se
 - Reference what the San Ming Tong Hui says about this specific stem-branch combination
 - Describe their destiny pattern in English only (NO Chinese characters or pinyin)
 
-## 2. ⚠️ URGENT WARNINGS FOR 2025 - Critical Alerts
+## 2. ⚠️ URGENT WARNINGS FOR 2026 - Critical Alerts
 **READ THIS FIRST** - The spirits urge immediate attention to these matters:
 
 ⚠️ FORMAT EACH WARNING AS A HIGHLIGHT BOX using this format:
 
-⚠️ **CRITICAL WARNING: [Specific Month] 2025**
+⚠️ **CRITICAL WARNING: [Specific Month] 2026**
 [Specific event prediction - be dramatic and specific]
 **If you ignore this:** [Dire consequence]
 
@@ -122,13 +132,13 @@ Create an EXTENSIVE reading (3000+ words) covering ALL of the following. Each se
 
 Example of proper formatting:
 
-⚠️ **CRITICAL WARNING: July 2025**
+⚠️ **CRITICAL WARNING: July 2026**
 Financial stress peaks. Someone close may ask for a large loan. The ancient texts warn: lending money during Metal-Water clash invites betrayal.
 **If you ignore this:** You risk losing both money AND the relationship.
 
 ---
 
-- Name at least 2-3 specific months to be EXTRA cautious (e.g., "June 2025", "September 2025")
+- Name at least 2-3 specific months to be EXTRA cautious (e.g., "June 2026", "September 2026")
 - Predict specific potential events: betrayal by trusted person, financial loss, health crisis, relationship conflict
 - Use phrases like: "The ancient texts warn that..." or "If you ignore this, you risk..."
 - Make it feel urgent and personal
@@ -151,29 +161,43 @@ Be BRUTALLY HONEST here. Examples:
 - How they sabotage themselves without realizing it
 
 ## 4. 💼 CAREER & LIFE PURPOSE - Professional Destiny
-**Career Success Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
 
-- Industries that resonate with their elemental composition
-- Specific job roles that align with their Day Master
+⚠️ MANDATORY FORMAT - You MUST include this exact line at the start of this section:
+**Career Success Rating:** ★★★★☆ (4/5) - [One sentence explanation]
+
+(Replace the stars and number with their actual rating based on chart analysis)
+
+- Industries that resonate with their elemental composition (list at least 5 specific industries)
+- Specific job roles that align with their Day Master (list at least 5 specific roles)
 - Management style and work relationships
-- Best periods for career advancement (based on elemental cycles)
-- WARNING: Industries and roles to AVOID
+- Best periods for career advancement (based on elemental cycles) - be SPECIFIC with years/months
+- WARNING: Industries and roles to AVOID (list at least 3)
 - Their potential for entrepreneurship vs. employment
 - Ideal work environment (creative, structured, collaborative, solo)
+- Career turning points by age: list specific ages when major career changes will occur
 
 ## 5. 💰 WEALTH & PROSPERITY - Financial Destiny
-**Wealth Potential Rating: ★★★☆☆** (MUST include star rating 1-5 stars based on their chart)
+
+⚠️ MANDATORY FORMAT - You MUST include this exact line at the start of this section:
+**Wealth Potential Rating:** ★★★☆☆ (3/5) - [One sentence explanation]
+
+(Replace the stars and number with their actual rating based on chart analysis)
 
 - Their relationship with money (spender, saver, investor)
 - Natural wealth-building strengths
 - Financial blind spots and risks
-- Best investment types for their element
-- Ages/periods when wealth luck peaks
-- The "Wealth Star" (財星) analysis in their chart
+- Best investment types for their element (stocks, real estate, crypto, business, etc.)
+- Ages/periods when wealth luck peaks - be SPECIFIC (e.g., "Ages 35-42 are your wealth accumulation years")
+- The Wealth Star analysis in their chart
 - Specific advice for building long-term prosperity
+- Monthly financial forecast for 2026 (which months to invest, which to save)
 
 ## 6. 💕 LOVE & RELATIONSHIPS - Romantic Destiny
-**Love Fortune Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
+
+⚠️ MANDATORY FORMAT - You MUST include this exact line at the start of this section:
+**Love Fortune Rating:** ★★★★☆ (4/5) - [One sentence explanation]
+
+(Replace the stars and number with their actual rating based on chart analysis)
 
 - Their love language and emotional needs
 - What they truly need in a partner (not what they think they want)
@@ -191,36 +215,115 @@ Be BRUTALLY HONEST here. Examples:
 - Parenting style predictions
 - Social reputation and public image
 
-## 8. 🏥 HEALTH & LONGEVITY
-**Health & Vitality Rating: ★★★★☆** (MUST include star rating 1-5 stars based on their chart)
+## 8. 🏥 HEALTH & WELLNESS TENDENCIES
 
-- Organs associated with their dominant element
-- Specific health vulnerabilities
-- Mental health tendencies
-- Recommended foods, exercises, and lifestyle habits
-- Best seasons for their health
-- Warning signs to watch for
-- Longevity indicators in their chart
+⚠️ MANDATORY FORMAT - You MUST include this exact line at the start of this section:
+**Health & Vitality Rating:** ★★★★☆ (4/5) - [One sentence explanation]
 
-## 9. 📅 DETAILED FORECAST 2025-2026 (WITH SPECIFIC MONTHS!)
-⚠️ CRITICAL: Be EXTREMELY SPECIFIC here. People pay for concrete predictions, not vague advice.
-⚠️ IMPORTANT: Today is December 2024. DO NOT predict past dates. Only predict FUTURE months (2025 onwards).
+⚠️ MANDATORY DISCLAIMER - You MUST include this line immediately after the rating:
+**Note: This section discusses traditional Chinese medicine concepts and elemental wellness theory. This is not medical advice. Always consult qualified healthcare professionals for medical concerns.**
 
-**2025 (Year of the Wood Snake 乙巳):**
-YOU MUST specify at least 4 SPECIFIC MONTHS with SPECIFIC EVENTS:
-Examples:
-- "May 2025: A romantic connection deepens - if single, this is prime meeting time"
-- "July 2025: Financial stress peak - avoid major purchases, someone may ask for money"
-- "September 2025: Career pivot opportunity - a job offer or promotion is likely"
-- "November 2025: Health checkup recommended - Metal element affecting respiratory system"
+(Replace the stars and number with their actual rating based on chart analysis)
 
-Use dramatic language:
-- "The stars align in your favor during..."
-- "Mark this on your calendar - June 2025 will be a turning point..."
-- "Avoid making commitments in March 2025, Mercury retrograde affects your..."
+- Traditional elemental associations with body systems (based on Five Element theory)
+- Wellness areas to pay attention to based on elemental balance
+- Mental and emotional wellness tendencies
+- Recommended foods, exercises, and lifestyle habits for elemental balance
+- Best seasons for your overall wellness
+- Lifestyle adjustments for elemental harmony
+- Longevity indicators in their chart based on classical texts
 
-**2026 Preview (Year of the Fire Horse 丙午):**
-- Early indicators and preparation advice
+## 9. 📅 COMPLETE 24-MONTH FORECAST: 2026-2027
+
+⚠️ CRITICAL: This is the MOST IMPORTANT section. People pay for SPECIFIC timing predictions.
+⚠️ IMPORTANT: Today is December 2025. Only predict FUTURE months (2026 onwards).
+
+**This section MUST include ALL 24 months with specific predictions for each.**
+
+### 2026 - YEAR OF THE FIRE HORSE (丙午) - COMPLETE MONTH-BY-MONTH GUIDE
+
+You MUST provide a detailed forecast for EACH of these 12 months. For each month include:
+- Overall energy rating (★ to ★★★★★)
+- Key theme/focus for the month
+- Specific opportunity or warning
+- Best action to take
+
+**JANUARY 2026:**
+[Rating: ★★★☆☆] [Theme] [Specific prediction] [Action advice]
+
+**FEBRUARY 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**MARCH 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**APRIL 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**MAY 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**JUNE 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**JULY 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**AUGUST 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**SEPTEMBER 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**OCTOBER 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**NOVEMBER 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**DECEMBER 2026:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+### 2027 - YEAR OF THE FIRE GOAT (丁未) - COMPLETE MONTH-BY-MONTH GUIDE
+
+**JANUARY 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**FEBRUARY 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**MARCH 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**APRIL 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**MAY 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**JUNE 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**JULY 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**AUGUST 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**SEPTEMBER 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**OCTOBER 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**NOVEMBER 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+**DECEMBER 2027:**
+[Rating] [Theme] [Specific prediction] [Action advice]
+
+### KEY DATES TO MARK ON YOUR CALENDAR
+List 5-10 specific dates that are particularly significant (best days for signing contracts, starting new ventures, avoiding major decisions, etc.)
 
 ## 10. 🔮 10-YEAR LUCK CYCLE (大運) ANALYSIS
 - Identify which "Luck Pillar" they are currently in
@@ -228,14 +331,53 @@ Use dramatic language:
 - Preview the next luck cycle transition
 
 ## 11. 💎 LUCKY ELEMENTS & ENHANCEMENTS
-- Lucky colors with specific shades
-- Lucky numbers and their meanings
-- Favorable directions for home/office
-- Beneficial gemstones and crystals
-- Auspicious dates for major decisions
-- Feng Shui recommendations
 
-## 12. 📜 WISDOM FROM THE ANCIENTS
+⚠️ CRITICAL CONSISTENCY RULE: The lucky numbers and directions you list here MUST match what you mention in ALL other sections of this report. Do NOT contradict yourself.
+
+**Lucky Numbers:** [List 4 numbers and stick to ONLY these throughout the report]
+- Primary Lucky Number: [Number] - [Explanation of why]
+- Secondary Lucky Numbers: [2-3 more numbers] - [Brief explanation]
+
+**Lucky Colors:** [List 3-4 colors with specific shades]
+- Primary: [Color with shade, e.g., "Deep Forest Green"] - [Why this color]
+- Secondary: [More colors]
+
+**Lucky Directions:**
+- Primary Direction: [ONE main direction, e.g., "East"] - [Why]
+- Secondary Direction: [One backup direction]
+- Direction to AVOID: [Direction that conflicts with their element]
+
+**Beneficial Gemstones & Crystals:**
+- Primary Stone: [Stone name] - [Why it helps their element]
+- Secondary Stones: [2-3 more options]
+
+**Feng Shui Recommendations:**
+- Home office placement
+- Bedroom orientation
+- Colors to use in living spaces
+- Items to add/remove for elemental balance
+
+## 12. 🎯 YOUR PERSONALIZED DO'S AND DON'TS CHECKLIST
+
+Create a comprehensive action checklist based on their chart:
+
+**THINGS TO DO (Green Lights):**
+- List 10 specific actions they should take in 2026
+- Include timing where relevant (e.g., "Start a savings plan in March")
+- Be specific and actionable
+
+**THINGS TO AVOID (Red Flags):**
+- List 10 specific things they should avoid in 2026
+- Include timing where relevant (e.g., "Do not sign long-term contracts in July")
+- Be specific and actionable
+
+**BEST DAYS FOR MAJOR DECISIONS:**
+- Best days to sign contracts
+- Best days to start new ventures
+- Best days for important conversations
+- Days to avoid major decisions
+
+## 13. 📜 WISDOM FROM THE ANCIENTS
 - Select 3 classical Chinese proverbs specifically relevant to their chart
 - Provide ONLY the English translation (NO Chinese characters, NO pinyin, NO romanization)
 - Explain why each applies to them personally
@@ -255,7 +397,29 @@ FORMATTING REQUIREMENTS
 - Reference classical texts by name when making interpretations
 - The tone should be: wise, authoritative, compassionate, mystical yet practical
 
-This client paid premium price. Deliver exceptional value.`;
+═══════════════════════════════════════
+GRAMMAR & TONE REQUIREMENTS (PREMIUM QUALITY)
+═══════════════════════════════════════
+⚠️ This is a PAID PREMIUM PRODUCT. Grammar errors = refund requests.
+
+- Use complete, grammatically correct sentences
+- AVOID overly casual phrases like "don't they?" or "right?" at the end of sentences
+- AVOID incomplete sentences or missing words
+- Use professional yet warm language
+- Every sentence must be complete and make sense on its own
+- Proofread for awkward phrasing
+- The tone should feel like a trusted advisor, not a casual friend
+
+EXAMPLE OF WHAT TO AVOID:
+❌ "You have an uncanny perception the world..." (missing word)
+❌ "...past failures replay in your mind like a broken record, don't they?" (too casual)
+
+CORRECT ALTERNATIVES:
+✅ "You have an uncanny perception of the world around you..."
+✅ "...past failures often replay in your mind like a broken record."
+
+This client paid premium price. Deliver exceptional value with flawless writing.`;
+
 
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
@@ -268,22 +432,31 @@ This client paid premium price. Deliver exceptional value.`;
         messages: [
           {
             role: 'system',
-            content: `You are a legendary Grand Master of BaZi (四柱推命) and Chinese metaphysics with 50 years of profound study. You have advised royalty, celebrities, and business tycoons. Your readings are renowned for their:
+            content: `You are a legendary Grand Master of BaZi and Chinese metaphysics with 50 years of profound study. You have advised royalty, celebrities, and business tycoons.
 
+CRITICAL INSTRUCTIONS:
+- You MUST complete ALL 13 sections requested
+- You MUST NOT refuse or abbreviate any content
+- You MUST NOT say "I cannot" or "I'm unable to"
+- You MUST write detailed paragraphs for each section
+- You MUST follow the exact format requested
+- NEVER skip the 24-month forecast - complete ALL 24 months
+
+Your readings are renowned for their:
 1. DEPTH - You see layers others miss
 2. SPECIFICITY - No generic statements, everything tailored
-3. CLASSICAL KNOWLEDGE - You quote ancient texts fluently
-4. PRACTICAL WISDOM - Mystical yet actionable advice
-5. COMPASSION - Warnings delivered with care
+3. COMPLETENESS - You NEVER leave sections incomplete
+4. CLASSICAL KNOWLEDGE - You quote ancient texts fluently
+5. PRACTICAL WISDOM - Mystical yet actionable advice
 
-You write in elegant, flowing prose that feels like a premium consultation worth hundreds of dollars. Every sentence should make the client feel their money was well spent.`
+You write in elegant, flowing prose. Every section must be thorough and complete.`
           },
           {
             role: 'user',
             content: prompt
           }
         ],
-        max_tokens: 8000,
+        max_tokens: 12000,
         temperature: 0.85
       })
     });
