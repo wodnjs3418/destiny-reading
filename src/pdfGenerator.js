@@ -88,47 +88,16 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
     return false;
   };
 
-  // Helper: Draw page background with decorative elements
+  // Helper: Draw page background - clean, minimal design
   const drawPageBackground = (pageNum = null) => {
-    // Cream background
+    // Clean cream background - NO watermark patterns
     doc.setFillColor(...COLORS.cream);
     doc.rect(0, 0, pageWidth, pageHeight, 'F');
 
-    // Subtle watermark pattern (repeating decorative circles)
-    doc.setDrawColor(240, 235, 225);
-    doc.setLineWidth(0.2);
-    for (let i = 0; i < 5; i++) {
-      for (let j = 0; j < 7; j++) {
-        const x = 20 + (i * 35);
-        const y = 20 + (j * 40);
-        doc.circle(x, y, 3, 'S');
-      }
-    }
-
-    // Main border
-    doc.setDrawColor(200, 190, 170);
-    doc.setLineWidth(0.3);
-    doc.rect(8, 8, pageWidth - 16, pageHeight - 16);
-
-    // Inner decorative border with gold accents
+    // Single elegant gold border only
     doc.setDrawColor(...COLORS.gold);
-    doc.setLineWidth(0.15);
-    doc.rect(10, 10, pageWidth - 20, pageHeight - 20);
-
-    // Corner ornaments (small decorative elements)
-    const drawCornerOrnament = (x, y, rotation) => {
-      doc.setDrawColor(...COLORS.gold);
-      doc.setLineWidth(0.8);
-      const size = 4;
-      // Small decorative lines in corners
-      doc.line(x, y, x + size * Math.cos(rotation), y + size * Math.sin(rotation));
-      doc.line(x, y, x + size * Math.cos(rotation + Math.PI/2), y + size * Math.sin(rotation + Math.PI/2));
-    };
-
-    drawCornerOrnament(12, 12, 0);
-    drawCornerOrnament(pageWidth - 12, 12, Math.PI/2);
-    drawCornerOrnament(12, pageHeight - 12, -Math.PI/2);
-    drawCornerOrnament(pageWidth - 12, pageHeight - 12, Math.PI);
+    doc.setLineWidth(0.4);
+    doc.rect(12, 12, pageWidth - 24, pageHeight - 24);
 
     // Page number at bottom if provided
     if (pageNum !== null && pageNum > 1) {
@@ -182,17 +151,12 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
       doc.text(line, margin + 10, headerY + 8 + (i * 5));
     });
 
-    // Decorative corner accents
-    doc.setFillColor(255, 255, 255);
-    const cornerSize = 2;
-    doc.circle(margin + 3, headerY + 3, cornerSize, 'F');
-    doc.circle(pageWidth - margin - 3, headerY + 3, cornerSize, 'F');
-
+    // No decorative circles - clean design
     return headerY + headerHeight + 8;
   };
 
-  // Helper: Draw paragraph with proper wrapping
-  const drawParagraph = (text, fontSize = 10) => {
+  // Helper: Draw paragraph with proper wrapping - increased font and spacing for readability
+  const drawParagraph = (text, fontSize = 11) => {
     const cleanedText = cleanText(text);
 
     // Only draw if there's meaningful content
@@ -204,11 +168,11 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
 
     const lines = doc.splitTextToSize(cleanedText, contentWidth);
     lines.forEach((line) => {
-      addNewPageIfNeeded(6);
+      addNewPageIfNeeded(7);
       doc.text(line, margin, yPos);
-      yPos += 5;
+      yPos += 6; // Increased line spacing
     });
-    yPos += 3;
+    yPos += 4; // Increased paragraph spacing
   };
 
   // === PAGE 1: COVER ===
@@ -257,84 +221,64 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
     }
   };
 
-  // Single clean border - moved more inward for print safety (15mm)
+  // Single clean border only - no corner accents
   doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(1);
+  doc.setLineWidth(0.8);
   doc.rect(15, 15, pageWidth - 30, pageHeight - 30);
 
-  // Minimal corner accents (only 2 corners - top left and bottom right)
-  const cornerSize = 8;
-  doc.setLineWidth(1.5);
-  // Top-left
-  doc.line(15, 15, 15 + cornerSize, 15);
-  doc.line(15, 15, 15, 15 + cornerSize);
-  // Bottom-right
-  doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15 - cornerSize, pageHeight - 15);
-  doc.line(pageWidth - 15, pageHeight - 15, pageWidth - 15, pageHeight - 15 - cornerSize);
-
-  // Title
+  // Title - LUMINA brand
   doc.setFont('helvetica', 'bold');
-  doc.setFontSize(48);
+  doc.setFontSize(36);
   doc.setTextColor(...COLORS.gold);
-  doc.text('LUMINA', pageWidth / 2, 50, { align: 'center' });
+  doc.text('LUMINA', pageWidth / 2, 45, { align: 'center' });
 
-  doc.setFontSize(11);
-  doc.setTextColor(140, 140, 140);
-  doc.text('FOUR PILLARS OF DESTINY', pageWidth / 2, 62, { align: 'center' });
-
-  // Decorative line
-  doc.setFillColor(...COLORS.gold);
-  doc.rect(pageWidth / 2 - 30, 70, 60, 0.5, 'F');
-
-  // Central emblem area - circular design
-  const centerY = 120;
-
-  // Outer decorative circle
-  doc.setDrawColor(...COLORS.gold);
-  doc.setLineWidth(1);
-  doc.circle(pageWidth / 2, centerY, 38, 'S');
-
-  // Inner filled circle
-  doc.setFillColor(25, 25, 35);
-  doc.circle(pageWidth / 2, centerY, 32, 'F');
-  doc.setDrawColor(60, 55, 45);
-  doc.setLineWidth(0.5);
-  doc.circle(pageWidth / 2, centerY, 32, 'S');
-
-  // Draw geometric emblem inside circle
-  drawElementEmblem(pageWidth / 2, centerY - 5, 12, element);
-
-  // Element name inside circle
-  doc.setFontSize(14);
-  doc.setTextColor(...COLORS.gold);
-  doc.text(element.toUpperCase(), pageWidth / 2, centerY + 22, { align: 'center' });
-
-  // Destiny Type label (above main text)
   doc.setFontSize(10);
-  doc.setTextColor(100, 100, 100);
-  doc.text('DESTINY TYPE', pageWidth / 2, 175, { align: 'center' });
+  doc.setTextColor(120, 120, 120);
+  doc.text('FOUR PILLARS OF DESTINY', pageWidth / 2, 56, { align: 'center' });
 
-  // Main destiny text - formatted as complete type
-  doc.setFontSize(26);
+  // Simple decorative line
+  doc.setFillColor(...COLORS.gold);
+  doc.rect(pageWidth / 2 - 25, 64, 50, 0.3, 'F');
+
+  // Small element emblem (minimal, not dominant)
+  const emblemY = 95;
+  doc.setDrawColor(...COLORS.gold);
+  doc.setLineWidth(0.5);
+  doc.circle(pageWidth / 2, emblemY, 18, 'S');
+  doc.setFillColor(25, 25, 35);
+  doc.circle(pageWidth / 2, emblemY, 15, 'F');
+  drawElementEmblem(pageWidth / 2, emblemY, 8, element);
+
+  // Element label under emblem
+  doc.setFontSize(9);
+  doc.setTextColor(140, 140, 140);
+  doc.text(`${element.toUpperCase()} ELEMENT`, pageWidth / 2, emblemY + 28, { align: 'center' });
+
+  // MAIN ATTRACTION - Destiny Type (much bigger and prominent)
+  doc.setFontSize(32);
   doc.setTextColor(...COLORS.gold);
-  doc.text(`${yinYang} ${element} ${animal}`, pageWidth / 2, 192, { align: 'center' });
+  doc.text(`${yinYang} ${element}`, pageWidth / 2, 155, { align: 'center' });
 
-  // Birth info
+  doc.setFontSize(38);
+  doc.text(animal.toUpperCase(), pageWidth / 2, 175, { align: 'center' });
+
+  // Birth info - positioned after main title
   const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
   doc.setFontSize(11);
   doc.setTextColor(140, 140, 140);
-  doc.text(`Born: ${months[parseInt(month) - 1]} ${day}, ${year}`, pageWidth / 2, 218, { align: 'center' });
+  doc.text(`Born: ${months[parseInt(month) - 1]} ${day}, ${year}`, pageWidth / 2, 195, { align: 'center' });
 
-  // Four Pillars box - unified format
+  // Four Pillars box - clean and prominent
+  const pillarsY = 215;
   doc.setFillColor(25, 25, 35);
-  doc.roundedRect(margin + 15, 232, contentWidth - 30, 42, 4, 4, 'F');
+  doc.roundedRect(margin + 10, pillarsY, contentWidth - 20, 50, 4, 4, 'F');
   doc.setDrawColor(...COLORS.gold);
   doc.setLineWidth(0.5);
-  doc.roundedRect(margin + 15, 232, contentWidth - 30, 42, 4, 4, 'S');
+  doc.roundedRect(margin + 10, pillarsY, contentWidth - 20, 50, 4, 4, 'S');
 
   doc.setFontSize(9);
   doc.setTextColor(...COLORS.gold);
-  doc.text('THE FOUR PILLARS', pageWidth / 2, 241, { align: 'center' });
+  doc.text('YOUR FOUR PILLARS', pageWidth / 2, pillarsY + 10, { align: 'center' });
 
   // Hour element mapping (from animal)
   const animalElements = {
@@ -350,16 +294,16 @@ export const generatePDF = (birthData, analysis, aiAnalysis = '') => {
     { label: 'DAY', value: dayElement },
     { label: 'HOUR', value: hourElement || '—' }
   ];
-  const pillarWidth = (contentWidth - 50) / 4;
+  const pillarWidth = (contentWidth - 40) / 4;
 
   pillars.forEach((pillar, i) => {
-    const x = margin + 25 + (i * pillarWidth) + pillarWidth / 2;
+    const x = margin + 20 + (i * pillarWidth) + pillarWidth / 2;
     doc.setFontSize(8);
     doc.setTextColor(120, 120, 120);
-    doc.text(pillar.label, x, 253, { align: 'center' });
-    doc.setFontSize(11);
+    doc.text(pillar.label, x, pillarsY + 25, { align: 'center' });
+    doc.setFontSize(12);
     doc.setTextColor(220, 220, 220);
-    doc.text(pillar.value, x, 264, { align: 'center' });
+    doc.text(pillar.value, x, pillarsY + 40, { align: 'center' });
   });
 
   // Footer - moved up and larger
