@@ -47,15 +47,11 @@ const PAYPAL_CLIENT_ID = PAYPAL_SANDBOX
   ? 'AZvUD5Okc-wujfd7j8NZqmhVorrKTfNEwPMA0hKQQ0gd3OK7aCSHb_uw8izQbCelkVNv4SVo6iIQ0dVS'
   : (import.meta.env.VITE_PAYPAL_CLIENT_ID || 'AZA5M2uG97zvYefdfuPrNjWdi5ni5xdJkjZgm2azrUX0WWeQW46Zb1VrwZi_7sZrZf1rKs98LmEriFxM');
 
-const MERCHANT_ID = import.meta.env.VITE_PAYPAL_MERCHANT_ID || '';
-
 // API 엔드포인트
 const API_BASE = '';
 
 function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
   const [applePayAvailable, setApplePayAvailable] = useState(false);
-  const [googlePayAvailable, setGooglePayAvailable] = useState(false);
-  const [googlePayClient, setGooglePayClient] = useState(null);
   const [processing, setProcessing] = useState(false);
 
   // Apple Pay 가용성 체크
@@ -70,93 +66,12 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
     }
   }, []);
 
-  // Google Pay 초기화 - 모바일 호환성 개선
-  useEffect(() => {
-    let mounted = true;
-
-    const initGooglePay = async () => {
-      try {
-        // Google Pay API 존재 여부 확인
-        if (typeof window === 'undefined') return;
-        if (!window.google?.payments?.api?.PaymentsClient) {
-          console.log('Google Pay API not loaded');
-          return;
-        }
-
-        const client = new window.google.payments.api.PaymentsClient({
-          environment: PAYPAL_SANDBOX ? 'TEST' : 'PRODUCTION'
-        });
-
-        const response = await client.isReadyToPay({
-          apiVersion: 2,
-          apiVersionMinor: 0,
-          allowedPaymentMethods: [{
-            type: 'CARD',
-            parameters: {
-              allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-              allowedCardNetworks: ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA']
-            }
-          }]
-        });
-
-        if (mounted && response.result) {
-          setGooglePayAvailable(true);
-          setGooglePayClient(client);
-        }
-      } catch (err) {
-        console.log('Google Pay init error:', err);
-        // 에러나도 무시 - PayPal만 사용
-      }
-    };
-
-    // Google Pay 스크립트 로드 시도
-    const loadGooglePay = () => {
-      try {
-        // 이미 로드되어 있으면 바로 초기화
-        if (window.google?.payments?.api?.PaymentsClient) {
-          initGooglePay();
-          return;
-        }
-
-        // 이미 스크립트가 있으면 스킵
-        if (document.querySelector('script[src*="pay.google.com"]')) {
-          // 로드 완료 대기
-          const checkInterval = setInterval(() => {
-            if (window.google?.payments?.api?.PaymentsClient) {
-              clearInterval(checkInterval);
-              initGooglePay();
-            }
-          }, 100);
-          setTimeout(() => clearInterval(checkInterval), 5000);
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = 'https://pay.google.com/gp/p/js/pay.js';
-        script.async = true;
-        script.onload = () => initGooglePay();
-        script.onerror = () => console.log('Google Pay script failed to load');
-        document.head.appendChild(script);
-      } catch (err) {
-        console.log('Google Pay load error:', err);
-      }
-    };
-
-    // 약간의 지연 후 로드 (모바일 호환성)
-    const timer = setTimeout(loadGooglePay, 100);
-
-    return () => {
-      mounted = false;
-      clearTimeout(timer);
-    };
-  }, []);
-
   // 결제 성공 처리
   const handlePaymentComplete = useCallback((details) => {
     // Meta Pixel 이벤트
     if (window.fbq) {
       window.fbq('track', 'Purchase', {
-        value: 9.99,
+        value: 6.99,
         currency: 'USD',
         content_name: 'Lumina Destiny Reading',
         content_type: 'product'
@@ -179,7 +94,7 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
         merchantCapabilities: ['supports3DS'],
         total: {
           label: 'Lumina Destiny Reading',
-          amount: '9.99'
+          amount: '6.99'
         }
       };
 
@@ -261,84 +176,6 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
     }
   };
 
-  // Google Pay 결제
-  const handleGooglePay = async () => {
-    if (!googlePayClient) return;
-
-    setProcessing(true);
-
-    try {
-      const paymentDataRequest = {
-        apiVersion: 2,
-        apiVersionMinor: 0,
-        allowedPaymentMethods: [{
-          type: 'CARD',
-          parameters: {
-            allowedAuthMethods: ['PAN_ONLY', 'CRYPTOGRAM_3DS'],
-            allowedCardNetworks: ['AMEX', 'DISCOVER', 'MASTERCARD', 'VISA']
-          },
-          tokenizationSpecification: {
-            type: 'PAYMENT_GATEWAY',
-            parameters: {
-              gateway: 'paypal',
-              'paypal:merchant_id': MERCHANT_ID
-            }
-          }
-        }],
-        merchantInfo: {
-          merchantId: MERCHANT_ID,
-          merchantName: 'Lumina Destiny'
-        },
-        transactionInfo: {
-          totalPriceStatus: 'FINAL',
-          totalPrice: '9.99',
-          currencyCode: 'USD',
-          countryCode: 'US'
-        }
-      };
-
-      const paymentData = await googlePayClient.loadPaymentData(paymentDataRequest);
-
-      // 1. 주문 생성
-      const createResponse = await fetch(`${API_BASE}/api/paypal/create-order`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          payment_source: {
-            google_pay: {
-              assurance_details: paymentData.paymentMethodData.info?.assuranceDetails
-            }
-          }
-        })
-      });
-
-      const order = await createResponse.json();
-
-      // 2. 결제 캡처
-      const captureResponse = await fetch(`${API_BASE}/api/paypal/capture-order`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ orderID: order.id })
-      });
-
-      const captureData = await captureResponse.json();
-
-      if (captureData.success) {
-        handlePaymentComplete(captureData);
-      } else {
-        onPaymentError('Google Pay payment failed');
-      }
-
-    } catch (err) {
-      console.error('Google Pay error:', err);
-      if (err.statusCode !== 'CANCELED') {
-        onPaymentError('Google Pay payment failed');
-      }
-    }
-
-    setProcessing(false);
-  };
-
   const buttonStyle = {
     width: '100%',
     padding: '14px',
@@ -375,30 +212,8 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
         </button>
       )}
 
-      {/* Google Pay 버튼 */}
-      {googlePayAvailable && (
-        <button
-          onClick={handleGooglePay}
-          disabled={processing}
-          style={{
-            ...buttonStyle,
-            background: '#fff',
-            color: '#3c4043',
-            border: '1px solid #dadce0'
-          }}
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24">
-            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
-          </svg>
-          Pay with Google Pay
-        </button>
-      )}
-
       {/* 구분선 */}
-      {(applePayAvailable || googlePayAvailable) && (
+      {applePayAvailable && (
         <div style={{
           display: 'flex',
           alignItems: 'center',
@@ -425,11 +240,35 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
             label: "pay"
           }}
           disabled={processing}
+          onClick={(data, actions) => {
+            // InitiateCheckout 이벤트 - 결제 버튼 클릭 시
+            if (window.fbq) {
+              window.fbq('track', 'InitiateCheckout', {
+                value: 6.99,
+                currency: 'USD',
+                content_name: 'Lumina Destiny Reading',
+                content_type: 'product',
+                payment_method: 'PayPal'
+              });
+            }
+            return actions.resolve();
+          }}
+          onCancel={(data) => {
+            // PayPalCancel 이벤트 - 결제 취소 시
+            if (window.fbq) {
+              window.fbq('trackCustom', 'PayPalCancel', {
+                value: 6.99,
+                currency: 'USD',
+                content_name: 'Lumina Destiny Reading'
+              });
+            }
+            console.log('PayPal payment cancelled:', data);
+          }}
           createOrder={(data, actions) => {
             return actions.order.create({
               purchase_units: [{
                 amount: {
-                  value: "9.99",
+                  value: "6.99",
                   currency_code: "USD"
                 },
                 description: "Lumina Destiny Reading - Complete PDF Report (Launch Special)"
@@ -460,7 +299,7 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
                 }
 
                 const capturedAmount = parseFloat(captures[0].amount.value);
-                if (capturedAmount !== 9.99) {
+                if (capturedAmount !== 6.99) {
                   throw new Error('Incorrect amount');
                 }
 
@@ -481,6 +320,15 @@ function PaymentButtonsInner({ email, onPaymentSuccess, onPaymentError }) {
               });
           }}
           onError={(err) => {
+            // PayPalError 이벤트 - 에러 발생 시
+            if (window.fbq) {
+              window.fbq('trackCustom', 'PayPalError', {
+                value: 6.99,
+                currency: 'USD',
+                content_name: 'Lumina Destiny Reading',
+                error_message: err?.message || 'Unknown error'
+              });
+            }
             console.error('PayPal Error:', err);
             onPaymentError('Payment failed. Please try again.');
           }}
